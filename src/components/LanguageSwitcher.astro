@@ -134,9 +134,12 @@
   if (window.location.pathname.startsWith('/posts/')) {
     const targetCode: Record<string,string> = {zh:'zh-CN',en:'en',ja:'ja',ko:'ko'};
     let translateReady = false;
-    const applyArticleTranslation = (language:string) => {
+    const applyArticleTranslation = (language:string, attempt = 0) => {
       const combo = document.querySelector<HTMLSelectElement>('.goog-te-combo');
-      if (!combo) return;
+      if (!combo) {
+        if (attempt < 20) window.setTimeout(() => applyArticleTranslation(language, attempt + 1), 300);
+        return;
+      }
       combo.value = targetCode[language] || 'zh-CN';
       combo.dispatchEvent(new Event('change', {bubbles:true}));
     };
