@@ -788,24 +788,14 @@ body[data-page="home"] {
 
 
 
-/* Final homepage geometry: the photo ends exactly where the hero ends; the content canvas is solid. */
+/* Homepage banner and wave stack: photo ends at the hero, waves bridge into a solid canvas. */
 body[data-page="home"] {
   position: relative;
   isolation: isolate;
   background: #faf9f6 !important;
   background-image: none !important;
 }
-body[data-page="home"]::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 712px;
-  pointer-events: none;
-  background: url('/backgrounds/home/background.jpg') center top / cover no-repeat;
-}
+body[data-page="home"]::before { content: none !important; display: none !important; }
 body[data-page="home"] .site-shell {
   position: relative;
   z-index: 1;
@@ -844,57 +834,60 @@ body[data-page="home"] .blog-hero {
   isolation: isolate;
   width: 100vw !important;
   max-width: none !important;
-  min-height: 620px !important;
+  min-height: 70vh !important;
   margin: 0 calc(50% - 50vw) 0 !important;
   overflow: hidden;
-  background: transparent !important;
-  background-image: none !important;
+  background-image: linear-gradient(0deg,rgba(25,20,30,.40),rgba(25,20,30,.06)), url('/backgrounds/home/background.jpg') !important;
+  background-position: center 46% !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
 }
 body[data-page="home"] .blog-hero .hero-overlay {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.40));
+  background: linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.28));
 }
 body[data-page="home"] .blog-hero .hero-heading {
   position: relative;
   z-index: 1;
-  min-height: 620px !important;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px 160px;
+  padding: 40px 24px 110px;
   text-align: center;
   color: #fff;
 }
-body[data-page="home"] .blog-hero > svg.hero-wave {
+body[data-page="home"] .waves {
+  position: relative !important;
+  z-index: 3 !important;
+  display: block !important;
+  width: 100vw !important;
+  height: 136px !important;
+  margin: -92px calc(50% - 50vw) 0 !important;
+  overflow: hidden !important;
+  pointer-events: none;
+  background: transparent !important;
+}
+body[data-page="home"] .waves-svg {
   position: absolute !important;
   display: block !important;
   left: 0 !important;
-  right: auto !important;
-  bottom: -1px !important;
+  bottom: 0 !important;
   width: 100% !important;
-  height: 180px !important;
+  height: 100% !important;
   max-width: none !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  transform: none !important;
-  animation: none !important;
-  overflow: hidden !important;
-  z-index: 2;
-  pointer-events: none;
 }
-body[data-page="home"] .blog-hero > svg.hero-wave-back { z-index: 2; opacity: .58; }
-body[data-page="home"] .blog-hero > svg.hero-wave-front { z-index: 3; opacity: 1; }
-body[data-page="home"] .blog-hero .hero-wave-back path {
-  d: path("M0 78 C180 8 360 18 540 82 C760 160 920 138 1080 80 C1220 30 1330 40 1440 76 L1440 180 L0 180 Z");
-  fill: #f1efeb !important;
+body[data-page="home"] .waves .parallax > use {
+  animation: beloved-wave-move 18s cubic-bezier(.55,.5,.45,.5) infinite;
 }
-body[data-page="home"] .blog-hero .hero-wave-front path {
-  d: path("M0 112 C190 72 350 78 520 116 C730 164 910 145 1080 116 C1230 88 1340 90 1440 112 L1440 180 L0 180 Z");
-  fill: #faf9f6 !important;
-}
+body[data-page="home"] .waves .wave-layer-1 { fill: #faf9f6 !important; opacity: .22; animation-duration: 7s !important; }
+body[data-page="home"] .waves .wave-layer-2 { fill: #faf9f6 !important; opacity: .42; animation-duration: 10s !important; }
+body[data-page="home"] .waves .wave-layer-3 { fill: #faf9f6 !important; opacity: .68; animation-duration: 13s !important; }
+body[data-page="home"] .waves .wave-layer-4 { fill: #faf9f6 !important; opacity: 1; animation-duration: 20s !important; }
+@keyframes beloved-wave-move { 0% { transform: translate3d(-90px,0,0); } 100% { transform: translate3d(85px,0,0); } }
 body[data-page="home"] .home-layout {
   position: relative;
   z-index: 2;
@@ -912,27 +905,35 @@ body[data-page="home"] .home-layout .profile-card {
   background-color: transparent !important;
   background-image: none !important;
 }
-:root[data-theme="dark"] body[data-page="home"] { background: #000 !important; }
-:root[data-theme="dark"] body[data-page="home"]::before {
-  background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg');
+:root[data-theme="dark"] body[data-page="home"] {
+  background: #000 !important;
+}
+:root[data-theme="dark"] body[data-page="home"] .blog-hero {
+  background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg') !important;
 }
 :root[data-theme="dark"] body[data-page="home"] .site-header.glass-panel {
   background: rgba(8,8,8,.34) !important;
   border-color: rgba(255,255,255,.24);
 }
-:root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-back path { fill: #101010 !important; }
-:root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-front path { fill: #000 !important; }
+:root[data-theme="dark"] body[data-page="home"] .waves .wave-layer-1,
+:root[data-theme="dark"] body[data-page="home"] .waves .wave-layer-2,
+:root[data-theme="dark"] body[data-page="home"] .waves .wave-layer-3,
+:root[data-theme="dark"] body[data-page="home"] .waves .wave-layer-4 {
+  fill: #000 !important;
+}
 :root[data-theme="dark"] body[data-page="home"] .home-layout { background: #000 !important; }
 @media (max-width: 700px) {
-  body[data-page="home"]::before { height: 552px; background-position: center top; }
   body[data-page="home"] .site-header.glass-panel { width: calc(100% - 28px); margin-top: 12px; }
-  body[data-page="home"] .blog-hero { min-height: 540px !important; }
-  body[data-page="home"] .blog-hero .hero-heading { min-height: 540px !important; }
-  body[data-page="home"] .blog-hero > svg.hero-wave { height: 130px !important; }
+  body[data-page="home"] .blog-hero { min-height: 62vh !important; }
+  body[data-page="home"] .blog-hero .hero-heading { min-height: 62vh; }
+  body[data-page="home"] .waves { height: 112px !important; margin-top: -76px !important; }
   body[data-page="home"] .home-layout {
     display: flex;
     flex-direction: column;
     width: calc(100% - 28px);
     gap: 20px;
   }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="home"] .waves .parallax > use { animation: none !important; }
 }
