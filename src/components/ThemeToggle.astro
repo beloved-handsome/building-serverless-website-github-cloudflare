@@ -1,0 +1,38 @@
+
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="切换深色模式"
+  title="切换深色模式"
+>
+  <span class="theme-icon" aria-hidden="true">☾</span>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>(
+    '.theme-toggle',
+  );
+
+  function setTheme(theme: 'light' | 'dark') {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+
+    if (button) {
+      button.querySelector('.theme-icon')!.textContent =
+        theme === 'dark' ? '☀' : '☾';
+    }
+  }
+
+  const savedTheme = localStorage.getItem('theme');
+
+  if (savedTheme === 'dark' || savedTheme === 'light') {
+    setTheme(savedTheme);
+  }
+
+  button?.addEventListener('click', () => {
+    const current =
+      document.documentElement.dataset.theme ?? 'light';
+
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+</script>
