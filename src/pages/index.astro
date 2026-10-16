@@ -74,24 +74,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     updateLabels();
   });
   updateLabels();
+  function getBrowserPosition(): Promise<GeolocationPosition> {
+    return new Promise((resolve, reject) => {
+      if (!('geolocation' in navigator)) { reject(new Error('Geolocation unsupported')); return; }
+      navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+    });
+  }
   async function loadLocalWeather() {
-    const t = liveText[language] || liveText.zh;
     try {
-      const response = await fetch('https://ipwho.is/');
-      if (!response.ok) throw new Error('IP geolocation unavailable');
-      const place = await response.json();
-      if (!place.success || typeof place.latitude !== 'number' || typeof place.longitude !== 'number') throw new Error('IP geolocation unavailable');
-      timeZone = place.timezone?.id || timeZone;
-      locationName = [place.city, place.region, place.country].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(', ');
-      if (locationEl) { locationEl.dataset.liveLabel = 'location'; locationEl.textContent = locationName || t.locationError; }
+      let latitude: number;
+      let longitude: number;
+      let accurateLocation = false;
+      try {
+        const position = await getBrowserPosition();
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        accurateLocation = position.coords.accuracy <= 1000;
+        try {
+          const reverseUrl = new URL('https://api.bigdatacloud.net/data/reverse-geocode-client');
+          reverseUrl.search = new URLSearchParams({ latitude: String(latitude), longitude: String(longitude), localityLanguage: languageCodes[language] || 'en' }).toString();
+          const reverseResponse = await fetch(reverseUrl);
+          if (reverseResponse.ok) {
+            const place = await reverseResponse.json();
+            locationName = [place.city || place.locality, place.principalSubdivision, place.countryName].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(', ');
+          }
+        } catch { /* Weather still works if reverse geocoding fails. */ }
+      } catch {
+        const response = await fetch('https://ipwho.is/');
+        if (!response.ok) throw new Error('IP geolocation unavailable');
+        const place = await response.json();
+        if (!place.success || typeof place.latitude !== 'number' || typeof place.longitude !== 'number') throw new Error('IP geolocation unavailable');
+        latitude = place.latitude;
+        longitude = place.longitude;
+        timeZone = place.timezone?.id || timeZone;
+        locationName = [place.city, place.region, place.country].filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i).join(', ');
+      }
+      const t = liveText[language] || liveText.zh;
+      if (locationEl) {
+        locationEl.dataset.liveLabel = 'location';
+        locationEl.textContent = locationName || t.locationError;
+        locationEl.title = accurateLocation ? 'GPS location' : 'Approximate location';
+      }
       startClock();
       const url = new URL('https://api.open-meteo.com/v1/forecast');
-      url.search = new URLSearchParams({latitude:String(place.latitude),longitude:String(place.longitude),current:'temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m',timezone:'auto'}).toString();
+      url.search = new URLSearchParams({ latitude: String(latitude), longitude: String(longitude), current: 'temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m', timezone: 'auto' }).toString();
       const weatherResponse = await fetch(url);
       if (!weatherResponse.ok) throw new Error('Weather unavailable');
       const result = await weatherResponse.json();
       const current = result.current;
-      weatherData = {temperature:current.temperature_2m,apparent:current.apparent_temperature,humidity:current.relative_humidity_2m,code:current.weather_code,wind:current.wind_speed_10m};
+      weatherData = { temperature: current.temperature_2m, apparent: current.apparent_temperature, humidity: current.relative_humidity_2m, code: current.weather_code, wind: current.wind_speed_10m };
       if (weatherEl) weatherEl.dataset.liveLabel = 'weather';
       updateLabels();
     } catch {
@@ -100,7 +131,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       if (weatherEl && !weatherData) { weatherEl.dataset.liveLabel = 'weatherError'; weatherEl.textContent = current.weatherError; }
     }
   }
-  loadLocalWeather();
 </script>
 <style>
   .home-dashboard {
