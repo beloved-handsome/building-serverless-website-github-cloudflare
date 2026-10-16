@@ -5,10 +5,10 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p =>
 ---
 <BaseLayout title="随机漫游 — 个人书房" description="不按计划，随机读一篇文章。">
   <section class="utility-page wander-page">
-    <p class="section-kicker">SERENDIPITY</p><h1>随机漫游<span>.</span></h1>
-    <p class="utility-intro">有时不必带着问题来。让下一篇文章替你决定方向。</p>
-    <div class="wander-card glass-panel"><div class="wander-symbol">✳</div><h2 id="wander-title">准备好偶遇一段文字了吗？</h2><p id="wander-description">点击下面的按钮，随机打开书房中的一篇文章。</p><button class="button-primary" id="wander-button" type="button">带我去看看 ↗</button></div>
-    {posts.length === 0 ? <p class="search-count">书房里还没有已发布的文章。添加 Markdown 文章后，随机漫游就会启程。</p> : <script type="application/json" id="wander-data" set:html={JSON.stringify(posts).replace(/</g, '\\u003c')} />}
+    <p class="section-kicker" data-i18n="wander.kicker">SERENDIPITY</p><h1 data-i18n="wander.title">随机漫游<span>.</span></h1>
+    <p class="utility-intro" data-i18n="wander.intro">有时不必带着问题来。让下一篇文章替你决定方向。</p>
+    <div class="wander-card glass-panel"><div class="wander-symbol">✳</div><h2 id="wander-title" data-i18n="wander.ready">准备好偶遇一段文字了吗？</h2><p id="wander-description" data-i18n="wander.desc">点击下面的按钮，随机打开书房中的一篇文章。</p><button class="button-primary" id="wander-button" type="button" data-i18n="wander.button">带我去看看 ↗</button></div>
+    {posts.length === 0 ? <p class="search-count" data-i18n="wander.empty">书房里还没有文章。先为书房添几篇记录吧。</p> : <script type="application/json" id="wander-data" set:html={JSON.stringify(posts).replace(/</g, '\\u003c')} />}
   </section>
 </BaseLayout>
 <script>
@@ -17,13 +17,18 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p =>
   const desc = document.querySelector<HTMLElement>('#wander-description');
   const node = document.querySelector<HTMLScriptElement>('#wander-data');
   const posts = JSON.parse(node?.textContent || '[]') as {title:string;url:string;description:string}[];
+  let chosenPost: {title:string;url:string;description:string} | undefined;
+  const labels: Record<string,string> = {zh:'打开这篇文章 →',en:'Open this article →',ja:'この記事を開く →',ko:'이 글 열기 →'};
   btn?.addEventListener('click', () => {
-    if (!posts.length) { if (desc) desc.textContent = '目前还没有文章，先为书房添几篇记录吧。'; return; }
+    if (!posts.length) { if (desc) desc.textContent = ({zh:'目前还没有文章，先为书房添几篇记录吧。',en:'There are no posts yet. Add a few notes to begin.',ja:'記事はまだありません。まずはいくつか記録を追加してください。',ko:'아직 글이 없습니다. 먼저 몇 편의 기록을 추가해 주세요.'} as Record<string,string>)[document.documentElement.dataset.language || 'zh']; return; }
+    if (chosenPost) { location.href = chosenPost.url; return; }
     const candidates = posts.length > 1 ? posts.filter(p => p.url !== location.pathname) : posts;
-    const chosen = candidates[Math.floor(Math.random() * candidates.length)];
-    if (title) title.textContent = chosen.title;
-    if (desc) desc.textContent = chosen.description;
-    btn.textContent = '打开这篇文章 →';
-    btn.onclick = () => { location.href = chosen.url; };
+    chosenPost = candidates[Math.floor(Math.random() * candidates.length)];
+    if (title) title.textContent = chosenPost.title;
+    if (desc) desc.textContent = chosenPost.description;
+    if (btn) btn.textContent = labels[document.documentElement.dataset.language || 'zh'];
+  });
+  window.addEventListener('study-room-language-change', event => {
+    if (!chosenPost && btn) btn.textContent = labels[(event as CustomEvent).detail?.language || 'zh'];
   });
 </script>
