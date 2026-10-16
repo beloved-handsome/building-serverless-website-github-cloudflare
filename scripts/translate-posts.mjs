@@ -20,7 +20,7 @@ function parseMarkdown(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
   const front = match?.[1] || '';
   const body = source.slice(match?.[0].length || 0);
-  const scalar = key => front.match(new RegExp('^' + key + ':\\s*["\\']?(.*?)["\\']?\\s*$', 'm'))?.[1]?.trim() || '';
+  const scalar = key => {\n    const line = front.split('\\n').find(item => item.startsWith(key + ':'));\n    return (line ? line.slice(key.length + 1).trim().replace(/^[\\"']|[\\"']$/g, '') : '');\n  };
   const tagsText = front.match(/^tags:\s*\n((?:\s+-.*\n?)*)/m)?.[1] || '';
   const tags = [...tagsText.matchAll(/^\s+-\s*["']?(.*?)["']?\s*$/gm)].map(m => m[1]);
   const blocks = body.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
@@ -48,7 +48,7 @@ function parseMarkdown(source) {
 }
 async function translate(text, target) {
   const url = new URL('https://api.mymemory.translated.net/get');
-  url.search = new URLSearchParams({ q: text.slice(0, 450), langpair: 'autodetect|' + target }).toString();
+  url.search = new URLSearchParams({ q: text.slice(0, 450), langpair: 'zh-CN|' + target }).toString();
   const response = await fetch(url);
   if (!response.ok) throw new Error('HTTP ' + response.status);
   const data = await response.json();
