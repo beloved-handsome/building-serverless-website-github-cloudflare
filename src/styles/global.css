@@ -697,3 +697,89 @@ body { top:0!important; }
 @media(prefers-reduced-transparency:reduce) {
   .google-translate-hidden { visibility:hidden; }
 }
+
+
+/* Homepage: full-bleed cover image, one unified glass navigation, true black night mode. */
+body[data-page="home"] {
+  background-color: var(--bg) !important;
+  background-image: none !important;
+}
+.blog-hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: clamp(420px, 34vw, 560px);
+  margin-top: 0;
+  overflow: hidden;
+  background-image: url('/backgrounds/home/background.jpg');
+  background-size: cover;
+  background-position: center 42%;
+  background-repeat: no-repeat;
+}
+.blog-hero .hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(12,14,12,.18), rgba(12,14,12,.28));
+}
+.blog-hero .hero-heading {
+  position: relative;
+  z-index: 1;
+  min-height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 24px 110px;
+  text-align: center;
+  color: #fff;
+}
+.site-header.glass-panel {
+  width: min(1200px, calc(100% - 40px));
+  min-height: 64px;
+  margin: 18px auto 0;
+  padding: 9px 16px;
+  border: 1px solid rgba(255,255,255,.42);
+  border-radius: 22px;
+  background: rgba(255,255,255,.20);
+  box-shadow: 0 10px 36px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.35);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+}
+.site-header .brand {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 4px 8px 4px 4px;
+}
+:root[data-theme="dark"] {
+  --bg: #000;
+  --surface: #0b0b0b;
+  --text: #f2f2f2;
+  --muted: #a3a3a3;
+  --border: #292929;
+  --accent: #b7c9a7;
+  --accent-soft: #171717;
+  --page-background: #000;
+  --glass: rgba(10,10,10,.78);
+  --glass-border: rgba(255,255,255,.12);
+  --glass-shadow: 0 16px 48px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.025);
+}
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] body[data-page="home"] {
+  background-color: #000 !important;
+  background-image: none !important;
+}
+:root[data-theme="dark"] .blog-hero {
+  background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg');
+}
+@media (max-width: 700px) {
+  .site-header.glass-panel {
+    width: calc(100% - 28px);
+    margin-top: 12px;
+  }
+  .blog-hero {
+    min-height: 430px;
+    background-position: center;
+  }
+}
