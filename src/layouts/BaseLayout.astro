@@ -78,7 +78,9 @@ const pageKey = pathname === '/' ? 'home'
           const supportedPages = ['home','archive','search','about','wander','posts'];
           const ownImage = supportedPages.includes(page) ? `/backgrounds/${page}/background.jpg` : null;
           const setBackground = (imageUrl) => {
-            const imageLayer = imageUrl ? `, url("${imageUrl}")` : '';
+            // Version the image URL to avoid a stale cached background.
+            const versionedUrl = imageUrl ? `${imageUrl}?v=2` : null;
+            const imageLayer = versionedUrl ? `, url("${versionedUrl}")` : '';
             body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${imageLayer}`, 'important');
           };
           // Apply only this page's own image path directly. If its file is absent,
