@@ -134,42 +134,51 @@
     window.dispatchEvent(new CustomEvent('study-room-language-change', {detail:{language:lang, dictionary:dictionaries[lang]}}));
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
-  const articleOriginals = new WeakMap<Text, string>();
+  const articleOriginals = new WeakMap<HTMLElement, string>();
   const translationCache = new Map<string, string>();
   const languageNames: Record<string,string> = {zh:'zh-CN',en:'en',ja:'ja',ko:'ko'};
+  let translationRun = 0;
   async function translateArticle(language: string) {
     const lang = languageNames[language] || 'zh-CN';
     const article = document.querySelector<HTMLElement>('.article-page');
     if (!article) return;
-    article.dataset.translationState = 'loading';
-    const candidates = Array.from(article.querySelectorAll<HTMLElement>('h1,.article-description,.post-category,.tag,.article-content p,.article-content li,.article-content h2,.article-content h3,.article-content blockquote,.article-content td,.article-content th'));
-    const nodes = candidates.flatMap(el => Array.from(el.childNodes).filter((n): n is Text => n.nodeType === Node.TEXT_NODE && !!n.textContent?.trim()));
-    for (const node of nodes) {
-      if (!article.isConnected) return;
-      if (!articleOriginals.has(node)) articleOriginals.set(node, node.textContent || '');
-      const original = articleOriginals.get(node) || '';
-      if (language === 'zh') { node.textContent = original; continue; }
-      const key = lang + ':' + original;
-      let translated = translationCache.get(key);
-      if (!translated) {
-        try {
-          const url = new URL('https://api.mymemory.translated.net/get');
-          url.search = new URLSearchParams({q: original.slice(0, 450), langpair: 'zh-CN|' + lang}).toString();
-          const response = await fetch(url);
-          if (!response.ok) throw new Error('translation service unavailable');
-          const data = await response.json();
-          translated = data.responseData?.translatedText;
-          if (!translated || data.responseStatus !== 200) throw new Error('translation failed');
-          translationCache.set(key, translated);
-        } catch (error) {
-          article.dataset.translationState = 'error';
-          console.warn('Article translation failed:', error);
-          return;
-        }
+    const run = ++translationRun;
+    const blocks = Array.from(article.querySelectorAll<HTMLElement>(
+      '.article-header h1,.article-description,.post-category,.tag,.article-content h1,.article-content h2,.article-content h3,.article-content h4,.article-content p,.article-content li,.article-content blockquote,.article-content th,.article-content td'
+    )).filter(el => !el.closest('pre,code,a,button') && el.children.length === 0 && !!el.textContent?.trim());
+    if (language === 'zh') {
+      for (const el of blocks) {
+        const original = articleOriginals.get(el);
+        if (original !== undefined) el.textContent = original;
       }
-      node.textContent = translated;
+      article.dataset.translationState = 'ready';
+      return;
     }
-    article.dataset.translationState = 'ready';
+    article.dataset.translationState = 'loading';
+    const jobs = blocks.map(async el => {
+      if (!articleOriginals.has(el)) articleOriginals.set(el, el.textContent || '');
+      const original = articleOriginals.get(el) || '';
+      const key = lang + ':' + original;
+      const cached = translationCache.get(key);
+      if (cached) { if (run === translationRun) el.textContent = cached; return; }
+      try {
+        const url = new URL('https://api.mymemory.translated.net/get');
+        url.search = new URLSearchParams({q: original.slice(0, 450), langpair: 'autodetect|' + lang}).toString();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Translation service unavailable');
+        const data = await response.json();
+        const translated = data.responseData?.translatedText;
+        if (!translated || data.responseStatus !== 200) throw new Error('Translation failed');
+        translationCache.set(key, translated);
+        if (run === translationRun && article.isConnected) el.textContent = translated;
+      } catch (error) {
+        console.warn('Article translation failed:', error);
+        throw error;
+      }
+    });
+    const results = await Promise.allSettled(jobs);
+    if (run !== translationRun) return;
+    article.dataset.translationState = results.some(result => result.status === 'rejected') ? 'error' : 'ready';
   }
   if (window.location.pathname.startsWith('/posts/')) {
     window.addEventListener('beloved-translate-article', (event) => {
