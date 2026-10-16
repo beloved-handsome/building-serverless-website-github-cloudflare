@@ -81,17 +81,9 @@ const pageKey = pathname === '/' ? 'home'
             const imageLayer = imageUrl ? `, url("${imageUrl}")` : '';
             body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${imageLayer}`, 'important');
           };
-          if (!ownImage || page === 'home') {
-            setBackground(ownImage);
-          } else {
-            const probe = new Image();
-            probe.onload = () => setBackground(ownImage);
-            probe.onerror = () => {
-              // No image uploaded for this page: keep its plain theme background.
-              setBackground(null);
-            };
-            probe.src = ownImage;
-          }
+          // Apply only this page's own image path directly. If its file is absent,
+          // the browser simply shows the theme background; never borrow another page's image.
+          setBackground(ownImage);
           body.style.setProperty('background-color', 'var(--bg)', 'important');
           body.style.setProperty('background-size', 'cover', 'important');
           body.style.setProperty('background-position', 'center', 'important');
