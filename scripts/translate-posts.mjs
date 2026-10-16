@@ -20,7 +20,10 @@ function parseMarkdown(source) {
   const match = source.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
   const front = match?.[1] || '';
   const body = source.slice(match?.[0].length || 0);
-  const scalar = key => {\n    const line = front.split(/\r?\n/).find(item => item.startsWith(key + ':'));\n    return (line ? line.slice(key.length + 1).trim().replace(/^[\\"']|[\\"']$/g, '') : '');\n  };
+  const scalar = key => {
+    const line = front.split(/\r?\n/).find(item => item.startsWith(key + ':'));
+    return line ? line.slice(key.length + 1).trim().replace(/^[\"']|[\"']$/g, '') : '';
+  };
   const tagsText = front.match(/^tags:\s*\n((?:\s+-.*\n?)*)/m)?.[1] || '';
   const tags = [...tagsText.matchAll(/^\s+-\s*["']?(.*?)["']?\s*$/gm)].map(m => m[1]);
   const blocks = body.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
