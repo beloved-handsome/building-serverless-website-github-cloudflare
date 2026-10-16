@@ -33,7 +33,7 @@ const pageKey = pathname === '/' ? 'home'
       })();
     </script>
   </head>
-  <body data-page={pageKey}>
+  <body data-page={pageKey} style={pageKey === 'home' ? "background-image: linear-gradient(rgba(247,248,244,.20),rgba(247,248,244,.20)), url('/backgrounds/home/background.jpg') !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important;" : undefined}>
     <div class="site-shell">
       <header class="site-header glass-panel notranslate" translate="no">
         <a class="brand" href="/" aria-label="Beloved home">
