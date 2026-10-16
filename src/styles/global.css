@@ -939,11 +939,11 @@ body[data-page="home"] .home-layout .profile-card {
 }
 
 
-/* Home header matches the archive shell width and floats over the hero photo. */
+/* One shared 900px navigation shell on every route, including the homepage. */
 body[data-page="home"] .site-shell {
   position: relative !important;
-  width: min(var(--max-width), calc(100% - 40px)) !important;
-  max-width: var(--max-width) !important;
+  width: min(900px, calc(100% - 40px)) !important;
+  max-width: 900px !important;
   margin-inline: auto !important;
   background: transparent !important;
 }
@@ -959,6 +959,7 @@ body[data-page="home"] .site-header.glass-panel {
   z-index: 20 !important;
   box-sizing: border-box !important;
   width: 100% !important;
+  max-width: 900px !important;
   min-height: 64px !important;
   margin: 0 !important;
   background: rgba(255,255,255,.20) !important;
