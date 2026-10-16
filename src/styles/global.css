@@ -961,3 +961,36 @@ body[data-page="home"] .site-header .theme-toggle {
     background-position: center top !important;
   }
 }
+
+
+/* Wave transition: make the curved separator match the page below and deepen its curve. */
+body[data-page="home"] .blog-hero {
+  position: relative;
+  overflow: visible;
+  margin-bottom: 0 !important;
+}
+body[data-page="home"] .blog-hero::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 112px;
+  background: var(--bg);
+  clip-path: ellipse(72% 55% at 50% 100%);
+}
+/* If the existing wave is drawn by an overlay/pseudo element, keep it white like the content area. */
+body[data-page="home"] .blog-hero .hero-overlay {
+  clip-path: none;
+}
+:root[data-theme="dark"] body[data-page="home"] .blog-hero::after {
+  background: #000;
+}
+@media (max-width: 700px) {
+  body[data-page="home"] .blog-hero::after {
+    height: 84px;
+    clip-path: ellipse(82% 55% at 50% 100%);
+  }
+}
