@@ -36,8 +36,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
           <div class="latest-heading"><h2>最近文章</h2><a href="/archive/">查看全部　↗</a></div>
           <div class="latest-grid">
             {posts.map((post) => (
-              <a class="latest-card glass-panel" href={`/posts/${post.slug}/`}>
-                {post.data.cover && <img class="post-cover" src={post.data.cover} alt="" loading="lazy" />}
+              <a class="latest-card glass-panel" href={`/posts/${post.id}/`}>
                 <div class="latest-card-body">
                   <h3>{post.data.title}</h3>
                   <p>{post.data.description || '记录生活里的片段与想法。'}</p>
@@ -193,7 +192,6 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .latest-heading>a { color:var(--muted);font-size:11px; }
   .latest-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
   .latest-card { display:block;overflow:hidden;min-width:0;border-radius:15px;transition:transform .2s,border-color .2s; }
-  .post-cover { display:block;width:100%;height:110px;object-fit:cover; }
   .latest-card-body { padding:13px; }
   .latest-card h3 { margin:0;font-size:13px;line-height:1.6; }
   .latest-card p { margin:5px 0 10px;color:var(--muted);font-size:10px;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
@@ -204,5 +202,5 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .now-title span { color:var(--accent); }
   .now-details { display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:8px;color:var(--muted);font-size:10px; }
   @media(max-width:700px) { .blog-hero { min-height:230px;margin-top:12px;border-radius:18px; }.home-layout { grid-template-columns:1fr; }.profile-card { position:static;order:2;flex-direction:row;text-align:left;gap:12px;padding:13px; }.profile-avatar { width:64px;height:64px;flex:0 0 64px;border-radius:12px; }.profile-name { margin-top:0; }.profile-bio { margin:2px 0 4px; }.profile-card>div:not(.profile-avatar) { min-width:0; }.profile-link { display:block; }.latest-section { margin-top:18px; } }
-  @media(max-width:450px) { .shortcut-grid,.latest-grid { gap:8px; }.shortcut-card { padding:11px 9px;gap:8px; }.shortcut-icon { flex-basis:29px;height:29px;font-size:17px; }.shortcut-copy strong { font-size:11px; }.shortcut-copy small { font-size:9px; }.latest-card-body { padding:10px; }.post-cover { height:90px; } }
+  @media(max-width:450px) { .shortcut-grid,.latest-grid { gap:8px; }.shortcut-card { padding:11px 9px;gap:8px; }.shortcut-icon { flex-basis:29px;height:29px;font-size:17px; }.shortcut-copy strong { font-size:11px; }.shortcut-copy small { font-size:9px; }.latest-card-body { padding:10px; } }
 </style>
