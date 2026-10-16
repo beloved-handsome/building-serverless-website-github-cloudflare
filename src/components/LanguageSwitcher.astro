@@ -151,7 +151,7 @@
           autoDisplay:false
         }, 'google_translate_element');
         translateReady = true;
-        window.setTimeout(() => applyArticleTranslation(savedLanguage), 700);
+        window.setTimeout(() => applyArticleTranslation(selector?.value || savedLanguage), 700);
       } catch (error) { console.warn('Article translation could not initialize.', error); }
     };
     window.addEventListener('beloved-translate-article', (event) => {
