@@ -787,7 +787,8 @@ body[data-page="home"] {
 
 
 
-/* Homepage: lock the hero/photo boundary and use one continuous, deeper wave. */
+
+/* Final homepage geometry: the photo ends exactly where the hero ends; the content canvas is solid. */
 body[data-page="home"] {
   position: relative;
   isolation: isolate;
@@ -801,7 +802,7 @@ body[data-page="home"]::before {
   top: 0;
   left: 0;
   right: 0;
-  height: 700px;
+  height: 712px;
   pointer-events: none;
   background: url('/backgrounds/home/background.jpg') center top / cover no-repeat;
 }
@@ -841,10 +842,10 @@ body[data-page="home"] .blog-home {
 body[data-page="home"] .blog-hero {
   position: relative;
   isolation: isolate;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  min-height: 620px;
+  width: 100vw !important;
+  max-width: none !important;
+  min-height: 620px !important;
+  margin: 0 calc(50% - 50vw) 0 !important;
   overflow: hidden;
   background: transparent !important;
   background-image: none !important;
@@ -858,7 +859,7 @@ body[data-page="home"] .blog-hero .hero-overlay {
 body[data-page="home"] .blog-hero .hero-heading {
   position: relative;
   z-index: 1;
-  min-height: 620px;
+  min-height: 620px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -867,43 +868,43 @@ body[data-page="home"] .blog-hero .hero-heading {
   text-align: center;
   color: #fff;
 }
-/* Both SVGs share the exact same viewport and bottom edge; no partial-width wave ends. */
 body[data-page="home"] .blog-hero > svg.hero-wave {
   position: absolute !important;
   display: block !important;
-  left: calc(50% - 50vw) !important;
+  left: 0 !important;
   right: auto !important;
   bottom: -1px !important;
-  width: 100vw !important;
+  width: 100% !important;
   height: 180px !important;
   max-width: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  transform: none !important;
+  animation: none !important;
   overflow: hidden !important;
   z-index: 2;
   pointer-events: none;
 }
-body[data-page="home"] .blog-hero > svg.hero-wave-back { z-index: 2; }
-body[data-page="home"] .blog-hero > svg.hero-wave-front { z-index: 3; }
+body[data-page="home"] .blog-hero > svg.hero-wave-back { z-index: 2; opacity: .58; }
+body[data-page="home"] .blog-hero > svg.hero-wave-front { z-index: 3; opacity: 1; }
 body[data-page="home"] .blog-hero .hero-wave-back path {
-  d: path("M0 90 C220 10 390 150 650 92 C900 34 1100 25 1280 86 C1360 112 1410 112 1440 95 L1440 180 L0 180 Z");
-  fill: rgba(250,249,246,.42) !important;
+  d: path("M0 78 C180 8 360 18 540 82 C760 160 920 138 1080 80 C1220 30 1330 40 1440 76 L1440 180 L0 180 Z");
+  fill: #f1efeb !important;
 }
 body[data-page="home"] .blog-hero .hero-wave-front path {
-  d: path("M0 112 C220 70 390 168 650 124 C900 78 1080 64 1260 116 C1340 140 1400 137 1440 120 L1440 180 L0 180 Z");
+  d: path("M0 112 C190 72 350 78 520 116 C730 164 910 145 1080 116 C1230 88 1340 90 1440 112 L1440 180 L0 180 Z");
   fill: #faf9f6 !important;
 }
-/* Content stays on a full-width solid layer; no background image can bleed around its sides. */
 body[data-page="home"] .home-layout {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 32px;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 18px;
   width: min(960px, calc(100% - 40px));
-  margin: -1px auto 0;
+  margin: 0 auto !important;
   padding: 24px 0 60px;
-  background: transparent !important;
+  background: #faf9f6 !important;
   background-image: none !important;
 }
 body[data-page="home"] .home-layout .home-main,
@@ -911,9 +912,7 @@ body[data-page="home"] .home-layout .profile-card {
   background-color: transparent !important;
   background-image: none !important;
 }
-:root[data-theme="dark"] body[data-page="home"] {
-  background: #000 !important;
-}
+:root[data-theme="dark"] body[data-page="home"] { background: #000 !important; }
 :root[data-theme="dark"] body[data-page="home"]::before {
   background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg');
 }
@@ -921,23 +920,15 @@ body[data-page="home"] .home-layout .profile-card {
   background: rgba(8,8,8,.34) !important;
   border-color: rgba(255,255,255,.24);
 }
-:root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-back path {
-  fill: rgba(0,0,0,.46) !important;
-}
-:root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-front path {
-  fill: #000 !important;
-}
+:root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-back path { fill: #101010 !important; }
+:root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-front path { fill: #000 !important; }
+:root[data-theme="dark"] body[data-page="home"] .home-layout { background: #000 !important; }
 @media (max-width: 700px) {
-  body[data-page="home"]::before { height: 620px; background-position: center top; }
-  body[data-page="home"] .site-header.glass-panel {
-    width: calc(100% - 28px);
-    margin-top: 12px;
-  }
-  body[data-page="home"] .blog-hero,
-  body[data-page="home"] .blog-hero .hero-heading { min-height: 540px; }
-  body[data-page="home"] .blog-hero > svg.hero-wave {
-    height: 130px !important;
-  }
+  body[data-page="home"]::before { height: 552px; background-position: center top; }
+  body[data-page="home"] .site-header.glass-panel { width: calc(100% - 28px); margin-top: 12px; }
+  body[data-page="home"] .blog-hero { min-height: 540px !important; }
+  body[data-page="home"] .blog-hero .hero-heading { min-height: 540px !important; }
+  body[data-page="home"] .blog-hero > svg.hero-wave { height: 130px !important; }
   body[data-page="home"] .home-layout {
     display: flex;
     flex-direction: column;
