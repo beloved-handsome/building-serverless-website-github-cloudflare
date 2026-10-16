@@ -166,7 +166,7 @@
       });
       const nodes = Array.from(article.querySelectorAll<HTMLElement>('.article-content h1,.article-content h2,.article-content h3,.article-content h4,.article-content p,.article-content li,.article-content blockquote,.article-content th,.article-content td'));
       for (const el of nodes) {
-        if (el.children.length || el.closest('pre,code,a,button')) continue;
+        if (el.closest('pre,code,a,button')) continue;
         const original = el.dataset.translatedOriginal || el.textContent || '';
         if (!el.dataset.translatedOriginal) el.dataset.translatedOriginal = original;
         if (data.strings[original]) el.textContent = data.strings[original];
