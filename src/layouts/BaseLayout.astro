@@ -15,9 +15,10 @@ const pageKey = pathname === '/' ? 'home'
   : pathname.startsWith('/posts/') ? 'posts' : 'default';
 ---
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" translate="no">
   <head>
     <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#e9eee8" />
     <meta name="description" content={description} />
