@@ -1,62 +1,122 @@
+
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const recentPosts = posts.slice(0, 6);
+
+const dateFormat = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
 ---
 
-<Layout title="Home - Serverless Website">
-  <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-12">
-      <h1 class="text-5xl font-bold text-gray-900 mb-4">
-        Welcome to Your Serverless Website
-      </h1>
-      <p class="text-xl text-gray-600">
-        Built with Astro, deployed on Cloudflare Pages, powered by GitHub Actions
-      </p>
+<BaseLayout
+  title="你的名字 — 个人博客"
+  description="记录技术、生活与思考。欢迎来到我的个人博客。"
+>
+  <section class="hero">
+    <div class="hero-eyebrow">
+      <span class="status-dot"></span>
+      一个持续更新的个人空间
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8 mb-12">
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <div class="text-3xl mb-4">⚡</div>
-        <h2 class="text-2xl font-semibold mb-2">Lightning Fast</h2>
-        <p class="text-gray-600">
-          Astro generates static HTML for optimal performance and SEO.
-        </p>
-      </div>
+    <h1>
+      记录思考，<br />
+      <span class="muted-heading">分享生活。</span>
+    </h1>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <div class="text-3xl mb-4">🌐</div>
-        <h2 class="text-2xl font-semibold mb-2">Global CDN</h2>
-        <p class="text-gray-600">
-          Cloudflare Pages deploys your site to a global network for fast access anywhere.
-        </p>
-      </div>
+    <p class="hero-description">
+      你好，我是你的名字。一名普通的探索者。
+      这里记录我的技术实践、日常思考，
+      以及那些值得被时间留下的瞬间。
+    </p>
 
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <div class="text-3xl mb-4">🔄</div>
-        <h2 class="text-2xl font-semibold mb-2">Auto Deploy</h2>
-        <p class="text-gray-600">
-          GitHub Actions automatically builds and deploys on every push.
-        </p>
-      </div>
-    </div>
-
-    <div class="bg-blue-50 border-l-4 border-blue-600 p-6 mb-8">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Getting Started</h2>
-      <ol class="list-decimal list-inside space-y-2 text-gray-700">
-        <li>Clone this repository</li>
-        <li>Run <code class="bg-gray-200 px-2 py-1 rounded">npm install</code></li>
-        <li>Start development with <code class="bg-gray-200 px-2 py-1 rounded">npm run dev</code></li>
-        <li>Build for production with <code class="bg-gray-200 px-2 py-1 rounded">npm run build</code></li>
-        <li>Deploy to Cloudflare Pages via GitHub Actions</li>
-      </ol>
-    </div>
-
-    <div class="text-center">
+    <div class="hero-actions">
       <a
-        href="/about"
-        class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+        class="button-primary"
+        href="/archive/"
       >
-        Learn More
+        阅读文章 <span aria-hidden="true">↗</span>
+      </a>
+
+      <a
+        class="button-secondary"
+        href="https://github.com/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        GitHub <span aria-hidden="true">↗</span>
       </a>
     </div>
-  </div>
-</Layout>
+
+    <div class="hero-meta">
+      <span>⌘ 技术与代码</span>
+      <span>✳ 日常与思考</span>
+      <span>◷ 持续记录中</span>
+    </div>
+  </section>
+
+  <section class="posts-section" aria-labelledby="posts-heading">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">THE JOURNAL</p>
+        <h2 id="posts-heading">最近的文章</h2>
+      </div>
+      <a class="text-link" href="/archive/">
+        查看全部 <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    {recentPosts.length > 0 ? (
+      <div class="post-list">
+        {recentPosts.map((post) => (
+          <article class="post-item">
+            <a class="post-main" href={`/posts/${post.id}/`}>
+              <div class="post-meta">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {dateFormat.format(post.data.pubDate)}
+                </time>
+                <span class="meta-divider">/</span>
+                <span class="post-category">{post.data.category}</span>
+              </div>
+
+              <h3>{post.data.title}</h3>
+              <p>{post.data.description}</p>
+            </a>
+
+            <a
+              class="post-arrow"
+              href={`/posts/${post.id}/`}
+              aria-label={`阅读：${post.data.title}`}
+            >
+              ↗
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <span class="empty-icon">✳</span>
+        <h3>故事从这里开始</h3>
+        <p>在 src/content/posts/ 中添加你的第一篇 Markdown 文章。</p>
+      </div>
+    )}
+  </section>
+
+  <section class="about-strip">
+    <div class="about-symbol">Y.</div>
+    <div>
+      <h2>关于这个角落</h2>
+      <p>
+        不追求更新的速度，只希望每一次记录都有意义。
+        如果你也喜欢文字与技术，欢迎认识一下。
+      </p>
+      <a class="text-link" href="/about/">了解更多 →</a>
+    </div>
+  </section>
+</BaseLayout>
