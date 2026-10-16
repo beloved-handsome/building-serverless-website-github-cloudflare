@@ -10,9 +10,9 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const dateFormat = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
-<BaseLayout title={`${post.data.title} — 个人书房`} description={post.data.description}>
+<BaseLayout title={`${post.data.title} — Beloved`} description={post.data.description}>
   <article class="article-page">
-    <a class="back-link" href="/archive/" data-i18n="article.back">← 返回文章归档</a>
+    <a class="back-link notranslate" translate="no" href="/archive/" data-i18n="article.back">← 返回文章归档</a>
     <header class="article-header glass-panel">
       <div class="post-meta">
         <time datetime={post.data.pubDate.toISOString()}>{dateFormat.format(post.data.pubDate)}</time>
@@ -26,7 +26,7 @@ const dateFormat = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'l
       )}
     </header>
     <div class="article-content glass-panel"><Content /></div>
-    <div class="article-end glass-panel">
+    <div class="article-end glass-panel notranslate" translate="no">
       <span>✳</span>
       <p data-i18n="article.end">感谢阅读，下一篇文章再见。</p>
       <a class="text-link" href="/archive/" data-i18n="article.more">浏览更多文章 →</a>
