@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
+const entries = posts.map(p => ({ title:p.data.title, description:p.data.description, category:p.data.category, tags:p.data.tags, date:p.data.pubDate.toISOString().slice(0,10), url:`/posts/${p.id}/`, text:[p.data.title,p.data.description,p.data.category,...p.data.tags].join(' ') }));
+---
+<BaseLayout title="搜索 — 个人书房" description="搜索个人书房中的文章、主题与标签。">
+  <section class="utility-page">
+    <p class="section-kicker">FIND A NOTE</p><h1>搜索书房<span>.</span></h1>
+    <p class="utility-intro">按标题、摘要、分类或标签寻找一段记录。</p>
+    <div class="search-box glass-panel"><span aria-hidden="true">⌕</span><input id="site-search" type="search" placeholder="试试输入：读书、生活、思考……" autocomplete="off" aria-label="搜索文章" /><kbd>Enter</kbd></div>
+    <p id="search-count" class="search-count">共 {posts.length} 篇文章。输入关键词开始搜索。</p>
+    <div id="search-results" class="search-results"></div>
+    <script type="application/json" id="search-data" set:html={JSON.stringify(entries).replace(/</g, '\\u003c')} />
+  </section>
+</BaseLayout>
+<script>
+  const input = document.querySelector<HTMLInputElement>('#site-search');
+  const results = document.querySelector<HTMLDivElement>('#search-results');
+  const count = document.querySelector<HTMLParagraphElement>('#search-count');
+  const dataNode = document.querySelector<HTMLScriptElement>('#search-data');
+  const entries = JSON.parse(dataNode?.textContent || '[]') as {title:string;description:string;category:string;tags:string[];date:string;url:string;text:string}[];
+  function render(query = '') {
+    if (!results || !count) return;
+    const q = query.trim().toLocaleLowerCase();
+    const matched = q ? entries.filter(p => p.text.toLocaleLowerCase().includes(q)) : [];
+    count.textContent = q ? `找到 ${matched.length} 篇相关记录` : `共 ${entries.length} 篇文章。输入关键词开始搜索。`;
+    results.innerHTML = '';
+    if (!q) return;
+    if (!matched.length) { results.innerHTML = '<div class="empty-state glass-panel"><h3>没有找到相关记录</h3><p>换个关键词试试。</p></div>'; return; }
+    for (const post of matched) {
+      const a = document.createElement('a'); a.className = 'search-result glass-panel'; a.href = post.url;
+      const meta = document.createElement('span'); meta.className = 'post-meta'; meta.textContent = post.date + ' / ' + post.category;
+      const h = document.createElement('h2'); h.textContent = post.title;
+      const p = document.createElement('p'); p.textContent = post.description;
+      a.append(meta,h,p); results.append(a);
+    }
+  }
+  input?.addEventListener('input', () => render(input.value));
+</script>

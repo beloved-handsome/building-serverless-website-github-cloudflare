@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p => ({ title:p.data.title, url:`/posts/${p.id}/`, description:p.data.description }));
+---
+<BaseLayout title="随机漫游 — 个人书房" description="不按计划，随机读一篇文章。">
+  <section class="utility-page wander-page">
+    <p class="section-kicker">SERENDIPITY</p><h1>随机漫游<span>.</span></h1>
+    <p class="utility-intro">有时不必带着问题来。让下一篇文章替你决定方向。</p>
+    <div class="wander-card glass-panel"><div class="wander-symbol">✳</div><h2 id="wander-title">准备好偶遇一段文字了吗？</h2><p id="wander-description">点击下面的按钮，随机打开书房中的一篇文章。</p><button class="button-primary" id="wander-button" type="button">带我去看看 ↗</button></div>
+    {posts.length === 0 ? <p class="search-count">书房里还没有已发布的文章。添加 Markdown 文章后，随机漫游就会启程。</p> : <script type="application/json" id="wander-data" set:html={JSON.stringify(posts).replace(/</g, '\\u003c')} />}
+  </section>
+</BaseLayout>
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('#wander-button');
+  const title = document.querySelector<HTMLElement>('#wander-title');
+  const desc = document.querySelector<HTMLElement>('#wander-description');
+  const node = document.querySelector<HTMLScriptElement>('#wander-data');
+  const posts = JSON.parse(node?.textContent || '[]') as {title:string;url:string;description:string}[];
+  btn?.addEventListener('click', () => {
+    if (!posts.length) { if (desc) desc.textContent = '目前还没有文章，先为书房添几篇记录吧。'; return; }
+    const candidates = posts.length > 1 ? posts.filter(p => p.url !== location.pathname) : posts;
+    const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+    if (title) title.textContent = chosen.title;
+    if (desc) desc.textContent = chosen.description;
+    btn.textContent = '打开这篇文章 →';
+    btn.onclick = () => { location.href = chosen.url; };
+  });
+</script>

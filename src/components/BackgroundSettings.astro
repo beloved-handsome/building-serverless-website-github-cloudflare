@@ -1,0 +1,44 @@
+<details class="background-settings">
+  <summary aria-label="背景设置" title="自定义背景">◐</summary>
+  <div class="background-popover glass-panel">
+    <strong>书房背景</strong><p>只影响当前浏览器，不会改变其他访客看到的页面。</p>
+    <div class="background-presets">
+      <button type="button" data-bg="sage">鼠尾草</button><button type="button" data-bg="paper">暖米白</button><button type="button" data-bg="dusk">暮色</button><button type="button" data-bg="sky">薄雾蓝</button>
+    </div>
+    <label class="background-upload">上传自己的背景图片<input id="background-file" type="file" accept="image/*" /></label>
+    <button class="background-reset" id="background-reset" type="button">恢复默认背景</button>
+    <small>背景图保存在本机浏览器；清除网站数据后需要重新选择。</small>
+  </div>
+</details>
+<script>
+  const root = document.documentElement;
+  const presets: Record<string,string> = {
+    sage: 'radial-gradient(ellipse at 12% 8%, rgba(170,190,164,.58), transparent 42%), radial-gradient(ellipse at 90% 20%, rgba(219,226,210,.72), transparent 38%), linear-gradient(145deg,#edf0e9,#f7f5ef 58%,#e7ece4)',
+    paper: 'radial-gradient(ellipse at 10% 5%, rgba(232,218,193,.6), transparent 42%), linear-gradient(145deg,#f7f1e7,#fbfaf6 60%,#eae6dc)',
+    dusk: 'radial-gradient(ellipse at 10% 10%, rgba(120,136,151,.5), transparent 45%), linear-gradient(145deg,#d9e0e3,#f1eeeb 65%,#d7d9d0)',
+    sky: 'radial-gradient(ellipse at 15% 10%, rgba(164,194,211,.6), transparent 42%), linear-gradient(145deg,#e7f0f2,#f8f8f5 60%,#dfe9e8)'
+  };
+  function applyBackground(value: string) { root.style.setProperty('--page-background', value); }
+  try {
+    const saved = localStorage.getItem('study-room-background');
+    if (saved) applyBackground(saved.startsWith('data:image/') ? 'center / cover fixed no-repeat url("' + saved + '")' : (presets[saved] || presets.sage));
+  } catch {}
+  document.querySelectorAll<HTMLButtonElement>('[data-bg]').forEach(button => button.addEventListener('click', () => {
+    const key = button.dataset.bg || 'sage'; applyBackground(presets[key]);
+    try { localStorage.setItem('study-room-background', key); } catch {}
+  }));
+  document.querySelector<HTMLInputElement>('#background-file')?.addEventListener('change', event => {
+    const file = (event.currentTarget as HTMLInputElement).files?.[0];
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) { alert('图片请控制在 4MB 以内。'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const data = String(reader.result); applyBackground('center / cover fixed no-repeat url("' + data + '")');
+      try { localStorage.setItem('study-room-background', data); } catch { alert('图片太大，浏览器无法保存。请换一张较小的图片。'); }
+    };
+    reader.readAsDataURL(file);
+  });
+  document.querySelector<HTMLButtonElement>('#background-reset')?.addEventListener('click', () => {
+    applyBackground(presets.sage); try { localStorage.removeItem('study-room-background'); } catch {}
+  });
+</script>
