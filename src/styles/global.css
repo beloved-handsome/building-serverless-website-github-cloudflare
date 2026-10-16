@@ -579,13 +579,10 @@ body { min-height:100vh; }
 body {
   min-height:100vh;
   background-color:var(--bg);
-  background-image:linear-gradient(rgba(247,248,244,.45),rgba(247,248,244,.45)),url('/backgrounds/study-room.jpg'),var(--page-background);
+  background-image:linear-gradient(rgba(247,248,244,.45),rgba(247,248,244,.45));
   background-size:cover,cover,cover;
   background-position:center,center,center;
   background-attachment:fixed,fixed,fixed;
-}
-:root[data-theme='dark'] body {
-  background-image:linear-gradient(rgba(17,20,18,.56),rgba(17,20,18,.56)),url('/backgrounds/study-room.jpg'),var(--page-background);
 }
 .glass-panel,
 .hero,
