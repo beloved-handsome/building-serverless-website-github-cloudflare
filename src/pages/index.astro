@@ -73,6 +73,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     startClock();
     updateLabels();
   });
+  updateLabels();
   async function loadLocalWeather() {
     const t = liveText[language] || liveText.zh;
     try {
