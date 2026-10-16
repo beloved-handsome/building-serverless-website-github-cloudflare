@@ -675,14 +675,14 @@ body {
   background-position:center;
   background-attachment:fixed;
 }
-body[data-page="home"] { background-image:linear-gradient(rgba(247,248,244,.36),rgba(247,248,244,.36)),url('/backgrounds/home/background.jpg'); }
+body[data-page="home"] { background-image:linear-gradient(rgba(247,248,244,.20),rgba(247,248,244,.20)),url('/backgrounds/home/background.jpg') !important; }
 body[data-page="archive"] { background-image:linear-gradient(rgba(247,248,244,.36),rgba(247,248,244,.36)),url('/backgrounds/archive/background.jpg'); }
 body[data-page="search"] { background-image:linear-gradient(rgba(247,248,244,.36),rgba(247,248,244,.36)),url('/backgrounds/search/background.jpg'); }
 body[data-page="about"] { background-image:linear-gradient(rgba(247,248,244,.36),rgba(247,248,244,.36)),url('/backgrounds/about/background.jpg'); }
 body[data-page="wander"] { background-image:linear-gradient(rgba(247,248,244,.36),rgba(247,248,244,.36)),url('/backgrounds/wander/background.jpg'); }
 body[data-page="posts"] { background-image:linear-gradient(rgba(247,248,244,.36),rgba(247,248,244,.36)),url('/backgrounds/posts/background.jpg'); }
 :root[data-theme="dark"] body { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)); }
-:root[data-theme="dark"] body[data-page="home"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/home/background.jpg'); }
+:root[data-theme="dark"] body[data-page="home"] { background-image:linear-gradient(rgba(17,20,18,.42),rgba(17,20,18,.42)),url('/backgrounds/home/background.jpg') !important; }
 :root[data-theme="dark"] body[data-page="archive"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/archive/background.jpg'); }
 :root[data-theme="dark"] body[data-page="search"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/search/background.jpg'); }
 :root[data-theme="dark"] body[data-page="about"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/about/background.jpg'); }
