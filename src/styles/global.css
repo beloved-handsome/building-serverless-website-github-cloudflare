@@ -994,3 +994,44 @@ body[data-page="home"] .blog-hero .hero-overlay {
     clip-path: ellipse(82% 55% at 50% 100%);
   }
 }
+
+
+/* Final wave fix: hero image ends cleanly; the section below is solid theme background. */
+body[data-page="home"]::before {
+  height: 600px !important;
+}
+body[data-page="home"] .blog-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden !important;
+  background: transparent !important;
+  background-image: none !important;
+}
+body[data-page="home"] .blog-hero::after {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  left: -5%;
+  width: 110%;
+  bottom: -1px;
+  height: 104px;
+  background: var(--bg) !important;
+  clip-path: ellipse(75% 58% at 50% 100%);
+}
+/* The content area must never inherit the hero artwork. */
+body[data-page="home"] main,
+body[data-page="home"] .home-content,
+body[data-page="home"] .home-main {
+  background-color: var(--bg);
+  background-image: none !important;
+}
+:root[data-theme="dark"] body[data-page="home"] .blog-hero::after {
+  background: #000 !important;
+}
+@media (max-width: 700px) {
+  body[data-page="home"] .blog-hero::after {
+    height: 78px;
+    clip-path: ellipse(84% 58% at 50% 100%);
+  }
+}
