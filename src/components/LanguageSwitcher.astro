@@ -3,8 +3,6 @@
   <select id="site-language" aria-label="Choose language" title="Choose language">
     <option value="zh">中文</option>
     <option value="en">English</option>
-    <option value="ja">日本語</option>
-    <option value="ko">한국어</option>
   </select>
 </label>
 <script>
@@ -84,8 +82,8 @@
   };
   const selector = document.querySelector<HTMLSelectElement>('#site-language');
   function applyLanguage(language: string) {
-    const lang = dictionaries[language] ? language : 'zh';
-    document.documentElement.lang = ({zh:'zh-CN',en:'en',ja:'ja',ko:'ko'} as Record<string,string>)[lang];
+    const lang = (language === 'en' || language === 'zh') ? language : 'zh';
+    document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
     document.documentElement.dataset.language = lang;
     document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
       const value = dictionaries[lang][el.dataset.i18n || ''];
@@ -150,7 +148,7 @@
     article.dataset.translationState = 'loading';
     const slug = decodeURIComponent(window.location.pathname.split('/').filter(Boolean).slice(1).join('/')).split('/').join('--');
     try {
-      const response = await fetch('/translations/' + encodeURIComponent(slug) + '.' + language + '.json');
+      const response = await fetch('/translations/' + encodeURIComponent(slug) + '.en.json');
       if (!response.ok) throw new Error('Prebuilt translation is unavailable');
       const data = await response.json() as {title:string;description:string;category:string;tags:string[];strings:Record<string,string>};
       if (run !== translationRun || !article.isConnected) return;
