@@ -112,25 +112,56 @@
     if (archiveIntro) archiveIntro.textContent = (dictionaries[lang]['archive.intro'] || '').replace('{n}', archiveIntro.dataset.archiveCount || '0');
     const path = window.location.pathname;
     const pageTitles: Record<string, Record<string,string>> = {
-      '/': {zh:'个人书房 — 记录生活，思考世界',en:'The Private Study — Notes on Life & the World',ja:'個人書斎 — 日々を記録し、世界を考える',ko:'개인 서재 — 삶을 기록하고 세계를 생각하다'},
-      '/search/': {zh:'搜索 — 个人书房',en:'Search — The Private Study',ja:'検索 — 個人書斎',ko:'검색 — 개인 서재'},
-      '/wander/': {zh:'随机漫游 — 个人书房',en:'Wander — The Private Study',ja:'ランダム散策 — 個人書斎',ko:'랜덤 산책 — 개인 서재'},
-      '/archive/': {zh:'文章归档 — 个人书房',en:'Archive — The Private Study',ja:'記事一覧 — 個人書斎',ko:'글 모음 — 개인 서재'},
-      '/about/': {zh:'关于我 — 个人书房',en:'About — The Private Study',ja:'私について — 個人書斎',ko:'소개 — 개인 서재'}
+      '/': {zh:'Beloved',en:'Beloved',ja:'Beloved',ko:'Beloved'},
+      '/search/': {zh:'搜索 — Beloved',en:'Search — Beloved',ja:'検索 — Beloved',ko:'검색 — Beloved'},
+      '/wander/': {zh:'随机漫游 — Beloved',en:'Wander — Beloved',ja:'ランダム散策 — Beloved',ko:'랜덤 산책 — Beloved'},
+      '/archive/': {zh:'文章归档 — Beloved',en:'Archive — Beloved',ja:'記事一覧 — Beloved',ko:'글 모음 — Beloved'},
+      '/about/': {zh:'关于 — Beloved',en:'About — Beloved',ja:'このサイトについて — Beloved',ko:'소개 — Beloved'}
     };
     if (pageTitles[path]?.[lang]) document.title = pageTitles[path][lang];
     if (path.startsWith('/posts/')) {
-      const articleSuffix: Record<string,string> = {zh:'个人书房',en:'The Private Study',ja:'個人書斎',ko:'개인 서재'};
+      const articleSuffix: Record<string,string> = {zh:'Beloved',en:'Beloved',ja:'Beloved',ko:'Beloved'};
       const originalTitle = document.querySelector('article.article-page h1')?.textContent?.trim();
       if (originalTitle) document.title = originalTitle + ' — ' + articleSuffix[lang];
     }
     const theme = document.querySelector<HTMLButtonElement>('.theme-toggle');
     if (theme) { theme.title = dictionaries[lang]['theme.title'] || 'Toggle theme'; theme.setAttribute('aria-label', theme.title); }
     if (selector) selector.value = lang;
-    try { localStorage.setItem('study-room-language', lang); } catch {}
+    try { localStorage.setItem('study-room-language', lang); } catch {}\n    if (path.startsWith('/posts/')) {\n      window.dispatchEvent(new CustomEvent('beloved-translate-article', {detail:{language:lang}}));\n    }
     window.dispatchEvent(new CustomEvent('study-room-language-change', {detail:{language:lang, dictionary:dictionaries[lang]}}));
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
+  if (window.location.pathname.startsWith('/posts/')) {
+    const targetCode: Record<string,string> = {zh:'zh-CN',en:'en',ja:'ja',ko:'ko'};
+    let translateReady = false;
+    const applyArticleTranslation = (language:string) => {
+      const combo = document.querySelector<HTMLSelectElement>('.goog-te-combo');
+      if (!combo) return;
+      combo.value = targetCode[language] || 'zh-CN';
+      combo.dispatchEvent(new Event('change', {bubbles:true}));
+    };
+    (window as any).googleTranslateElementInit = () => {
+      try {
+        new (window as any).google.translate.TranslateElement({
+          pageLanguage:'zh-CN',
+          includedLanguages:'zh-CN,en,ja,ko',
+          autoDisplay:false
+        }, 'google_translate_element');
+        translateReady = true;
+        window.setTimeout(() => applyArticleTranslation(savedLanguage), 700);
+      } catch (error) { console.warn('Article translation could not initialize.', error); }
+    };
+    window.addEventListener('beloved-translate-article', (event) => {
+      const language = (event as CustomEvent).detail?.language || 'zh';
+      if (translateReady) applyArticleTranslation(language);
+      else if (language !== 'zh') window.setTimeout(() => applyArticleTranslation(language), 1200);
+    });
+    const googleScript = document.createElement('script');
+    googleScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    googleScript.async = true;
+    googleScript.onerror = () => console.warn('Google Translate is unavailable; article text remains in its original language.');
+    document.head.appendChild(googleScript);
+  }
   applyLanguage(savedLanguage);
   selector?.addEventListener('change', () => applyLanguage(selector.value));
   document.addEventListener('astro:page-load', () => applyLanguage(selector?.value || savedLanguage));
