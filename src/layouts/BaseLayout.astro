@@ -27,7 +27,7 @@ const pageKey = pathname === '/' ? 'home'
     <script is:inline>
       (() => {
         const p = location.pathname;
-        document.documentElement.dataset.page = p === '/' ? 'home' : p.startsWith('/archive') ? 'archive' : p.startsWith('/search') ? 'search' : p.startsWith('/about') ? 'about' : p.startsWith('/wander') ? 'wander' : p.startsWith('/posts/') ? 'posts' : 'default';
+        document.documentElement.dataset.page = p === '/' ? 'home' : p.startsWith('/archive') ? 'archive' : p.startsWith('/search') ? 'search' : p.startsWith('/about') ? 'about' : p.startsWith('/wander') ? 'wander' : p.startsWith('/posts/') ? 'posts' : 'default';\n        try { document.documentElement.dataset.language = localStorage.getItem('study-room-language') || 'zh'; } catch { document.documentElement.dataset.language = 'zh'; }
       })();
     </script>
   </head>
