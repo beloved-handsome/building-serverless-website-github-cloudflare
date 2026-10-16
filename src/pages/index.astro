@@ -10,17 +10,24 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   <div class="blog-home">
     <section class="blog-hero">
       <div class="hero-overlay"></div>
-      <svg class="hero-wave hero-wave-back" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,72 C180,120 300,22 500,64 C700,108 820,132 1010,78 C1190,26 1300,62 1440,82 L1440,180 L0,180 Z"></path>
-      </svg>
-      <svg class="hero-wave hero-wave-front" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,94 C190,54 320,126 520,98 C740,66 830,34 1030,88 C1200,132 1320,110 1440,72 L1440,180 L0,180 Z"></path>
-      </svg>
       <div class="hero-heading">
         <h1>Beloved's Blog</h1>
         <p>🌿 记录生活的点滴，分享值得珍藏的瞬间。</p>
       </div>
     </section>
+    <div class="waves" aria-hidden="true">
+      <svg class="waves-svg" viewBox="0 24 150 28" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <defs>
+          <path id="beloved-gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path>
+        </defs>
+        <g class="parallax">
+          <use href="#beloved-gentle-wave" x="48" y="0" class="wave-layer wave-layer-1"></use>
+          <use href="#beloved-gentle-wave" x="48" y="3" class="wave-layer wave-layer-2"></use>
+          <use href="#beloved-gentle-wave" x="48" y="5" class="wave-layer wave-layer-3"></use>
+          <use href="#beloved-gentle-wave" x="48" y="7" class="wave-layer wave-layer-4"></use>
+        </g>
+      </svg>
+    </div>
 
     <div class="home-layout">
       <aside class="profile-card glass-panel">
@@ -172,21 +179,22 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
 </script>
 <style>
   .blog-home { padding-bottom:36px; }
-  /* Homepage banner: the photo ends at the hero edge; the wave is a static, continuous divider. */
-  :global(body[data-page="home"]) { background-color:#d8d8d8 !important; background-image:none !important; }
+  /* Hero photo and the reference-style standalone parallax wave divider. */
+  :global(body[data-page="home"]) { background-color:#faf9f6 !important; background-image:none !important; }
   :global(body[data-page="home"] .site-header) { background:transparent !important; border-color:transparent !important; box-shadow:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
   .profile-card,.shortcut-card,.latest-card,.empty-posts,.now-card { background:transparent !important; border:0 !important; box-shadow:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
-  .blog-hero { width:100vw;min-height:620px;position:relative;display:grid;place-items:center;overflow:hidden;margin:0 calc(50% - 50vw) 0;border-radius:0;border:0;background:linear-gradient(0deg,rgba(25,20,30,.40),rgba(25,20,30,.06)),url('/backgrounds/home/background.jpg') center 46%/cover no-repeat,linear-gradient(125deg,#746a7e,#c88d89 55%,#e4c8a2);box-shadow:none; }
+  .blog-hero { width:100vw;min-height:70vh;position:relative;display:grid;place-items:center;overflow:hidden;margin:0 calc(50% - 50vw) 0;border-radius:0;border:0;background:linear-gradient(0deg,rgba(25,20,30,.40),rgba(25,20,30,.06)),url('/backgrounds/home/background.jpg') center 46%/cover no-repeat,linear-gradient(125deg,#746a7e,#c88d89 55%,#e4c8a2);box-shadow:none; }
   .hero-overlay { position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,18,28,.18),transparent 70%); }
-  /* Two independently moving wave layers create the animated shoreline seen in the reference. */
-  .hero-wave { position:absolute;z-index:2;left:0;bottom:-1px;width:100%;height:180px;pointer-events:none;transform:none;animation:none; }
-  .hero-wave path { fill:#d8d8d8; }
-  .hero-wave-back { opacity:.58; }
-  .hero-wave-back path { fill:#e2e2e2; }
-  .hero-wave-front { opacity:1; }
-  .hero-wave-front path { fill:#d8d8d8; }
-  @keyframes hero-wave-drift { from { transform:translateX(0); } to { transform:translateX(0); } }
-  @media(prefers-reduced-motion:reduce) { .hero-wave-back,.hero-wave-front { animation:none; } }
+  /* Reference-inspired wave stack: four copies of one continuous SVG path. */
+  .waves { position:relative;z-index:3;width:100vw;height:136px;margin:-92px calc(50% - 50vw) 0;overflow:hidden;pointer-events:none; }
+  .waves-svg { position:absolute;left:0;bottom:0;display:block;width:100%;height:100%; }
+  .parallax > use { animation:beloved-wave-move 18s cubic-bezier(.55,.5,.45,.5) infinite; }
+  .parallax > use.wave-layer-1 { fill:#faf9f6;opacity:.22;animation-duration:7s; }
+  .parallax > use.wave-layer-2 { fill:#faf9f6;opacity:.42;animation-duration:10s; }
+  .parallax > use.wave-layer-3 { fill:#faf9f6;opacity:.68;animation-duration:13s; }
+  .parallax > use.wave-layer-4 { fill:#faf9f6;opacity:1;animation-duration:20s; }
+  @keyframes beloved-wave-move { 0% { transform:translate3d(-90px,0,0); } 100% { transform:translate3d(85px,0,0); } }
+  @media(prefers-reduced-motion:reduce) { .parallax > use { animation:none; } }
   .hero-heading { position:relative;z-index:1;text-align:center;color:white;padding:clamp(70px,10vw,130px) 16px clamp(90px,12vw,150px);text-shadow:0 2px 22px rgba(0,0,0,.22); }
   .hero-heading h1 { margin:0;font-size:clamp(40px,7vw,62px);line-height:1.2;letter-spacing:.01em;font-weight:600; }
   .hero-heading p { margin:14px 0 0;font-size:clamp(13px,2vw,17px); }
