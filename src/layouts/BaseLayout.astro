@@ -75,10 +75,26 @@ const pageKey = pathname === '/' ? 'home'
           const overlay = dark
             ? (page === 'home' ? 'rgba(17,20,18,.42)' : 'rgba(17,20,18,.60)')
             : (page === 'home' ? 'rgba(247,248,244,.20)' : 'rgba(247,248,244,.36)');
-          const image = ['home','archive','search','about','wander','posts'].includes(page)
-            ? `, url('/backgrounds/${page}/background.jpg')`
-            : '';
-          body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${image}`, 'important');
+          const supportedPages = ['home','archive','search','about','wander','posts'];
+          const ownImage = supportedPages.includes(page) ? `/backgrounds/${page}/background.jpg` : null;
+          const setBackground = (imageUrl) => {
+            const imageLayer = imageUrl ? `, url("${imageUrl}")` : '';
+            body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${imageLayer}`, 'important');
+          };
+          if (!ownImage || page === 'home') {
+            setBackground(ownImage);
+          } else {
+            const probe = new Image();
+            probe.onload = () => setBackground(ownImage);
+            probe.onerror = () => {
+              // If a page-specific image has not been uploaded, use the homepage image.
+              const fallback = new Image();
+              fallback.onload = () => setBackground('/backgrounds/home/background.jpg');
+              fallback.onerror = () => setBackground(null);
+              fallback.src = '/backgrounds/home/background.jpg';
+            };
+            probe.src = ownImage;
+          }
           body.style.setProperty('background-color', 'var(--bg)', 'important');
           body.style.setProperty('background-size', 'cover', 'important');
           body.style.setProperty('background-position', 'center', 'important');
