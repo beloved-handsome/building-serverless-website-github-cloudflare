@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p => ({ title:p.data.title, url:`/posts/${p.id}/`, description:p.data.description }));
 ---
-<BaseLayout title="随机漫游 — 个人书房" description="不按计划，随机读一篇文章。">
+<BaseLayout title="随机漫游 — Beloved" description="在 Beloved 随机阅读一篇文章。">
   <section class="utility-page wander-page">
     <p class="section-kicker" data-i18n="wander.kicker">SERENDIPITY</p><h1 data-i18n="wander.title">随机漫游<span>.</span></h1>
     <p class="utility-intro" data-i18n="wander.intro">有时不必带着问题来。让下一篇文章替你决定方向。</p>

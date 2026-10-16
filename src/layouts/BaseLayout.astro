@@ -4,8 +4,15 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 
 interface Props { title?: string; description?: string; }
-const { title = '个人书房 — 记录生活，思考世界', description = '一个记录生活、独立思考与观察世界的个人空间。' } = Astro.props;
+const { title = 'Beloved — A personal corner of the world', description = 'Beloved — a quiet space for time, place, weather, and writing.' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const pathname = Astro.url.pathname;
+const pageKey = pathname === '/' ? 'home'
+  : pathname.startsWith('/archive') ? 'archive'
+  : pathname.startsWith('/search') ? 'search'
+  : pathname.startsWith('/about') ? 'about'
+  : pathname.startsWith('/wander') ? 'wander'
+  : pathname.startsWith('/posts/') ? 'posts' : 'default';
 ---
 <!doctype html>
 <html lang="zh-CN">
@@ -17,15 +24,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
+    <script is:inline>
+      (() => {
+        const p = location.pathname;
+        document.documentElement.dataset.page = p === '/' ? 'home' : p.startsWith('/archive') ? 'archive' : p.startsWith('/search') ? 'search' : p.startsWith('/about') ? 'about' : p.startsWith('/wander') ? 'wander' : p.startsWith('/posts/') ? 'posts' : 'default';
+      })();
+    </script>
   </head>
-  <body>
+  <body data-page={pageKey}>
     <div class="site-shell">
-      <header class="site-header glass-panel">
-        <a class="brand" href="/" aria-label="返回个人书房首页">
-          <span class="brand-mark">书</span>
-          <span>个人书房</span>
+      <header class="site-header glass-panel notranslate" translate="no">
+        <a class="brand" href="/" aria-label="Beloved home">
+          <span class="brand-mark">B</span>
+          <span>Beloved</span>
         </a>
-        <nav class="nav-links" aria-label="主导航">
+        <nav class="nav-links" aria-label="Main navigation">
           <a href="/" data-i18n="nav.home">首页</a>
           <a href="/archive/" data-i18n="nav.archive">归档</a>
           <a href="/search/" data-i18n="nav.search">搜索</a>
@@ -36,9 +49,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
         </nav>
       </header>
       <main>
-        <slot/>
+        <slot />
       </main>
-      
     </div>
+    <div id="google_translate_element" class="google-translate-hidden" aria-hidden="true"></div>
   </body>
 </html>
