@@ -7,20 +7,20 @@ const dateFormat = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 's
 ---
 <BaseLayout title="个人书房 — 记录生活，思考世界" description="记录生活、独立思考，观察社会与世界。">
   <section class="hero glass-panel">
-    <div class="hero-eyebrow"><span class="status-dot"></span> 一个持续更新的个人空间</div>
-    <p class="hero-overline">THE PRIVATE STUDY · NOTES ON LIFE & THE WORLD</p>
-    <h1>记录生活，<br /><span class="muted-heading">思考世界。</span></h1>
-    <p class="hero-description">这里是我的个人书房。收集读过的书、走过的路、遇见的人，也记录那些暂时没有答案的问题。愿每一次落笔，都更接近真实的自己。</p>
+    <div class="hero-eyebrow"><span class="status-dot"></span> <span data-i18n="home.eyebrow">一个持续更新的个人空间</span></div>
+    <p class="hero-overline" data-i18n="home.overline">THE PRIVATE STUDY · NOTES ON LIFE & THE WORLD</p>
+    <h1 data-i18n="home.title">记录生活，<br /><span class="muted-heading">思考世界。</span></h1>
+    <p class="hero-description" data-i18n="home.description">这里是我的个人书房。收集读过的书、走过的路、遇见的人，也记录那些暂时没有答案的问题。愿每一次落笔，都更接近真实的自己。</p>
     <div class="hero-actions">
-      <a class="button-primary" href="/archive/">开始阅读 <span aria-hidden="true">↗</span></a>
-      <a class="button-secondary" href="/search/">在书房中搜索 <span aria-hidden="true">⌕</span></a>
-      <a class="button-secondary" href="/wander/">随机读一篇 <span aria-hidden="true">✳</span></a>
+      <a class="button-primary" href="/archive/" data-i18n="home.read">开始阅读 <span aria-hidden="true">↗</span></a>
+      <a class="button-secondary" href="/search/" data-i18n="home.search">在书房中搜索 <span aria-hidden="true">⌕</span></a>
+      <a class="button-secondary" href="/wander/" data-i18n="home.random">随机读一篇 <span aria-hidden="true">✳</span></a>
     </div>
-    <div class="hero-meta"><span>✳ 独立思考</span><span>⌘ 社会与世界</span><span>◷ 长期主义</span></div>
-    <div class="hero-note"><span class="note-line"></span><span>“重要的不是答案，而是提出好问题的能力。”</span></div>
+    <div class="hero-meta" data-i18n="home.meta"><span>✳ 独立思考</span><span>⌘ 社会与世界</span><span>◷ 长期主义</span></div>
+    <div class="hero-note"><span class="note-line"></span><span data-i18n="home.quote">“重要的不是答案，而是提出好问题的能力。”</span></div>
   </section>
   <section class="posts-section" aria-labelledby="posts-heading">
-    <div class="section-heading"><div><p class="section-kicker">THE JOURNAL</p><h2 id="posts-heading">最近的记录</h2></div><a class="text-link" href="/archive/">全部文章 →</a></div>
+    <div class="section-heading"><div><p class="section-kicker" data-i18n="home.journal">THE JOURNAL</p><h2 id="posts-heading" data-i18n="home.recent">最近的记录</h2></div><a class="text-link" href="/archive/" data-i18n="home.all">全部文章 →</a></div>
     {recentPosts.length > 0 ? (
       <div class="post-grid">
         {recentPosts.map((post, i) => (
@@ -35,7 +35,7 @@ const dateFormat = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 's
           </article>
         ))}
       </div>
-    ) : <div class="empty-state glass-panel"><span class="empty-icon">✳</span><h3>书房还很安静</h3><p>在 src/content/posts/ 中添加 Markdown 文章，新的记录就会出现在这里。</p></div>}
+    ) : <div class="empty-state glass-panel"><span class="empty-icon">✳</span><h3 data-i18n="home.emptyTitle">书房还很安静</h3><p data-i18n="home.empty">在 src/content/posts/ 中添加 Markdown 文章，新的记录就会出现在这里。</p></div>}
   </section>
-  <section class="about-strip glass-panel"><div class="about-symbol">阅</div><div><p class="section-kicker">A SMALL NOTE</p><h2>给思考留一点空间</h2><p>不急着给世界下结论，也不因为人声嘈杂就放弃自己的判断。欢迎在这里停留片刻。</p><a class="text-link" href="/about/">关于这个书房 →</a></div></section>
+  <section class="about-strip glass-panel"><div class="about-symbol">阅</div><div><p class="section-kicker" data-i18n="home.note">A SMALL NOTE</p><h2 data-i18n="home.space">给思考留一点空间</h2><p data-i18n="home.noteText">不急着给世界下结论，也不因为人声嘈杂就放弃自己的判断。欢迎在这里停留片刻。</p><a class="text-link" href="/about/" data-i18n="home.about">关于这个书房 →</a></div></section>
 </BaseLayout>
