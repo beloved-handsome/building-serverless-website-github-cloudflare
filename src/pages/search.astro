@@ -15,6 +15,8 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
   </section>
 </BaseLayout>
 <script>
+  import { englishText } from '../i18n/translations';
+
   const input = document.querySelector<HTMLInputElement>('#site-search');
   const results = document.querySelector<HTMLDivElement>('#search-results');
   const count = document.querySelector<HTMLParagraphElement>('#search-count');
@@ -31,7 +33,7 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
     const lang = document.documentElement.dataset.language || 'zh';
     const t = messages[lang] || messages.zh;
     const q = query.trim().toLocaleLowerCase();
-    const matched = q ? entries.filter(p => p.text.toLocaleLowerCase().includes(q)) : [];
+    const matched = q ? entries.filter(p => [p.text, englishText[p.title] || p.title, englishText[p.description] || p.description, englishText[p.category] || p.category, ...p.tags.map(tag => englishText[tag] || tag)].join(' ').toLocaleLowerCase().includes(q)) : [];
     count.textContent = q ? t.found.replace('{n}', String(matched.length)) : t.hint.replace('{n}', String(entries.length));
     results.innerHTML = '';
     if (!q) return;
@@ -43,9 +45,10 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
     }
     for (const post of matched) {
       const a = document.createElement('a'); a.className = 'search-result glass-panel'; a.href = post.url;
-      const meta = document.createElement('span'); meta.className = 'post-meta'; meta.textContent = post.date + ' / ' + post.category;
-      const h = document.createElement('h2'); h.textContent = post.title;
-      const p = document.createElement('p'); p.textContent = post.description;
+      const localize = (value: string) => lang === 'en' ? (englishText[value] || value) : value;
+      const meta = document.createElement('span'); meta.className = 'post-meta'; meta.textContent = post.date + ' / ' + localize(post.category);
+      const h = document.createElement('h2'); h.textContent = localize(post.title);
+      const p = document.createElement('p'); p.textContent = localize(post.description);
       a.append(meta,h,p); results.append(a);
     }
   }
