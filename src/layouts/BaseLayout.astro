@@ -72,20 +72,27 @@ const pageKey = pathname === '/' ? 'home'
           const page = getPage();
           body.dataset.page = page;
           const dark = document.documentElement.dataset.theme === 'dark';
-          const overlay = dark
-            ? (page === 'home' ? 'rgba(17,20,18,.42)' : 'rgba(17,20,18,.60)')
-            : (page === 'home' ? 'rgba(247,248,244,.20)' : 'rgba(247,248,244,.36)');
+          // Keep the photographic backdrop visible across the whole site, like the reference blog.
+          // Glass cards provide contrast; the page overlay should stay light rather than wash out the image.
+          const overlay = dark ? 'rgba(17,20,18,.46)' : 'rgba(247,244,237,.18)';
           const supportedPages = ['home','archive','search','about','wander','posts'];
           const ownImage = supportedPages.includes(page) ? `/backgrounds/${page}/background.jpg` : null;
           const setBackground = (imageUrl) => {
-            // Version the image URL to avoid a stale cached background.
-            const versionedUrl = imageUrl ? `${imageUrl}?v=2` : null;
+            // Version image URLs so updated uploads are not hidden by stale browser caches.
+            const versionedUrl = imageUrl ? `${imageUrl}?v=3` : null;
             const imageLayer = versionedUrl ? `, url("${versionedUrl}")` : '';
             body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${imageLayer}`, 'important');
           };
-          // Apply only this page's own image path directly. If its file is absent,
-          // the browser simply shows the theme background; never borrow another page's image.
-          setBackground(ownImage);
+          // Prefer a page-specific image. If that image is missing, reuse the homepage
+          // background so every page retains the same photographic atmosphere.
+          if (ownImage && page !== 'home') {
+            const probe = new Image();
+            probe.onload = () => setBackground(ownImage);
+            probe.onerror = () => setBackground('/backgrounds/home/background.jpg');
+            probe.src = `${ownImage}?v=3`;
+          } else {
+            setBackground(ownImage || '/backgrounds/home/background.jpg');
+          }
           body.style.setProperty('background-color', 'var(--bg)', 'important');
           body.style.setProperty('background-size', 'cover', 'important');
           body.style.setProperty('background-position', 'center', 'important');
