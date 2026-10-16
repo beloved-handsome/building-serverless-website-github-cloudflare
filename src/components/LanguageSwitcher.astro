@@ -137,6 +137,13 @@
     const article = document.querySelector<HTMLElement>('.article-page');
     if (!article) return;
     const run = ++translationRun;
+    const dateElement = article.querySelector<HTMLTimeElement>('time[datetime]');
+    if (dateElement?.dateTime) {
+      const date = new Date(dateElement.dateTime);
+      dateElement.textContent = date.toLocaleDateString(language === 'en' ? 'en-US' : 'zh-CN', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
     if (language === 'zh') {
       article.querySelectorAll<HTMLElement>('[data-translated-original]').forEach(el => {
         el.textContent = el.dataset.translatedOriginal || '';
