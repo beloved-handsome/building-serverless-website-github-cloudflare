@@ -108,7 +108,7 @@
       if (!el.dataset.translatedOriginal) {
         el.dataset.translatedOriginal = el.textContent || '';
       }
-      const original = el.dataset.translatedOriginal;
+      const original = el.dataset.translatedOriginal || '';
       el.textContent = language === 'en' ? (englishText[original] || original) : original;
     });
 
@@ -162,7 +162,7 @@
     if (path.startsWith('/posts/')) {
       translateArticle(lang);
       const articleTitle = document.querySelector<HTMLElement>('.article-header h1');
-      if (articleTitle) document.title = articleTitle.textContent.trim() + ' — Beloved';
+      if (articleTitle) document.title = (articleTitle.textContent || '').trim() + ' — Beloved';
     } else if (pageTitles[path]?.[lang]) {
       document.title = pageTitles[path][lang];
     }
