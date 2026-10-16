@@ -148,7 +148,7 @@
       return;
     }
     article.dataset.translationState = 'loading';
-    const slug = decodeURIComponent(window.location.pathname.replace(/^\\/posts\\//, '').replace(/\\/$/, '')).replace(/\\//g, '--');
+    const slug = decodeURIComponent(window.location.pathname.split('/').filter(Boolean).slice(1).join('/')).split('/').join('--');
     try {
       const response = await fetch('/translations/' + encodeURIComponent(slug) + '.' + language + '.json');
       if (!response.ok) throw new Error('Prebuilt translation is unavailable');
