@@ -10,6 +10,12 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   <div class="blog-home">
     <section class="blog-hero">
       <div class="hero-overlay"></div>
+      <svg class="hero-wave hero-wave-back" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,72 C180,120 300,22 500,64 C700,108 820,132 1010,78 C1190,26 1300,62 1440,82 L1440,180 L0,180 Z"></path>
+      </svg>
+      <svg class="hero-wave hero-wave-front" viewBox="0 0 1440 180" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,94 C190,54 320,126 520,98 C740,66 830,34 1030,88 C1200,132 1320,110 1440,72 L1440,180 L0,180 Z"></path>
+      </svg>
       <div class="hero-heading">
         <h1>Beloved's Blog</h1>
         <p>🌿 记录生活的点滴，分享值得珍藏的瞬间。</p>
@@ -168,7 +174,16 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .blog-home { padding-bottom:36px; }
   .blog-hero { min-height:290px;position:relative;display:grid;place-items:center;overflow:hidden;margin:18px 0 24px;border-radius:24px;border:1px solid var(--glass-border);background:linear-gradient(0deg,rgba(25,20,30,.40),rgba(25,20,30,.06)),url('/backgrounds/home/background.jpg') center 46%/cover no-repeat,linear-gradient(125deg,#746a7e,#c88d89 55%,#e4c8a2);box-shadow:var(--glass-shadow); }
   .hero-overlay { position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,18,28,.18),transparent 70%); }
-  .hero-heading { position:relative;text-align:center;color:white;padding:44px 16px;text-shadow:0 2px 22px rgba(0,0,0,.22); }
+  /* Two independently moving wave layers create the animated shoreline seen in the reference. */
+  .hero-wave { position:absolute;z-index:2;left:-1%;bottom:-1px;width:202%;height:clamp(48px,10vw,92px);pointer-events:none;will-change:transform; }
+  .hero-wave path { fill:rgba(225,224,224,.78); }
+  .hero-wave-back { animation:hero-wave-drift 13s linear infinite;opacity:.68; }
+  .hero-wave-back path { fill:rgba(247,246,244,.72); }
+  .hero-wave-front { animation:hero-wave-drift 8s linear infinite reverse;opacity:.92; }
+  .hero-wave-front path { fill:rgba(211,210,210,.88); }
+  @keyframes hero-wave-drift { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @media(prefers-reduced-motion:reduce) { .hero-wave-back,.hero-wave-front { animation:none; } }
+  .hero-heading { position:relative;z-index:1;text-align:center;color:white;padding:44px 16px 70px;text-shadow:0 2px 22px rgba(0,0,0,.22); }
   .hero-heading h1 { margin:0;font-size:clamp(40px,7vw,62px);line-height:1.2;letter-spacing:.01em;font-weight:600; }
   .hero-heading p { margin:14px 0 0;font-size:clamp(13px,2vw,17px); }
   .home-layout { display:grid;grid-template-columns:190px minmax(0,1fr);gap:18px;align-items:start; }
