@@ -6,10 +6,10 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
 ---
 <BaseLayout title="搜索 — 个人书房" description="搜索个人书房中的文章、主题与标签。">
   <section class="utility-page">
-    <p class="section-kicker">FIND A NOTE</p><h1>搜索书房<span>.</span></h1>
-    <p class="utility-intro">按标题、摘要、分类或标签寻找一段记录。</p>
-    <div class="search-box glass-panel"><span aria-hidden="true">⌕</span><input id="site-search" type="search" placeholder="试试输入：读书、生活、思考……" autocomplete="off" aria-label="搜索文章" /><kbd>Enter</kbd></div>
-    <p id="search-count" class="search-count">共 {posts.length} 篇文章。输入关键词开始搜索。</p>
+    <p class="section-kicker" data-i18n="search.kicker">FIND A NOTE</p><h1 data-i18n="search.title">搜索书房<span>.</span></h1>
+    <p class="utility-intro" data-i18n="search.intro">按标题、摘要、分类或标签寻找一段记录。</p>
+    <div class="search-box glass-panel"><span aria-hidden="true">⌕</span><input id="site-search" type="search" data-i18n-placeholder="search.placeholder" data-i18n-aria="search.aria" placeholder="试试输入：读书、生活、思考……" autocomplete="off" aria-label="搜索文章" /><kbd>Enter</kbd></div>
+    <p id="search-count" class="search-count" data-search-count data-total={posts.length}>共 {posts.length} 篇文章。输入关键词开始搜索。</p>
     <div id="search-results" class="search-results"></div>
     <script type="application/json" id="search-data" set:html={JSON.stringify(entries).replace(/</g, '\\u003c')} />
   </section>
@@ -20,14 +20,27 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
   const count = document.querySelector<HTMLParagraphElement>('#search-count');
   const dataNode = document.querySelector<HTMLScriptElement>('#search-data');
   const entries = JSON.parse(dataNode?.textContent || '[]') as {title:string;description:string;category:string;tags:string[];date:string;url:string;text:string}[];
+  const messages: Record<string, Record<string,string>> = {
+    zh:{hint:'共 {n} 篇文章。输入关键词开始搜索。',found:'找到 {n} 篇相关记录',noneTitle:'没有找到相关记录',none:'换个关键词试试。'},
+    en:{hint:'{n} articles. Enter a keyword to search.',found:'Found {n} related articles',noneTitle:'No matching notes',none:'Try another keyword.'},
+    ja:{hint:'全 {n} 件。キーワードを入力して検索してください。',found:'関連する記事：{n} 件',noneTitle:'記事が見つかりません',none:'別のキーワードをお試しください。'},
+    ko:{hint:'전체 {n}개 글. 키워드를 입력해 검색하세요.',found:'관련 글 {n}개를 찾았습니다',noneTitle:'검색 결과가 없습니다',none:'다른 키워드를 입력해 보세요.'}
+  };
   function render(query = '') {
     if (!results || !count) return;
+    const lang = document.documentElement.dataset.language || 'zh';
+    const t = messages[lang] || messages.zh;
     const q = query.trim().toLocaleLowerCase();
     const matched = q ? entries.filter(p => p.text.toLocaleLowerCase().includes(q)) : [];
-    count.textContent = q ? `找到 ${matched.length} 篇相关记录` : `共 ${entries.length} 篇文章。输入关键词开始搜索。`;
+    count.textContent = q ? t.found.replace('{n}', String(matched.length)) : t.hint.replace('{n}', String(entries.length));
     results.innerHTML = '';
     if (!q) return;
-    if (!matched.length) { results.innerHTML = '<div class="empty-state glass-panel"><h3>没有找到相关记录</h3><p>换个关键词试试。</p></div>'; return; }
+    if (!matched.length) {
+      const empty = document.createElement('div'); empty.className = 'empty-state glass-panel';
+      const h = document.createElement('h3'); h.textContent = t.noneTitle;
+      const p = document.createElement('p'); p.textContent = t.none;
+      empty.append(h,p); results.append(empty); return;
+    }
     for (const post of matched) {
       const a = document.createElement('a'); a.className = 'search-result glass-panel'; a.href = post.url;
       const meta = document.createElement('span'); meta.className = 'post-meta'; meta.textContent = post.date + ' / ' + post.category;
@@ -37,4 +50,5 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
     }
   }
   input?.addEventListener('input', () => render(input.value));
+  window.addEventListener('study-room-language-change', () => render(input?.value || ''));
 </script>

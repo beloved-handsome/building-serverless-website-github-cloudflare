@@ -1,0 +1,137 @@
+<label class="language-switcher" aria-label="Language">
+  <span aria-hidden="true">文</span>
+  <select id="site-language" aria-label="Choose language" title="Choose language">
+    <option value="zh">中文</option>
+    <option value="en">English</option>
+    <option value="ja">日本語</option>
+    <option value="ko">한국어</option>
+  </select>
+</label>
+<script>
+  const dictionaries: Record<string, Record<string, string>> = {
+    zh: {
+      'nav.home':'首页','nav.archive':'归档','nav.search':'搜索','nav.about':'关于','nav.wander':'随机漫游 ↗',
+      'footer.motto':'保持好奇，独立思考。 · 用 <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a> 静静搭建',
+      'home.eyebrow':'一个持续更新的个人空间','home.overline':'THE PRIVATE STUDY · NOTES ON LIFE & THE WORLD',
+      'home.title':'记录生活，<br><span class="muted-heading">思考世界。</span>',
+      'home.description':'这里是我的个人书房。收集读过的书、走过的路、遇见的人，也记录那些暂时没有答案的问题。愿每一次落笔，都更接近真实的自己。',
+      'home.read':'开始阅读 <span aria-hidden="true">↗</span>','home.search':'在书房中搜索 <span aria-hidden="true">⌕</span>','home.random':'随机读一篇 <span aria-hidden="true">✳</span>',
+      'home.meta':'<span>✳ 独立思考</span><span>⌘ 社会与世界</span><span>◷ 长期主义</span>',
+      'home.quote':'“重要的不是答案，而是提出好问题的能力。”','home.journal':'THE JOURNAL','home.recent':'最近的记录','home.all':'全部文章 →',
+      'home.emptyTitle':'书房还很安静','home.empty':'在 src/content/posts/ 中添加 Markdown 文章，新的记录就会出现在这里。',
+      'home.note':'A SMALL NOTE','home.space':'给思考留一点空间','home.noteText':'不急着给世界下结论，也不因为人声嘈杂就放弃自己的判断。欢迎在这里停留片刻。','home.about':'关于这个书房 →',
+      'search.kicker':'FIND A NOTE','search.title':'搜索书房<span>.</span>','search.intro':'按标题、摘要、分类或标签寻找一段记录。','search.placeholder':'试试输入：读书、生活、思考……','search.aria':'搜索文章','search.hint':'共 {n} 篇文章。输入关键词开始搜索。','search.found':'找到 {n} 篇相关记录','search.noneTitle':'没有找到相关记录','search.none':'换个关键词试试。',
+      'wander.kicker':'SERENDIPITY','wander.title':'随机漫游<span>.</span>','wander.intro':'有时不必带着问题来。让下一篇文章替你决定方向。','wander.ready':'准备好偶遇一段文字了吗？','wander.desc':'点击下面的按钮，随机打开书房中的一篇文章。','wander.button':'带我去看看 ↗','wander.empty':'目前还没有文章，先为书房添几篇记录吧。',
+      'archive.kicker':'THE ARCHIVE','archive.title':'文章归档<span>.</span>','archive.intro':'所有写过的东西，都在这里留下痕迹。共 {n} 篇文章。',
+      'about.kicker':'ABOUT ME','about.title':'关于我<span>.</span>','about.lead':'你好，很高兴你来到这里。','about.p1':'我是一个喜欢探索、记录和思考的人。这个博客用来记录技术实践、生活感悟，以及那些值得留下的瞬间。','about.h2':'关于这个博客','about.p2':'网站使用 Astro 构建，通过 GitHub 管理代码，并部署在 Cloudflare。我希望它简单、快速，也能长期维护。','about.find':'找到我','about.p3':'你可以通过下方链接联系我。','about.back':'← 返回首页',
+      'article.back':'← 返回文章归档','article.end':'感谢阅读，下一篇文章再见。','article.more':'浏览更多文章 →',
+      'theme.title':'切换深色模式'
+    },
+    en: {
+      'nav.home':'Home','nav.archive':'Archive','nav.search':'Search','nav.about':'About','nav.wander':'Wander ↗',
+      'footer.motto':'Stay curious. Think independently. · Quietly built with <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a>',
+      'home.eyebrow':'A personal space, always in progress','home.overline':'THE PRIVATE STUDY · NOTES ON LIFE & THE WORLD',
+      'home.title':'Record life,<br><span class="muted-heading">reflect on the world.</span>',
+      'home.description':'Welcome to my private study. Here I collect books read, roads travelled, people met, and questions without easy answers. May every line bring me closer to who I really am.',
+      'home.read':'Start reading <span aria-hidden="true">↗</span>','home.search':'Search the study <span aria-hidden="true">⌕</span>','home.random':'Read something random <span aria-hidden="true">✳</span>',
+      'home.meta':'<span>✳ Independent thought</span><span>⌘ Society & the world</span><span>◷ Long-term thinking</span>',
+      'home.quote':'“The point is not having answers, but asking better questions.”','home.journal':'THE JOURNAL','home.recent':'Recent notes','home.all':'All articles →',
+      'home.emptyTitle':'The study is quiet for now','home.empty':'Add Markdown posts to src/content/posts/ and they will appear here.',
+      'home.note':'A SMALL NOTE','home.space':'Make room for thought','home.noteText':'There is no need to rush to judge the world, or abandon your own judgment in the noise. Stay a while.','home.about':'About this study →',
+      'search.kicker':'FIND A NOTE','search.title':'Search the study<span>.</span>','search.intro':'Find a note by title, summary, category, or tag.','search.placeholder':'Try books, life, reflection…','search.aria':'Search articles','search.hint':'{n} articles. Enter a keyword to search.','search.found':'Found {n} related articles','search.noneTitle':'No matching notes','search.none':'Try another keyword.',
+      'wander.kicker':'SERENDIPITY','wander.title':'Wander<span>.</span>','wander.intro':'You do not always need a question. Let the next article choose the direction.','wander.ready':'Ready to stumble upon a thought?','wander.desc':'Click below to open a random article from the study.','wander.button':'Take me there ↗','wander.empty':'There are no posts yet. Add a few notes to begin.',
+      'archive.kicker':'THE ARCHIVE','archive.title':'Archive<span>.</span>','archive.intro':'Every note leaves a trace here. {n} articles in total.',
+      'about.kicker':'ABOUT ME','about.title':'About me<span>.</span>','about.lead':'Hello, I’m glad you’re here.','about.p1':'I enjoy exploring, recording, and thinking. This blog holds technical experiments, reflections on life, and moments worth keeping.','about.h2':'About this blog','about.p2':'Built with Astro, managed on GitHub, and deployed on Cloudflare. I hope it stays simple, fast, and easy to maintain.','about.find':'Find me','about.p3':'You can reach me through GitHub. ','about.back':'← Back home',
+      'article.back':'← Back to archive','article.end':'Thanks for reading. See you in the next post.','article.more':'Browse more articles →',
+      'theme.title':'Toggle dark mode'
+    },
+    ja: {
+      'nav.home':'ホーム','nav.archive':'記事一覧','nav.search':'検索','nav.about':'このサイトについて','nav.wander':'ランダム散策 ↗',
+      'footer.motto':'好奇心を忘れず、自分で考える。 · <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a> で構築',
+      'home.eyebrow':'更新を続ける個人の空間','home.overline':'THE PRIVATE STUDY · NOTES ON LIFE & THE WORLD',
+      'home.title':'日々を記録し、<br><span class="muted-heading">世界を考える。</span>',
+      'home.description':'ここは私の個人書斎です。読んだ本、歩いた道、出会った人、そしてまだ答えのない問いを記録します。書くたびに、本当の自分に近づけますように。',
+      'home.read':'読み始める <span aria-hidden="true">↗</span>','home.search':'書斎を検索 <span aria-hidden="true">⌕</span>','home.random':'記事をランダムに読む <span aria-hidden="true">✳</span>',
+      'home.meta':'<span>✳ 自分で考える</span><span>⌘ 社会と世界</span><span>◷ 長期的な視点</span>',
+      'home.quote':'「答えよりも、よい問いを立てる力が大切だ。」','home.journal':'THE JOURNAL','home.recent':'最近の記録','home.all':'すべての記事 →',
+      'home.emptyTitle':'書斎はまだ静かです','home.empty':'src/content/posts/ に Markdown 記事を追加すると、ここに表示されます。',
+      'home.note':'A SMALL NOTE','home.space':'思考のための余白','home.noteText':'世界を急いで決めつけず、周囲の声に流されて自分の判断を手放さない。どうぞゆっくりお過ごしください。','home.about':'この書斎について →',
+      'search.kicker':'FIND A NOTE','search.title':'書斎を検索<span>.</span>','search.intro':'タイトル、概要、カテゴリー、タグから記事を探せます。','search.placeholder':'読書、生活、思考など…','search.aria':'記事を検索','search.hint':'全 {n} 件。キーワードを入力して検索してください。','search.found':'関連する記事：{n} 件','search.noneTitle':'記事が見つかりません','search.none':'別のキーワードをお試しください。',
+      'wander.kicker':'SERENDIPITY','wander.title':'ランダム散策<span>.</span>','wander.intro':'いつも問いを持つ必要はありません。次の記事に行き先を任せましょう。','wander.ready':'思いがけない文章に出会う準備はできましたか？','wander.desc':'下のボタンを押すと、書斎の記事をランダムに開きます。','wander.button':'読んでみる ↗','wander.empty':'記事はまだありません。まずはいくつか記録を追加してください。',
+      'archive.kicker':'THE ARCHIVE','archive.title':'記事一覧<span>.</span>','archive.intro':'書いたものが、ここに残っています。全 {n} 件。',
+      'about.kicker':'ABOUT ME','about.title':'私について<span>.</span>','about.lead':'こんにちは。訪問してくださり、ありがとうございます。','about.p1':'探求し、記録し、考えることが好きです。このブログには技術の実践、暮らしの気づき、残しておきたい瞬間を記録します。','about.h2':'このブログについて','about.p2':'Astro で構築し、GitHub で管理し、Cloudflare にデプロイしています。シンプルで高速、長く保守できるサイトを目指しています。','about.find':'連絡先','about.p3':'GitHub から連絡できます。','about.back':'← ホームへ戻る',
+      'article.back':'← 記事一覧へ戻る','article.end':'読んでくださり、ありがとうございます。また次の記事で。','article.more':'ほかの記事を見る →',
+      'theme.title':'ダークモード切替'
+    },
+    ko: {
+      'nav.home':'홈','nav.archive':'글 모음','nav.search':'검색','nav.about':'소개','nav.wander':'랜덤 산책 ↗',
+      'footer.motto':'호기심을 잃지 말고 독립적으로 생각하기. · <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a>로 제작',
+      'home.eyebrow':'계속해서 기록하는 개인 공간','home.overline':'THE PRIVATE STUDY · NOTES ON LIFE & THE WORLD',
+      'home.title':'삶을 기록하고,<br><span class="muted-heading">세계를 생각하다.</span>',
+      'home.description':'이곳은 나만의 서재입니다. 읽은 책, 걸어온 길, 만난 사람들, 아직 답을 찾지 못한 질문을 기록합니다. 한 줄 한 줄 쓰며 진정한 나에게 가까워지기를 바랍니다.',
+      'home.read':'읽기 시작하기 <span aria-hidden="true">↗</span>','home.search':'서재 검색 <span aria-hidden="true">⌕</span>','home.random':'무작위로 읽기 <span aria-hidden="true">✳</span>',
+      'home.meta':'<span>✳ 독립적인 사고</span><span>⌘ 사회와 세계</span><span>◷ 장기적인 관점</span>',
+      'home.quote':'“답을 아는 것보다 좋은 질문을 하는 능력이 중요하다.”','home.journal':'THE JOURNAL','home.recent':'최근 기록','home.all':'모든 글 →',
+      'home.emptyTitle':'아직 조용한 서재','home.empty':'src/content/posts/에 Markdown 글을 추가하면 여기에 표시됩니다.',
+      'home.note':'A SMALL NOTE','home.space':'생각을 위한 여백','home.noteText':'세상을 서둘러 단정하지 않고, 시끄러운 목소리 속에서도 자신의 판단을 놓지 않으려 합니다. 잠시 머물다 가세요.','home.about':'이 서재 소개 →',
+      'search.kicker':'FIND A NOTE','search.title':'서재 검색<span>.</span>','search.intro':'제목, 요약, 분류 또는 태그로 기록을 찾아보세요.','search.placeholder':'책, 일상, 생각 등을 입력하세요…','search.aria':'글 검색','search.hint':'전체 {n}개 글. 키워드를 입력해 검색하세요.','search.found':'관련 글 {n}개를 찾았습니다','search.noneTitle':'검색 결과가 없습니다','search.none':'다른 키워드를 입력해 보세요.',
+      'wander.kicker':'SERENDIPITY','wander.title':'랜덤 산책<span>.</span>','wander.intro':'항상 질문을 가지고 올 필요는 없습니다. 다음 글이 방향을 정하도록 해 보세요.','wander.ready':'뜻밖의 문장을 만날 준비가 되었나요?','wander.desc':'아래 버튼을 누르면 서재의 글 하나를 무작위로 엽니다.','wander.button':'이동하기 ↗','wander.empty':'아직 글이 없습니다. 먼저 몇 편의 기록을 추가해 주세요.',
+      'archive.kicker':'THE ARCHIVE','archive.title':'글 모음<span>.</span>','archive.intro':'작성한 모든 글이 이곳에 남습니다. 총 {n}편.',
+      'about.kicker':'ABOUT ME','about.title':'소개<span>.</span>','about.lead':'안녕하세요. 방문해 주셔서 반갑습니다.','about.p1':'탐구하고 기록하고 생각하는 것을 좋아합니다. 이 블로그에는 기술 실험, 삶의 단상, 간직할 만한 순간을 기록합니다.','about.h2':'이 블로그에 관하여','about.p2':'Astro로 만들고 GitHub로 관리하며 Cloudflare에 배포합니다. 단순하고 빠르며 오래 유지할 수 있는 사이트를 지향합니다.','about.find':'연락하기','about.p3':'GitHub를 통해 연락할 수 있습니다. ','about.back':'← 홈으로',
+      'article.back':'← 글 모음으로','article.end':'읽어 주셔서 감사합니다. 다음 글에서 만나요.','article.more':'다른 글 보기 →',
+      'theme.title':'다크 모드 전환'
+    }
+  };
+  const selector = document.querySelector<HTMLSelectElement>('#site-language');
+  function applyLanguage(language: string) {
+    const lang = dictionaries[language] ? language : 'zh';
+    document.documentElement.lang = ({zh:'zh-CN',en:'en',ja:'ja',ko:'ko'} as Record<string,string>)[lang];
+    document.documentElement.dataset.language = lang;
+    document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
+      const value = dictionaries[lang][el.dataset.i18n || ''];
+      if (value !== undefined) el.innerHTML = value;
+    });
+    document.querySelectorAll<HTMLElement>('[data-i18n-placeholder]').forEach(el => {
+      const value = dictionaries[lang][el.dataset.i18nPlaceholder || ''];
+      if (value !== undefined) el.setAttribute('placeholder', value);
+    });
+    document.querySelectorAll<HTMLElement>('[data-i18n-aria]').forEach(el => {
+      const value = dictionaries[lang][el.dataset.i18nAria || ''];
+      if (value !== undefined) el.setAttribute('aria-label', value);
+    });
+    document.querySelectorAll<HTMLElement>('[data-i18n-title]').forEach(el => {
+      const value = dictionaries[lang][el.dataset.i18nTitle || ''];
+      if (value !== undefined) el.setAttribute('title', value);
+    });
+    const count = document.querySelector<HTMLElement>('[data-search-count]');
+    if (count) {
+      const total = Number(count.dataset.total || 0);
+      count.textContent = (dictionaries[lang]['search.hint'] || '').replace('{n}', String(total));
+    }
+    const archiveIntro = document.querySelector<HTMLElement>('[data-archive-count]');
+    if (archiveIntro) archiveIntro.textContent = (dictionaries[lang]['archive.intro'] || '').replace('{n}', archiveIntro.dataset.archiveCount || '0');
+    const path = window.location.pathname;
+    const pageTitles: Record<string, Record<string,string>> = {
+      '/': {zh:'个人书房 — 记录生活，思考世界',en:'The Private Study — Notes on Life & the World',ja:'個人書斎 — 日々を記録し、世界を考える',ko:'개인 서재 — 삶을 기록하고 세계를 생각하다'},
+      '/search/': {zh:'搜索 — 个人书房',en:'Search — The Private Study',ja:'検索 — 個人書斎',ko:'검색 — 개인 서재'},
+      '/wander/': {zh:'随机漫游 — 个人书房',en:'Wander — The Private Study',ja:'ランダム散策 — 個人書斎',ko:'랜덤 산책 — 개인 서재'},
+      '/archive/': {zh:'文章归档 — 个人书房',en:'Archive — The Private Study',ja:'記事一覧 — 個人書斎',ko:'글 모음 — 개인 서재'},
+      '/about/': {zh:'关于我 — 个人书房',en:'About — The Private Study',ja:'私について — 個人書斎',ko:'소개 — 개인 서재'}
+    };
+    if (pageTitles[path]?.[lang]) document.title = pageTitles[path][lang];
+    if (path.startsWith('/posts/')) {
+      const articleSuffix: Record<string,string> = {zh:'个人书房',en:'The Private Study',ja:'個人書斎',ko:'개인 서재'};
+      const originalTitle = document.querySelector('article.article-page h1')?.textContent?.trim();
+      if (originalTitle) document.title = originalTitle + ' — ' + articleSuffix[lang];
+    }
+    const theme = document.querySelector<HTMLButtonElement>('.theme-toggle');
+    if (theme) { theme.title = dictionaries[lang]['theme.title'] || 'Toggle theme'; theme.setAttribute('aria-label', theme.title); }
+    if (selector) selector.value = lang;
+    try { localStorage.setItem('study-room-language', lang); } catch {}
+    window.dispatchEvent(new CustomEvent('study-room-language-change', {detail:{language:lang, dictionary:dictionaries[lang]}}));
+  }
+  const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
+  applyLanguage(savedLanguage);
+  selector?.addEventListener('change', () => applyLanguage(selector.value));
+  document.addEventListener('astro:page-load', () => applyLanguage(selector?.value || savedLanguage));
+</script>
