@@ -37,11 +37,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
           <ThemeToggle />
         </nav>
       </header>
-      <main><slot /></main>
-      <footer class="site-footer glass-panel">
-        <span>© {new Date().getFullYear()} 个人书房</span>
-        <span>保持好奇，独立思考。 · 用 <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a> 静静搭建</span>
-      </footer>
+      
+      
     </div>
   </body>
 </html>
