@@ -489,7 +489,7 @@ button:focus-visible {
   --glass-border: rgba(255,255,255,.10);
   --glass-shadow: 0 18px 55px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.04);
 }
-body { min-height:100vh; background:var(--page-background); background-attachment:fixed; }
+body { min-height:100vh; }
 .site-shell { width:min(900px,calc(100% - 40px)); position:relative; z-index:1; }
 .glass-panel { background:var(--glass); border:1px solid var(--glass-border); box-shadow:var(--glass-shadow); backdrop-filter:blur(22px) saturate(135%); -webkit-backdrop-filter:blur(22px) saturate(135%); }
 .ambient { position:fixed; pointer-events:none; z-index:0; border-radius:50%; filter:blur(55px); opacity:.22; }
