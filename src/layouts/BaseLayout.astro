@@ -55,5 +55,24 @@ const pageKey = pathname === '/' ? 'home'
       </main>
     </div>
     <div id="google_translate_element" class="google-translate-hidden" aria-hidden="true"></div>
+    <script is:inline>
+      (() => {
+        const path = window.location.pathname;
+        const page = path === '/' ? 'home'
+          : path.startsWith('/archive') ? 'archive'
+          : path.startsWith('/search') ? 'search'
+          : path.startsWith('/about') ? 'about'
+          : path.startsWith('/wander') ? 'wander'
+          : path.startsWith('/posts/') ? 'posts' : 'default';
+        const body = document.body;
+        body.dataset.page = page;
+        if (page === 'home') {
+          body.style.setProperty('background-image', "linear-gradient(rgba(247,248,244,.20),rgba(247,248,244,.20)), url('/backgrounds/home/background.jpg')", 'important');
+          body.style.setProperty('background-size', 'cover', 'important');
+          body.style.setProperty('background-position', 'center', 'important');
+          body.style.setProperty('background-attachment', 'fixed', 'important');
+        }
+      })();
+    </script>
   </body>
 </html>
