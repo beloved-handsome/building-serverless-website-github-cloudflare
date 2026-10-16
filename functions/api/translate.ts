@@ -8,7 +8,9 @@ interface TranslateRequest {
   texts?: string[];
 }
 
-type PagesContext = { request: Request; env: Env };\n\nexport const onRequestPost = async ({ request, env }: PagesContext): Promise<Response> => {
+type PagesContext = { request: Request; env: Env };
+
+export const onRequestPost = async ({ request, env }: PagesContext): Promise<Response> => {
   let body: TranslateRequest;
   try {
     body = await request.json() as TranslateRequest;
