@@ -1,93 +1,27 @@
-
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-
-<BaseLayout
-  title="关于我 — 个人博客"
-  description="了解博客作者和这个个人博客。"
->
-  <article class="about-page">
-    <p class="eyebrow">ABOUT ME</p>
-
-    <h1>关于我<span>.</span></h1>
-
-    <p class="lead">
-      你好，很高兴你来到这里。
-    </p>
-
-    <p>
-      我是一个喜欢探索、记录和思考的人。
-      这个博客用来记录技术实践、生活感悟，
-      以及那些值得留下的瞬间。
-    </p>
-
-    <h2>关于这个博客</h2>
-
-    <p>
-      网站使用 Astro 构建，通过 GitHub 管理代码，
-      并部署在 Cloudflare。
-      我希望它简单、快速，也能长期维护。
-    </p>
-
-    <h2>找到我</h2>
-
-    <p>
-      你可以通过
-      <a href="https://github.com/" target="_blank" rel="noreferrer">
-        GitHub
-      </a>
-      联系我。记得替换成你自己的主页地址。
-    </p>
-
-    <a class="back-link" href="/">← 返回首页</a>
+<BaseLayout title="关于我 — 个人书房" description="了解个人书房和作者。">
+  <article class="about-page glass-panel">
+    <p class="eyebrow" data-i18n="about.kicker">ABOUT ME</p>
+    <h1 data-i18n="about.title">关于我<span>.</span></h1>
+    <p class="lead" data-i18n="about.lead">你好，很高兴你来到这里。</p>
+    <p data-i18n="about.p1">我是一个喜欢探索、记录和思考的人。这个博客用来记录技术实践、生活感悟，以及那些值得留下的瞬间。</p>
+    <h2 data-i18n="about.h2">关于这个博客</h2>
+    <p data-i18n="about.p2">网站使用 Astro 构建，通过 GitHub 管理代码，并部署在 Cloudflare。我希望它简单、快速，也能长期维护。</p>
+    <h2 data-i18n="about.find">找到我</h2>
+    <p><span data-i18n="about.p3">你可以通过 GitHub 联系我。记得替换成你自己的主页地址。</span> <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a></p>
+    <a class="back-link" href="/" data-i18n="about.back">← 返回首页</a>
   </article>
 </BaseLayout>
-
 <style>
-  .about-page {
-    max-width: 650px;
-    padding: 75px 0 40px;
-  }
-
-  .eyebrow {
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 2px;
-  }
-
-  h1 {
-    font-size: clamp(36px, 6vw, 48px);
-    letter-spacing: -1.5px;
-  }
-
-  h1 span {
-    color: var(--accent);
-  }
-
-  h2 {
-    margin-top: 35px;
-    font-size: 20px;
-  }
-
-  p {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 2.2;
-  }
-
-  .lead {
-    color: var(--text);
-    font-size: 19px;
-  }
-
-  a {
-    color: var(--accent);
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-top: 25px;
-    font-size: 13px;
-  }
+  .about-page { max-width:760px;margin:24px auto 0;padding:clamp(25px,5vw,48px);border-radius:24px; }
+  .eyebrow { color:var(--muted);font-size:11px;letter-spacing:2px; }
+  h1 { font-size:clamp(36px,6vw,48px);letter-spacing:-1.5px; }
+  h1 span { color:var(--accent); }
+  h2 { margin-top:35px;font-size:20px; }
+  p { color:var(--muted);font-size:14px;line-height:2.2; }
+  .lead { color:var(--text);font-size:19px; }
+  a { color:var(--accent); }
+  .back-link { display:inline-block;margin-top:25px;font-size:13px; }
 </style>
