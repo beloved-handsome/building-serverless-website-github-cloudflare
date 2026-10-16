@@ -134,56 +134,52 @@
     window.dispatchEvent(new CustomEvent('study-room-language-change', {detail:{language:lang, dictionary:dictionaries[lang]}}));
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
-  const articleOriginals = new WeakMap<HTMLElement, string>();
-  const translationCache = new Map<string, string>();
-  const languageNames: Record<string,string> = {zh:'zh-CN',en:'en',ja:'ja',ko:'ko'};
   let translationRun = 0;
   async function translateArticle(language: string) {
-    const lang = languageNames[language] || 'zh-CN';
     const article = document.querySelector<HTMLElement>('.article-page');
     if (!article) return;
     const run = ++translationRun;
-    const blocks = Array.from(article.querySelectorAll<HTMLElement>(
-      '.article-header h1,.article-description,.post-category,.tag,.article-content h1,.article-content h2,.article-content h3,.article-content h4,.article-content p,.article-content li,.article-content blockquote,.article-content th,.article-content td'
-    )).filter(el => !el.closest('pre,code,a,button') && el.children.length === 0 && !!el.textContent?.trim());
     if (language === 'zh') {
-      for (const el of blocks) {
-        const original = articleOriginals.get(el);
-        if (original !== undefined) el.textContent = original;
-      }
+      article.querySelectorAll<HTMLElement>('[data-translated-original]').forEach(el => {
+        el.textContent = el.dataset.translatedOriginal || '';
+        delete el.dataset.translatedOriginal;
+      });
       article.dataset.translationState = 'ready';
       return;
     }
     article.dataset.translationState = 'loading';
-    const jobs = blocks.map(async el => {
-      if (!articleOriginals.has(el)) articleOriginals.set(el, el.textContent || '');
-      const original = articleOriginals.get(el) || '';
-      const key = lang + ':' + original;
-      const cached = translationCache.get(key);
-      if (cached) { if (run === translationRun) el.textContent = cached; return; }
-      try {
-        const url = new URL('https://api.mymemory.translated.net/get');
-        url.search = new URLSearchParams({q: original.slice(0, 450), langpair: 'autodetect|' + lang}).toString();
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Translation service unavailable');
-        const data = await response.json();
-        const translated = data.responseData?.translatedText;
-        if (!translated || data.responseStatus !== 200) throw new Error('Translation failed');
-        translationCache.set(key, translated);
-        if (run === translationRun && article.isConnected) el.textContent = translated;
-      } catch (error) {
-        console.warn('Article translation failed:', error);
-        throw error;
+    const slug = decodeURIComponent(window.location.pathname.replace(/^\\/posts\\//, '').replace(/\\/$/, '')).replace(/\\//g, '--');
+    try {
+      const response = await fetch('/translations/' + encodeURIComponent(slug) + '.' + language + '.json');
+      if (!response.ok) throw new Error('Prebuilt translation is unavailable');
+      const data = await response.json() as {title:string;description:string;category:string;tags:string[];strings:Record<string,string>};
+      if (run !== translationRun || !article.isConnected) return;
+      const title = article.querySelector<HTMLElement>('.article-header h1');
+      const description = article.querySelector<HTMLElement>('.article-description');
+      const category = article.querySelector<HTMLElement>('.post-category');
+      if (title) { if (!title.dataset.translatedOriginal) title.dataset.translatedOriginal = title.textContent || ''; title.textContent = data.title || title.dataset.translatedOriginal; }
+      if (description) { if (!description.dataset.translatedOriginal) description.dataset.translatedOriginal = description.textContent || ''; description.textContent = data.description || description.dataset.translatedOriginal; }
+      if (category) { if (!category.dataset.translatedOriginal) category.dataset.translatedOriginal = category.textContent || ''; category.textContent = data.category || category.dataset.translatedOriginal; }
+      article.querySelectorAll<HTMLElement>('.tag-list .tag').forEach((el, i) => {
+        if (!el.dataset.translatedOriginal) el.dataset.translatedOriginal = el.textContent || '';
+        el.textContent = data.tags?.[i] || el.dataset.translatedOriginal;
+      });
+      const nodes = Array.from(article.querySelectorAll<HTMLElement>('.article-content h1,.article-content h2,.article-content h3,.article-content h4,.article-content p,.article-content li,.article-content blockquote,.article-content th,.article-content td'));
+      for (const el of nodes) {
+        if (el.children.length || el.closest('pre,code,a,button')) continue;
+        const original = el.dataset.translatedOriginal || el.textContent || '';
+        if (!el.dataset.translatedOriginal) el.dataset.translatedOriginal = original;
+        if (data.strings[original]) el.textContent = data.strings[original];
       }
-    });
-    const results = await Promise.allSettled(jobs);
-    if (run !== translationRun) return;
-    article.dataset.translationState = results.some(result => result.status === 'rejected') ? 'error' : 'ready';
+      article.dataset.translationState = 'ready';
+    } catch (error) {
+      article.dataset.translationState = 'error';
+      console.warn('Prebuilt article translation unavailable:', error);
+    }
   }
   if (window.location.pathname.startsWith('/posts/')) {
     window.addEventListener('beloved-translate-article', (event) => {
-      const language = (event as CustomEvent).detail?.language || 'zh';
-      void translateArticle(language);
+      void translateArticle((event as CustomEvent).detail?.language || 'zh');
     });
   }
   applyLanguage(savedLanguage);
