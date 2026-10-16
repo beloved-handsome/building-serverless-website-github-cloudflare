@@ -78,8 +78,13 @@ const pageKey = pathname === '/' ? 'home'
           const supportedPages = ['home','archive','search','about','wander','posts'];
           const ownImage = supportedPages.includes(page) ? `/backgrounds/${page}/background.jpg` : null;
           const setBackground = (imageUrl) => {
-            // Version image URLs so updated uploads are not hidden by stale browser caches.
-            const versionedUrl = imageUrl ? `${imageUrl}?v=3` : null;
+            // Homepage photo belongs only to the hero; keep the rest of the page gray.
+            if (page === 'home') {
+              body.style.setProperty('background-image', 'none', 'important');
+              body.style.setProperty('background-color', '#d8d8d8', 'important');
+              return;
+            }
+            const versionedUrl = imageUrl ? `${imageUrl}?v=4` : null;
             const imageLayer = versionedUrl ? `, url("${versionedUrl}")` : '';
             body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${imageLayer}`, 'important');
           };
