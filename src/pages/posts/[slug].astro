@@ -35,10 +35,6 @@ const dateFormat = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'l
 </BaseLayout>
 <style>
   .article-page { padding-top:24px; }
-  html[data-language]:not([data-language="zh"]) .article-page:not([data-translation-state="ready"]):not([data-translation-state="error"]) { visibility:hidden; }
-  html[data-language="en"] .article-page[data-translation-state="error"]::before { content:"Translation unavailable. Please try again later."; display:block; margin:12px 0; color:var(--muted); }
-  html[data-language="ja"] .article-page[data-translation-state="error"]::before { content:"翻訳を利用できません。しばらくしてからお試しください。"; display:block; margin:12px 0; color:var(--muted); }
-  html[data-language="ko"] .article-page[data-translation-state="error"]::before { content:"번역을 사용할 수 없습니다. 잠시 후 다시 시도해 주세요."; display:block; margin:12px 0; color:var(--muted); }
   .back-link { display:inline-flex;padding:7px 12px;border:1px solid var(--glass-border);border-radius:999px;background:var(--glass);color:var(--muted);font-size:12px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px); }
   .back-link:hover { color:var(--accent); }
   .article-header { margin-top:20px;padding:clamp(25px,5vw,46px);border-radius:24px; }
