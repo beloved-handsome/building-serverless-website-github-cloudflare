@@ -134,39 +134,48 @@
     window.dispatchEvent(new CustomEvent('study-room-language-change', {detail:{language:lang, dictionary:dictionaries[lang]}}));
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
-  if (window.location.pathname.startsWith('/posts/')) {
-    const targetCode: Record<string,string> = {zh:'zh-CN',en:'en',ja:'ja',ko:'ko'};
-    let translateReady = false;
-    const applyArticleTranslation = (language:string, attempt = 0) => {
-      const combo = document.querySelector<HTMLSelectElement>('.goog-te-combo');
-      if (!combo) {
-        if (attempt < 20) window.setTimeout(() => applyArticleTranslation(language, attempt + 1), 300);
-        return;
+  const articleOriginals = new WeakMap<Text, string>();
+  const translationCache = new Map<string, string>();
+  const languageNames: Record<string,string> = {zh:'zh-CN',en:'en',ja:'ja',ko:'ko'};
+  async function translateArticle(language: string) {
+    const lang = languageNames[language] || 'zh-CN';
+    const article = document.querySelector<HTMLElement>('.article-page');
+    if (!article) return;
+    article.dataset.translationState = 'loading';
+    const candidates = Array.from(article.querySelectorAll<HTMLElement>('h1,.article-description,.post-category,.tag,.article-content p,.article-content li,.article-content h2,.article-content h3,.article-content blockquote,.article-content td,.article-content th'));
+    const nodes = candidates.flatMap(el => Array.from(el.childNodes).filter((n): n is Text => n.nodeType === Node.TEXT_NODE && !!n.textContent?.trim()));
+    for (const node of nodes) {
+      if (!article.isConnected) return;
+      if (!articleOriginals.has(node)) articleOriginals.set(node, node.textContent || '');
+      const original = articleOriginals.get(node) || '';
+      if (language === 'zh') { node.textContent = original; continue; }
+      const key = lang + ':' + original;
+      let translated = translationCache.get(key);
+      if (!translated) {
+        try {
+          const url = new URL('https://api.mymemory.translated.net/get');
+          url.search = new URLSearchParams({q: original.slice(0, 450), langpair: 'zh-CN|' + lang}).toString();
+          const response = await fetch(url);
+          if (!response.ok) throw new Error('translation service unavailable');
+          const data = await response.json();
+          translated = data.responseData?.translatedText;
+          if (!translated || data.responseStatus !== 200) throw new Error('translation failed');
+          translationCache.set(key, translated);
+        } catch (error) {
+          article.dataset.translationState = 'error';
+          console.warn('Article translation failed:', error);
+          return;
+        }
       }
-      combo.value = targetCode[language] || 'zh-CN';
-      combo.dispatchEvent(new Event('change', {bubbles:true}));
-    };
-    (window as any).googleTranslateElementInit = () => {
-      try {
-        new (window as any).google.translate.TranslateElement({
-          pageLanguage:'zh-CN',
-          includedLanguages:'zh-CN,en,ja,ko',
-          autoDisplay:false
-        }, 'google_translate_element');
-        translateReady = true;
-        window.setTimeout(() => applyArticleTranslation(selector?.value || savedLanguage), 700);
-      } catch (error) { console.warn('Article translation could not initialize.', error); }
-    };
+      node.textContent = translated;
+    }
+    article.dataset.translationState = 'ready';
+  }
+  if (window.location.pathname.startsWith('/posts/')) {
     window.addEventListener('beloved-translate-article', (event) => {
       const language = (event as CustomEvent).detail?.language || 'zh';
-      if (translateReady) applyArticleTranslation(language);
-      else window.setTimeout(() => applyArticleTranslation(language), 500);
+      void translateArticle(language);
     });
-    const googleScript = document.createElement('script');
-    googleScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    googleScript.async = true;
-    googleScript.onerror = () => console.warn('Google Translate is unavailable; article text remains in its original language.');
-    document.head.appendChild(googleScript);
   }
   applyLanguage(savedLanguage);
   selector?.addEventListener('change', () => applyLanguage(selector.value));
