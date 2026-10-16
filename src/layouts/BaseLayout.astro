@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
-import BackgroundSettings from '../components/BackgroundSettings.astro';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 
 interface Props { title?: string; description?: string; }
 const { title = '个人书房 — 记录生活，思考世界', description = '一个记录生活、独立思考与观察世界的个人空间。' } = Astro.props;
@@ -19,8 +19,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <title>{title}</title>
   </head>
   <body>
-    <div class="ambient ambient-one" aria-hidden="true"></div>
-    <div class="ambient ambient-two" aria-hidden="true"></div>
     <div class="site-shell">
       <header class="site-header glass-panel">
         <a class="brand" href="/" aria-label="返回个人书房首页">
@@ -28,19 +26,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
           <span>个人书房</span>
         </a>
         <nav class="nav-links" aria-label="主导航">
-          <a href="/">首页</a>
-          <a href="/archive/">归档</a>
-          <a href="/search/">搜索</a>
-          <a href="/about/">关于</a>
-          <a class="wander-link" href="/wander/">随机漫游 ↗</a>
-          <BackgroundSettings />
+          <a href="/" data-i18n="nav.home">首页</a>
+          <a href="/archive/" data-i18n="nav.archive">归档</a>
+          <a href="/search/" data-i18n="nav.search">搜索</a>
+          <a href="/about/" data-i18n="nav.about">关于</a>
+          <a class="wander-link" href="/wander/" data-i18n="nav.wander">随机漫游 ↗</a>
+          <LanguageSwitcher />
           <ThemeToggle />
         </nav>
       </header>
       <main><slot /></main>
       <footer class="site-footer glass-panel">
         <span>© {new Date().getFullYear()} 个人书房</span>
-        <span>保持好奇，独立思考。 · 用 <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a> 静静搭建</span>
+        <span data-i18n="footer.motto">保持好奇，独立思考。 · 用 <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a> 静静搭建</span>
       </footer>
     </div>
   </body>
