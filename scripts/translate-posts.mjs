@@ -30,20 +30,22 @@ function parseMarkdown(source) {
   const texts = new Set();
   for (const block of blocks) {
     if (/^(```|~~~)/.test(block) || /^\|/.test(block)) continue;
-    const text = block.split('\n').map(line => line
-      .replace(/^\s{0,3}#{1,6}\s+/, '')
-      .replace(/^\s*>\s?/, '')
-      .replace(/^\s*[-*+]\s+/, '')
-      .replace(/^\s*\d+[.)]\s+/, '')
-      .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
-      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
-      .replace(/[*_~`]/g, '')
-      .trim()).filter(Boolean).join(' ');
-    if (text && text.length < 450) texts.add(text);
-    else if (text) {
-      for (const sentence of text.match(/[^。！？.!?]+[。！？.!?]?/g) || []) {
-        const part = sentence.trim();
-        if (part && part.length < 450) texts.add(part);
+    for (const rawLine of block.split('\n')) {
+      const line = rawLine
+        .replace(/^\s{0,3}#{1,6}\s+/, '')
+        .replace(/^\s*>\s?/, '')
+        .replace(/^\s*[-*+]\s+/, '')
+        .replace(/^\s*\d+[.)]\s+/, '')
+        .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+        .replace(/[*_~`]/g, '')
+        .trim();
+      if (line && line.length < 450 && !/^(```|~~~)/.test(line)) texts.add(line);
+      else if (line.length >= 450) {
+        for (const sentence of line.match(/[^。！？.!?]+[。！？.!?]?/g) || []) {
+          const part = sentence.trim();
+          if (part && part.length < 450) texts.add(part);
+        }
       }
     }
   }
