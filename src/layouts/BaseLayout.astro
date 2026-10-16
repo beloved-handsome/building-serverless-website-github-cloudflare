@@ -93,7 +93,7 @@ const pageKey = pathname === '/' ? 'home'
           } else {
             setBackground(ownImage || '/backgrounds/home/background.jpg');
           }
-          body.style.setProperty('background-color', 'var(--bg)', 'important');
+          if (page !== 'home') body.style.setProperty('background-color', 'var(--bg)', 'important');
           body.style.setProperty('background-size', 'cover', 'important');
           body.style.setProperty('background-position', 'center', 'important');
           body.style.setProperty('background-attachment', window.matchMedia('(max-width: 700px)').matches ? 'scroll' : 'fixed', 'important');
