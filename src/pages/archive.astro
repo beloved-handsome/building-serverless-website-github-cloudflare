@@ -1,0 +1,103 @@
+
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const groups = Object.groupBy(
+  posts,
+  (post) => String(post.data.pubDate.getFullYear()),
+);
+---
+
+<BaseLayout
+  title="文章归档 — 你的名字"
+  description="浏览我的全部博客文章。"
+>
+  <section class="archive-page">
+    <p class="section-kicker">THE ARCHIVE</p>
+    <h1>文章归档<span>.</span></h1>
+    <p class="archive-intro">
+      所有写过的东西，都在这里留下痕迹。
+      共 {posts.length} 篇文章。
+    </p>
+
+    {Object.entries(groups)
+      .sort(([a], [b]) => Number(b) - Number(a))
+      .map(([year, yearPosts]) => (
+        <section class="archive-year">
+          <h2>{year}</h2>
+          <div class="archive-list">
+            {yearPosts!.map((post) => (
+              <a class="archive-item" href={`/posts/${post.id}/`}>
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('zh-CN', {
+                    month: '2-digit',
+                    day: '2-digit',
+                  })}
+                </time>
+                <span>{post.data.title}</span>
+                <span class="archive-arrow">↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-page {
+    padding: 75px 0 30px;
+  }
+
+  .archive-page h1 {
+    margin: 10px 0;
+    font-size: clamp(36px, 6vw, 48px);
+    letter-spacing: -1.5px;
+  }
+
+  .archive-page h1 span {
+    color: var(--accent);
+  }
+
+  .archive-intro {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .archive-year {
+    margin-top: 48px;
+  }
+
+  .archive-year h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+  }
+
+  .archive-list {
+    border-top: 1px solid var(--border);
+  }
+
+  .archive-item {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) 20px;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .archive-item time,
+  .archive-arrow {
+    color: var(--muted);
+  }
+
+  .archive-item:hover > span:nth-child(2) {
+    color: var(--accent);
+  }
+</style>
