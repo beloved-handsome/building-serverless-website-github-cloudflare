@@ -12,6 +12,8 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p =>
   </section>
 </BaseLayout>
 <script>
+  import { englishText } from '../i18n/translations';
+
   const btn = document.querySelector<HTMLButtonElement>('#wander-button');
   const title = document.querySelector<HTMLElement>('#wander-title');
   const desc = document.querySelector<HTMLElement>('#wander-description');
@@ -24,11 +26,19 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p =>
     if (chosenPost) { location.href = chosenPost.url; return; }
     const candidates = posts.length > 1 ? posts.filter(p => p.url !== location.pathname) : posts;
     chosenPost = candidates[Math.floor(Math.random() * candidates.length)];
-    if (title) title.textContent = chosenPost.title;
-    if (desc) desc.textContent = chosenPost.description;
+    const lang = document.documentElement.dataset.language || 'zh';
+    if (title) title.textContent = lang === 'en' ? (englishText[chosenPost.title] || chosenPost.title) : chosenPost.title;
+    if (desc) desc.textContent = lang === 'en' ? (englishText[chosenPost.description] || chosenPost.description) : chosenPost.description;
     if (btn) btn.textContent = labels[document.documentElement.dataset.language || 'zh'];
   });
   window.addEventListener('study-room-language-change', event => {
-    if (!chosenPost && btn) btn.textContent = labels[(event as CustomEvent).detail?.language || 'zh'];
+    const lang = (event as CustomEvent).detail?.language || 'zh';
+    if (chosenPost) {
+      if (title) title.textContent = lang === 'en' ? (englishText[chosenPost.title] || chosenPost.title) : chosenPost.title;
+      if (desc) desc.textContent = lang === 'en' ? (englishText[chosenPost.description] || chosenPost.description) : chosenPost.description;
+      if (btn) btn.textContent = labels[lang] || labels.zh;
+    } else if (btn) {
+      btn.textContent = ({zh:'带我去看看 ↗',en:'Take me there ↗'} as Record<string,string>)[lang] || '带我去看看 ↗';
+    }
   });
 </script>
