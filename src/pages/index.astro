@@ -1,28 +1,35 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Beloved" description="Beloved — time, place, weather, and a little room to breathe.">
-  <section class="home-dashboard" aria-label="Local time and weather">
-    <p class="dashboard-eyebrow"><span class="dashboard-dot"></span><span data-live-label="welcome">此刻，世界正在发生。</span></p>
-    <div class="dashboard-date" id="local-date" aria-live="off">—</div>
-    <div class="dashboard-time" id="local-time" aria-live="off">--:--:--</div>
-    <div class="dashboard-location">
-      <span class="dashboard-icon" aria-hidden="true">⌖</span>
-      <span id="location-label" data-live-label="locating">正在读取所在位置…</span>
-    </div>
-    <div class="dashboard-weather">
-      <span class="weather-symbol" id="weather-symbol" aria-hidden="true">◌</span>
-      <span id="weather-label" data-live-label="weatherLoading">正在读取天气…</span>
-    </div>
-    <p class="dashboard-footnote" data-live-label="footnote">时间与天气，取自你所在的此刻。</p>
-    <nav class="dashboard-links" aria-label="Explore Beloved">
-      <a href="/archive/" data-i18n="nav.archive">归档</a>
-      <span aria-hidden="true">·</span>
-      <a href="/search/" data-i18n="nav.search">搜索</a>
-      <span aria-hidden="true">·</span>
-      <a href="/wander/" data-i18n="nav.wander">随机漫游 ↗</a>
-    </nav>
-  </section>
+<BaseLayout title="Beloved · 个人书房" description="记录生活的点滴，收藏值得回望的瞬间。">
+  <div class="home-page">
+    <section class="home-hero">
+      <div class="hero-shade"></div>
+      <div class="hero-copy">
+        <p class="hero-kicker">A QUIET CORNER OF THE WORLD</p>
+        <h1>个人书房</h1>
+        <p class="hero-subtitle">记录生活的点滴，收藏值得回望的瞬间。</p>
+      </div>
+    </section>
+
+    <section class="home-content" aria-label="书房导航">
+      <div class="home-shortcuts">
+        <a class="shortcut-card" href="/archive/"><span class="shortcut-icon">▤</span><span><strong>文章归档</strong><small>按时间回顾写下的文字</small></span><span class="shortcut-arrow">↗</span></a>
+        <a class="shortcut-card" href="/search/"><span class="shortcut-icon">⌕</span><span><strong>搜索文章</strong><small>寻找书房里的某个片段</small></span><span class="shortcut-arrow">↗</span></a>
+        <a class="shortcut-card" href="/about/"><span class="shortcut-icon">✳</span><span><strong>关于书房</strong><small>了解这里与这里的主人</small></span><span class="shortcut-arrow">↗</span></a>
+        <a class="shortcut-card" href="/wander/"><span class="shortcut-icon">↗</span><span><strong>随机漫游</strong><small>随意走进一篇旧文章</small></span><span class="shortcut-arrow">↗</span></a>
+      </div>
+      <div class="home-note glass-panel">
+        <span class="note-mark">✦</span>
+        <div><p class="note-eyebrow">RIGHT HERE, RIGHT NOW</p><p class="note-text" data-live-label="welcome">此刻，世界正在发生。</p><div class="note-meta"><span id="local-date">—</span><span id="local-time">--:--:--</span></div><div class="note-meta"><span id="location-label" data-live-label="locating">正在读取所在位置…</span><span id="weather-label" data-live-label="weatherLoading">正在读取天气…</span></div></div>
+      </div>
+    </section>
+
+    <aside class="profile-card glass-panel" aria-label="个人资料">
+      <div class="profile-avatar" role="img" aria-label="个人头像"></div>
+      <div class="profile-details"><strong>Beloved</strong><span>把日子写成值得珍藏的片段。</span><a href="/about/">认识一下我　↗</a></div>
+    </aside>
+  </div>
 </BaseLayout>
 <script>
   const liveText: Record<string, Record<string, string>> = {
@@ -133,33 +140,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 </script>
 <style>
-  .home-dashboard {
-    width:min(720px,100%);
-    min-height:calc(100svh - 145px);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    margin:24px auto;
-    padding:clamp(44px,7vw,76px) 24px;
-    border:1px solid var(--glass-border);
-    border-radius:28px;
-    background:var(--glass);
-    box-shadow:var(--glass-shadow);
-    backdrop-filter:blur(var(--glass-blur)) saturate(140%);
-    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(140%);
-    text-align:center;
-  }
-  .dashboard-eyebrow { display:flex;align-items:center;gap:10px;margin:0 0 28px;color:var(--muted);font-size:12px;letter-spacing:.08em; }
-  .dashboard-dot { width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft); }
-  .dashboard-date { color:var(--muted);font-size:clamp(13px,2vw,16px);letter-spacing:.06em; }
-  .dashboard-time { margin:5px 0 28px;font-size:clamp(58px,13vw,112px);font-weight:400;letter-spacing:-.065em;line-height:1.15;font-variant-numeric:tabular-nums; }
-  .dashboard-location,.dashboard-weather { display:flex;align-items:center;justify-content:center;gap:10px;max-width:100%;color:var(--text);font-size:14px; }
-  .dashboard-location { margin-top:6px; }
-  .dashboard-icon,.weather-symbol { color:var(--accent);font-size:21px; }
-  .dashboard-weather { margin-top:10px;color:var(--muted);font-size:13px; }
-  .dashboard-footnote { margin:32px 0 0;color:var(--muted);font-size:11px;letter-spacing:.04em; }
-  .dashboard-links { display:flex;gap:14px;align-items:center;margin-top:50px;padding:10px 17px;border:1px solid var(--glass-border);border-radius:999px;background:var(--glass);box-shadow:var(--glass-shadow);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));font-size:12px;color:var(--muted); }
-  .dashboard-links a:hover { color:var(--accent); }
-  @media(max-width:600px) { .home-dashboard { min-height:calc(100svh - 140px);margin:18px auto;padding:42px 12px 54px;border-radius:22px; }.dashboard-time { letter-spacing:-.07em; }.dashboard-links { gap:10px; } }
+  .home-page { position:relative; padding-bottom:40px; }
+  .home-hero { min-height:310px; margin:18px 0 22px; position:relative; display:grid; place-items:center; overflow:hidden; border:1px solid var(--glass-border); border-radius:26px; background:linear-gradient(120deg,rgba(34,30,42,.68),rgba(110,66,71,.30)),url('/backgrounds/home/background.jpg') center 45%/cover,linear-gradient(135deg,#6b6477,#c18a82 55%,#e0c8a0); box-shadow:var(--glass-shadow); }
+  .hero-shade { position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,18,24,.40),transparent 65%); }
+  .hero-copy { position:relative;z-index:1;text-align:center;color:#fff;padding:48px 18px;text-shadow:0 2px 20px rgba(0,0,0,.22); }
+  .hero-kicker { margin:0 0 12px;font-size:10px;letter-spacing:.24em;opacity:.85; }
+  .hero-copy h1 { margin:0;font-size:clamp(42px,7vw,68px);line-height:1.2;letter-spacing:.02em;font-weight:600; }
+  .hero-subtitle { margin:14px 0 0;font-size:clamp(13px,2vw,17px);letter-spacing:.05em; }
+  .home-content { width:min(680px,100%);margin:0 auto; }
+  .home-shortcuts { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+  .shortcut-card { display:flex;align-items:center;gap:12px;min-width:0;padding:16px;border:1px solid var(--glass-border);border-radius:16px;background:var(--glass);box-shadow:var(--glass-shadow);backdrop-filter:blur(18px) saturate(130%);-webkit-backdrop-filter:blur(18px) saturate(130%);transition:transform .2s,border-color .2s; }
+  .shortcut-card:hover { transform:translateY(-2px);border-color:var(--accent); }
+  .shortcut-icon { display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:var(--accent-soft);color:var(--accent);font-size:22px; }
+  .shortcut-card strong,.shortcut-card small { display:block; }
+  .shortcut-card strong { font-size:13px;font-weight:600; }
+  .shortcut-card small { margin-top:3px;color:var(--muted);font-size:10px;line-height:1.5; }
+  .shortcut-arrow { margin-left:auto;color:var(--muted);font-size:13px; }
+  .home-note { display:flex;gap:14px;margin-top:14px;padding:18px;border-radius:16px; }
+  .note-mark { display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:12px;background:var(--accent-soft);color:var(--accent); }
+  .note-eyebrow { margin:0;color:var(--muted);font-size:9px;letter-spacing:.18em; }
+  .note-text { margin:2px 0 8px;font-size:15px;font-weight:600; }
+  .note-meta { display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:4px;color:var(--muted);font-size:10px; }
+  .profile-card { position:fixed;z-index:10;left:max(18px,calc((100vw - 1120px)/2));bottom:18px;display:flex;align-items:center;gap:12px;width:220px;padding:12px;border-radius:18px; }
+  .profile-avatar { flex:0 0 68px;width:68px;height:68px;border-radius:14px;background:var(--accent-soft) url('/profile/avatar.jpg') center/cover no-repeat;box-shadow:inset 0 0 0 1px var(--glass-border); }
+  .profile-details { min-width:0;display:flex;flex-direction:column;align-items:flex-start; }
+  .profile-details strong { font-size:13px; }
+  .profile-details span { margin-top:3px;color:var(--muted);font-size:10px;line-height:1.5; }
+  .profile-details a { margin-top:6px;color:var(--accent);font-size:10px; }
+  @media(max-width:850px) { .profile-card { position:static;width:min(680px,100%);margin:16px auto 0; } .profile-avatar { flex-basis:58px;width:58px;height:58px; } }
+  @media(max-width:560px) { .home-hero { min-height:250px;margin-top:12px;border-radius:20px; }.home-shortcuts { gap:8px; }.shortcut-card { gap:9px;padding:12px 10px;border-radius:13px; }.shortcut-icon { flex-basis:32px;width:32px;height:32px;font-size:18px; }.shortcut-card strong { font-size:12px; }.shortcut-card small { font-size:9px; }.home-note { padding:14px; }.profile-card { margin-top:12px; } }
 </style>
