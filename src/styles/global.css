@@ -784,389 +784,139 @@ body[data-page="home"] {
   }
 }
 
-
-/* Break the homepage hero out of the centered content column so the photo reaches both viewport edges. */
-.blog-hero {
-  width: 100vw;
-  max-width: none;
-  margin-left: calc(50% - 50vw);
-}
-
-
-/* Let the homepage artwork continue behind the navigation glass from the very top. */
+/* Homepage layout rebuilt cleanly: one full-width photo behind the glass header and hero,
+   with the existing SVG wave separating it from a solid theme-colored content section. */
 body[data-page="home"] {
   position: relative;
   isolation: isolate;
-  background-color: var(--bg) !important;
-}
-body[data-page="home"]::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  width: 100%;
-  height: min(720px, 100vh);
-  z-index: 0;
-  pointer-events: none;
-  background-image: url('/backgrounds/home/background.jpg');
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-}
-body[data-page="home"] .site-shell {
-  position: relative;
-  z-index: 1;
-}
-body[data-page="home"] .site-header.glass-panel {
-  background: rgba(255,255,255,.20);
-  border-color: rgba(255,255,255,.42);
-  backdrop-filter: blur(22px) saturate(145%);
-  -webkit-backdrop-filter: blur(22px) saturate(145%);
-}
-:root[data-theme="dark"] body[data-page="home"]::before {
-  background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg');
-}
-
-
-/* FIX: use ONE continuous top background layer; don't repeat the wallpaper inside the hero. */
-body[data-page="home"]::before {
-  position: absolute;
-  inset: 0 0 auto 0;
-  width: 100%;
-  height: 665px;
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-}
-body[data-page="home"] .blog-hero {
+  background-color: #faf9f6 !important;
   background-image: none !important;
-  background-color: transparent !important;
-}
-body[data-page="home"] .hero-overlay {
-  background: linear-gradient(180deg, rgba(12,14,12,.08), rgba(12,14,12,.16));
-}
-body[data-page="home"] .site-header.glass-panel {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 68px;
-  margin: 14px 0 0;
-  padding: 10px 18px;
-  border: 1px solid rgba(255,255,255,.48);
-  border-radius: 22px;
-  background: rgba(255,255,255,.19) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.34);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-}
-body[data-page="home"] .site-header .brand,
-body[data-page="home"] .site-header .nav-links {
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(0,0,0,.28);
-}
-body[data-page="home"] .site-header .brand-mark {
-  text-shadow: none;
-}
-body[data-page="home"] .site-header .nav-links .language-switcher,
-body[data-page="home"] .site-header .theme-toggle {
-  color: #fff;
-  background: rgba(255,255,255,.14);
-  border-color: rgba(255,255,255,.42);
-}
-:root[data-theme="dark"] body[data-page="home"]::before {
-  background-image: linear-gradient(rgba(0,0,0,.30),rgba(0,0,0,.30)), url('/backgrounds/home/background.jpg');
-}
-@media (max-width: 700px) {
-  body[data-page="home"]::before { height: 600px; }
-  body[data-page="home"] .site-header.glass-panel {
-    width: 100%;
-    margin-top: 10px;
-    padding: 8px 10px;
-  }
-}
-
-
-/* Definitive homepage hero/nav fix: single backdrop, nav glass as one unified pill. */
-body[data-page="home"] {
-  position: relative;
-  isolation: isolate;
-  overflow-x: clip;
 }
 body[data-page="home"]::before {
   content: "";
   position: absolute;
+  z-index: 0;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  height: 620px;
-  z-index: -1;
+  height: 665px;
   pointer-events: none;
-  background: url('/backgrounds/home/background.jpg') center 35% / cover no-repeat !important;
+  background: url('/backgrounds/home/background.jpg') center top / cover no-repeat;
 }
-/* Keep the hero's own background disabled so the same image is never tiled twice. */
-body[data-page="home"] .blog-hero {
+body[data-page="home"] .site-shell {
+  position: relative;
+  z-index: 1;
   background: transparent !important;
-  background-image: none !important;
 }
-/* One glass frame wraps the brand, all links, language and theme controls. */
 body[data-page="home"] .site-header.glass-panel {
   position: relative;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
+  z-index: 5;
   width: min(1200px, calc(100% - 40px));
-  max-width: 1200px;
-  min-height: 66px;
   margin: 14px auto 0;
-  padding: 10px 18px;
-  border: 1px solid rgba(255,255,255,.48) !important;
-  border-radius: 22px !important;
-  background: rgba(235,240,238,.22) !important;
-  box-shadow: 0 8px 32px rgba(0,0,0,.13), inset 0 1px 0 rgba(255,255,255,.35) !important;
-  backdrop-filter: blur(24px) saturate(150%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(150%) !important;
+  background: rgba(255,255,255,.20) !important;
+  border: 1px solid rgba(255,255,255,.48);
+  border-radius: 22px;
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
 }
-body[data-page="home"] .site-header .brand {
-  color: #fff !important;
+body[data-page="home"] .site-shell > main {
   background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
 }
-body[data-page="home"] .site-header .nav-links,
-body[data-page="home"] .site-header .nav-links a {
-  color: rgba(255,255,255,.96) !important;
-}
-body[data-page="home"] .site-header .language-switcher,
-body[data-page="home"] .site-header .theme-toggle {
-  color: #fff !important;
-  background: rgba(255,255,255,.15) !important;
-  border: 1px solid rgba(255,255,255,.38) !important;
-}
-:root[data-theme="dark"] body[data-page="home"]::before {
-  background-image: linear-gradient(rgba(0,0,0,.30),rgba(0,0,0,.30)), url('/backgrounds/home/background.jpg') !important;
-}
-:root[data-theme="dark"] body[data-page="home"] .site-header.glass-panel {
-  background: rgba(0,0,0,.34) !important;
-  border-color: rgba(255,255,255,.24) !important;
-}
-@media (max-width: 700px) {
-  body[data-page="home"] .site-header.glass-panel {
-    width: calc(100% - 28px);
-    margin-top: 12px;
-    padding: 10px 12px;
-  }
-  body[data-page="home"]::before {
-    height: 560px;
-    background-position: center top !important;
-  }
-}
-
-
-/* Wave transition: make the curved separator match the page below and deepen its curve. */
-body[data-page="home"] .blog-hero {
-  position: relative;
-  overflow: visible;
-  margin-bottom: 0 !important;
-}
-body[data-page="home"] .blog-hero::after {
-  content: "";
-  position: absolute;
-  z-index: 3;
-  pointer-events: none;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 112px;
-  background: var(--bg);
-  clip-path: ellipse(72% 55% at 50% 100%);
-}
-/* If the existing wave is drawn by an overlay/pseudo element, keep it white like the content area. */
-body[data-page="home"] .blog-hero .hero-overlay {
-  clip-path: none;
-}
-:root[data-theme="dark"] body[data-page="home"] .blog-hero::after {
-  background: #000;
-}
-@media (max-width: 700px) {
-  body[data-page="home"] .blog-hero::after {
-    height: 84px;
-    clip-path: ellipse(82% 55% at 50% 100%);
-  }
-}
-
-
-/* Final wave fix: hero image ends cleanly; the section below is solid theme background. */
-body[data-page="home"]::before {
-  height: 600px !important;
+body[data-page="home"] .blog-home {
+  background: transparent !important;
 }
 body[data-page="home"] .blog-hero {
   position: relative;
   isolation: isolate;
-  overflow: hidden !important;
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  min-height: clamp(420px, 34vw, 560px);
+  margin-top: 0;
+  overflow: hidden;
   background: transparent !important;
   background-image: none !important;
-}
-body[data-page="home"] .blog-hero::after {
-  content: "";
-  position: absolute;
-  z-index: 5;
-  pointer-events: none;
-  left: -5%;
-  width: 110%;
-  bottom: -1px;
-  height: 104px;
-  background: var(--bg) !important;
-  clip-path: ellipse(75% 58% at 50% 100%);
-}
-/* The content area must never inherit the hero artwork. */
-body[data-page="home"] main,
-body[data-page="home"] .home-content,
-body[data-page="home"] .home-main {
-  background-color: var(--bg);
-  background-image: none !important;
-}
-:root[data-theme="dark"] body[data-page="home"] .blog-hero::after {
-  background: #000 !important;
-}
-@media (max-width: 700px) {
-  body[data-page="home"] .blog-hero::after {
-    height: 78px;
-    clip-path: ellipse(84% 58% at 50% 100%);
-  }
-}
-
-
-/* Clean homepage layering: one top-only backdrop, original hero geometry, no centered overlay panels. */
-body[data-page="home"] {
-  background-color: var(--bg) !important;
-  background-image: url('/backgrounds/home/background.jpg') !important;
-  background-position: center top !important;
-  background-size: 100% 600px !important;
-  background-repeat: no-repeat !important;
-}
-body[data-page="home"]::before {
-  content: none !important;
-  display: none !important;
-}
-body[data-page="home"] .blog-hero {
-  width: 100vw !important;
-  max-width: none !important;
-  margin-left: calc(50% - 50vw) !important;
-  position: relative !important;
-  isolation: auto !important;
-  overflow: hidden !important;
-  background: transparent !important;
-  background-image: none !important;
-  background-color: transparent !important;
-}
-/* Remove the accidental pseudo-element panel; the native SVG waves define the transition. */
-body[data-page="home"] .blog-hero::after {
-  content: none !important;
-  display: none !important;
 }
 body[data-page="home"] .blog-hero .hero-overlay {
-  z-index: 0 !important;
-  background: linear-gradient(180deg, rgba(12,14,12,.12), rgba(12,14,12,.22)) !important;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(12,14,12,.10), rgba(12,14,12,.24));
 }
 body[data-page="home"] .blog-hero .hero-heading {
-  z-index: 2 !important;
+  position: relative;
+  z-index: 1;
+  min-height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 24px 110px;
+  text-align: center;
+  color: #fff;
 }
 body[data-page="home"] .blog-hero .hero-wave {
-  position: absolute !important;
-  left: 0 !important;
-  bottom: -1px !important;
-  width: 100% !important;
-  height: 100px !important;
-  z-index: 3 !important;
-  pointer-events: none !important;
-  display: block !important;
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 112px;
+  z-index: 2;
+  display: block;
+  pointer-events: none;
 }
 body[data-page="home"] .blog-hero .hero-wave-back path {
-  fill: rgba(255,255,255,.55) !important;
+  fill: rgba(255,255,255,.58);
 }
 body[data-page="home"] .blog-hero .hero-wave-front path {
-  fill: #fff !important;
+  fill: #fff;
 }
 body[data-page="home"] .home-layout {
-  position: relative !important;
-  z-index: 4 !important;
+  position: relative;
+  z-index: 2;
   background: #fff !important;
+  background-image: none !important;
 }
-body[data-page="home"] .home-layout,
-body[data-page="home"] .home-layout main,
+body[data-page="home"] .home-layout .home-main,
 body[data-page="home"] .home-layout .profile-card {
   background-color: #fff !important;
   background-image: none !important;
 }
 :root[data-theme="dark"] body[data-page="home"] {
   background-color: #000 !important;
-  background-image: linear-gradient(rgba(0,0,0,.28),rgba(0,0,0,.28)), url('/backgrounds/home/background.jpg') !important;
+}
+:root[data-theme="dark"] body[data-page="home"]::before {
+  background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg');
+}
+:root[data-theme="dark"] body[data-page="home"] .site-header.glass-panel {
+  background: rgba(8,8,8,.32) !important;
+  border-color: rgba(255,255,255,.24);
 }
 :root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-back path {
-  fill: rgba(0,0,0,.55) !important;
+  fill: rgba(0,0,0,.58);
 }
 :root[data-theme="dark"] body[data-page="home"] .blog-hero .hero-wave-front path {
-  fill: #000 !important;
+  fill: #000;
 }
 :root[data-theme="dark"] body[data-page="home"] .home-layout,
-:root[data-theme="dark"] body[data-page="home"] .home-layout main,
+:root[data-theme="dark"] body[data-page="home"] .home-layout .home-main,
 :root[data-theme="dark"] body[data-page="home"] .home-layout .profile-card {
   background-color: #000 !important;
 }
 @media (max-width: 700px) {
-  body[data-page="home"] {
-    background-size: auto 560px !important;
+  body[data-page="home"]::before {
+    height: 560px;
+    background-position: center top;
+  }
+  body[data-page="home"] .site-header.glass-panel {
+    width: calc(100% - 28px);
+    margin-top: 12px;
+  }
+  body[data-page="home"] .blog-hero {
+    min-height: 430px;
   }
   body[data-page="home"] .blog-hero .hero-wave {
-    height: 76px !important;
+    height: 84px;
   }
-}
-
-
-/* Restore the actual hero artwork: keep the image on the hero, not on the page backdrop. */
-body[data-page="home"] {
-  background-color: #faf9f6 !important;
-  background-image: none !important;
-}
-body[data-page="home"] .blog-hero {
-  background-image: url('/backgrounds/home/background.jpg') !important;
-  background-size: cover !important;
-  background-position: center 42% !important;
-  background-repeat: no-repeat !important;
-  background-color: transparent !important;
-  overflow: hidden !important;
-  isolation: isolate !important;
-}
-/* Keep hero's own overlay above the photo, and wave SVGs above the overlay. */
-body[data-page="home"] .blog-hero .hero-overlay {
-  z-index: 0 !important;
-}
-body[data-page="home"] .blog-hero .hero-heading {
-  position: relative !important;
-  z-index: 2 !important;
-}
-body[data-page="home"] .blog-hero .hero-wave {
-  z-index: 3 !important;
-}
-/* The photo ends at the hero boundary; only the wave and white content continue below. */
-body[data-page="home"] .home-layout {
-  background: #fff !important;
-  background-image: none !important;
-}
-body[data-page="home"] .home-layout main,
-body[data-page="home"] .home-layout .profile-card {
-  background-color: #fff !important;
-  background-image: none !important;
-}
-:root[data-theme="dark"] body[data-page="home"] {
-  background-color: #000 !important;
-}
-:root[data-theme="dark"] body[data-page="home"] .blog-hero {
-  background-image: linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.25)), url('/backgrounds/home/background.jpg') !important;
-}
-:root[data-theme="dark"] body[data-page="home"] .home-layout,
-:root[data-theme="dark"] body[data-page="home"] .home-layout main,
-:root[data-theme="dark"] body[data-page="home"] .home-layout .profile-card {
-  background-color: #000 !important;
 }
