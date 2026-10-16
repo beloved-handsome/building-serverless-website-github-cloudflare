@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <circle cx="50" cy="50" r="45" fill="#2563eb"/>
-  <path d="M30 50 L45 35 L45 65 Z" fill="white"/>
-  <path d="M50 50 L65 35 L65 65 Z" fill="white"/>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="16" fill="#242421"/>
+  <text
+    x="32"
+    y="43"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="34"
+    font-weight="700"
+    fill="#faf9f6"
+  >Y.</text>
 </svg>
