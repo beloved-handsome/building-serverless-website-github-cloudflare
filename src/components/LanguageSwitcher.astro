@@ -168,8 +168,8 @@
       missingByText.set(text, indexes);
     });
     const uniqueMissing = Array.from(missingByText.keys());
-    for (let i = 0; i < uniqueMissing.length; i += 12) {
-      const batch = uniqueMissing.slice(i, i + 12);
+    for (let i = 0; i < uniqueMissing.length; i += 40) {
+      const batch = uniqueMissing.slice(i, i + 40);
       const response = await fetch('/api/translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
