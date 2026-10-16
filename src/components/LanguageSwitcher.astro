@@ -163,11 +163,14 @@
         el.textContent = data.tags?.[i] || el.dataset.translatedOriginal;
       });
       const nodes = Array.from(article.querySelectorAll<HTMLElement>('.article-content h1,.article-content h2,.article-content h3,.article-content h4,.article-content p,.article-content li,.article-content blockquote,.article-content th,.article-content td'));
+      const normalize = (value: string) => value.replace(/\\s+/g, ' ').trim();
+      const normalizedStrings = new Map(Object.entries(data.strings || {}).map(([key, value]) => [normalize(key), value]));
       for (const el of nodes) {
         if (el.closest('pre,code,a,button')) continue;
         const original = el.dataset.translatedOriginal || el.textContent || '';
         if (!el.dataset.translatedOriginal) el.dataset.translatedOriginal = original;
-        if (data.strings[original]) el.textContent = data.strings[original];
+        const translated = normalizedStrings.get(normalize(original));
+        if (translated) el.textContent = translated;
       }
       article.dataset.translationState = 'ready';
     } catch (error) {
