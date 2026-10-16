@@ -783,3 +783,11 @@ body[data-page="home"] {
     background-position: center;
   }
 }
+
+
+/* Break the homepage hero out of the centered content column so the photo reaches both viewport edges. */
+.blog-hero {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+}
