@@ -937,3 +937,53 @@ body[data-page="home"] .home-layout .profile-card {
 @media (prefers-reduced-motion: reduce) {
   body[data-page="home"] .waves .parallax > use { animation: none !important; }
 }
+
+
+/* Home header matches the archive shell width and floats over the hero photo. */
+body[data-page="home"] .site-shell {
+  position: relative !important;
+  width: min(var(--max-width), calc(100% - 40px)) !important;
+  max-width: var(--max-width) !important;
+  margin-inline: auto !important;
+  background: transparent !important;
+}
+body[data-page="home"] .site-shell > main {
+  width: 100% !important;
+  margin: 0 !important;
+}
+body[data-page="home"] .site-header.glass-panel {
+  position: absolute !important;
+  top: 18px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 20 !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-height: 64px !important;
+  margin: 0 !important;
+  background: rgba(255,255,255,.20) !important;
+  border: 1px solid rgba(255,255,255,.48) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 10px 36px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.35) !important;
+  backdrop-filter: blur(22px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(145%) !important;
+}
+body[data-page="home"] .blog-home {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+body[data-page="home"] .blog-hero {
+  margin-top: 0 !important;
+}
+:root[data-theme="dark"] body[data-page="home"] .site-header.glass-panel {
+  background: rgba(8,8,8,.34) !important;
+  border-color: rgba(255,255,255,.24) !important;
+}
+@media (max-width: 700px) {
+  body[data-page="home"] .site-shell {
+    width: calc(100% - 28px) !important;
+  }
+  body[data-page="home"] .site-header.glass-panel {
+    top: 12px !important;
+  }
+}
