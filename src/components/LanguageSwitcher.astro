@@ -149,10 +149,27 @@
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
   let translationRun = 0;
+  const translationCachePrefix = 'beloved-ai-zh-en-v1:';
+  function readTranslationCache(text: string): string | null {
+    try { return localStorage.getItem(translationCachePrefix + text); } catch { return null; }
+  }
+  function writeTranslationCache(text: string, translation: string) {
+    try { localStorage.setItem(translationCachePrefix + text, translation); } catch {}
+  }
   async function translateTexts(texts: string[]): Promise<string[]> {
-    const translated: string[] = [];
-    for (let i = 0; i < texts.length; i += 40) {
-      const batch = texts.slice(i, i + 40);
+    const results: string[] = new Array(texts.length);
+    const missingByText = new Map<string, number[]>();
+    texts.forEach((text, index) => {
+      if (!text.trim()) { results[index] = ''; return; }
+      const cached = readTranslationCache(text);
+      if (cached !== null) { results[index] = cached; return; }
+      const indexes = missingByText.get(text) || [];
+      indexes.push(index);
+      missingByText.set(text, indexes);
+    });
+    const uniqueMissing = Array.from(missingByText.keys());
+    for (let i = 0; i < uniqueMissing.length; i += 12) {
+      const batch = uniqueMissing.slice(i, i + 12);
       const response = await fetch('/api/translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -163,9 +180,13 @@
       if (!Array.isArray(data.translations) || data.translations.length !== batch.length) {
         throw new Error('Invalid translation response');
       }
-      translated.push(...data.translations);
+      batch.forEach((text, index) => {
+        const translation = data.translations![index] || '';
+        writeTranslationCache(text, translation);
+        for (const originalIndex of missingByText.get(text) || []) results[originalIndex] = translation;
+      });
     }
-    return translated;
+    return results;
   }
 
   async function translateArticle(language: string) {
