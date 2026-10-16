@@ -146,6 +146,25 @@
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
   let translationRun = 0;
+  async function translateTexts(texts: string[]): Promise<string[]> {
+    const translated: string[] = [];
+    for (let i = 0; i < texts.length; i += 40) {
+      const batch = texts.slice(i, i + 40);
+      const response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texts: batch })
+      });
+      if (!response.ok) throw new Error('Cloudflare AI translation failed');
+      const data = await response.json() as { translations?: string[] };
+      if (!Array.isArray(data.translations) || data.translations.length !== batch.length) {
+        throw new Error('Invalid translation response');
+      }
+      translated.push(...data.translations);
+    }
+    return translated;
+  }
+
   async function translateArticle(language: string) {
     const article = document.querySelector<HTMLElement>('.article-page');
     if (!article) return;
@@ -162,40 +181,35 @@
         el.textContent = el.dataset.translatedOriginal || '';
         delete el.dataset.translatedOriginal;
       });
+      document.querySelectorAll<HTMLElement>('.archive-item[data-post-slug] .archive-post-title').forEach(el => {
+        el.textContent = el.dataset.originalTitle || el.textContent || '';
+      });
       article.dataset.translationState = 'ready';
       return;
     }
+
     article.dataset.translationState = 'loading';
-    const slug = decodeURIComponent(window.location.pathname.split('/').filter(Boolean).slice(1).join('/')).split('/').join('--');
-    try {
-      const response = await fetch('/translations/' + encodeURIComponent(slug) + '.en.json');
-      if (!response.ok) throw new Error('Prebuilt translation is unavailable');
-      const data = await response.json() as {title:string;description:string;category:string;tags:string[];strings:Record<string,string>};
-      if (run !== translationRun || !article.isConnected) return;
-      const title = article.querySelector<HTMLElement>('.article-header h1');
-      const description = article.querySelector<HTMLElement>('.article-description');
-      const category = article.querySelector<HTMLElement>('.post-category');
-      if (title) { if (!title.dataset.translatedOriginal) title.dataset.translatedOriginal = title.textContent || ''; title.textContent = data.title || title.dataset.translatedOriginal; }
-      if (description) { if (!description.dataset.translatedOriginal) description.dataset.translatedOriginal = description.textContent || ''; description.textContent = data.description || description.dataset.translatedOriginal; }
-      if (category) { if (!category.dataset.translatedOriginal) category.dataset.translatedOriginal = category.textContent || ''; category.textContent = data.category || category.dataset.translatedOriginal; }
-      article.querySelectorAll<HTMLElement>('.tag-list .tag').forEach((el, i) => {
-        if (!el.dataset.translatedOriginal) el.dataset.translatedOriginal = el.textContent || '';
-        el.textContent = data.tags?.[i] || el.dataset.translatedOriginal;
-      });
-      const nodes = Array.from(article.querySelectorAll<HTMLElement>('.article-content h1,.article-content h2,.article-content h3,.article-content h4,.article-content p,.article-content li,.article-content blockquote,.article-content th,.article-content td'));
-      const normalize = (value: string) => value.replace(/\s+/g, ' ').trim();
-      const normalizedStrings = new Map(Object.entries(data.strings || {}).map(([key, value]) => [normalize(key), value]));
-      for (const el of nodes) {
-        if (el.closest('pre,code,a,button')) continue;
-        const original = el.dataset.translatedOriginal || el.textContent || '';
-        if (!el.dataset.translatedOriginal) el.dataset.translatedOriginal = original;
-        const translated = normalizedStrings.get(normalize(original));
-        if (translated) el.textContent = translated;
+    const archiveTitles = Array.from(document.querySelectorAll<HTMLElement>('.archive-item[data-post-slug] .archive-post-title'));
+    const nodes = Array.from(article.querySelectorAll<HTMLElement>(
+      '.article-header h1, .article-description, .post-category, .tag-list .tag, .article-content h1, .article-content h2, .article-content h3, .article-content h4, .article-content p, .article-content li, .article-content blockquote, .article-content th, .article-content td'
+    )).filter(el => !el.closest('pre,code,a,button'));
+    const allNodes = [...nodes, ...archiveTitles];
+    const originals = allNodes.map(el => {
+      if (!el.dataset.translatedOriginal) {
+        el.dataset.translatedOriginal = el.dataset.originalTitle || el.textContent || '';
       }
+      return el.dataset.translatedOriginal;
+    });
+    try {
+      const translations = await translateTexts(originals.map(text => text.length > 3000 ? text.slice(0, 3000) : text));
+      if (run !== translationRun || !article.isConnected) return;
+      allNodes.forEach((el, index) => {
+        if (translations[index]) el.textContent = translations[index];
+      });
       article.dataset.translationState = 'ready';
     } catch (error) {
       article.dataset.translationState = 'error';
-      console.warn('Prebuilt article translation unavailable:', error);
+      console.warn('Cloudflare AI article translation unavailable:', error);
     }
   }
   if (window.location.pathname.startsWith('/posts/')) {
