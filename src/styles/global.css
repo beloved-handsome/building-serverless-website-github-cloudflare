@@ -791,3 +791,37 @@ body[data-page="home"] {
   max-width: none;
   margin-left: calc(50% - 50vw);
 }
+
+
+/* Let the homepage artwork continue behind the navigation glass from the very top. */
+body[data-page="home"] {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--bg) !important;
+}
+body[data-page="home"]::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: min(720px, 100vh);
+  z-index: 0;
+  pointer-events: none;
+  background-image: url('/backgrounds/home/background.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+body[data-page="home"] .site-shell {
+  position: relative;
+  z-index: 1;
+}
+body[data-page="home"] .site-header.glass-panel {
+  background: rgba(255,255,255,.20);
+  border-color: rgba(255,255,255,.42);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+}
+:root[data-theme="dark"] body[data-page="home"]::before {
+  background-image: linear-gradient(rgba(0,0,0,.24),rgba(0,0,0,.24)), url('/backgrounds/home/background.jpg');
+}
