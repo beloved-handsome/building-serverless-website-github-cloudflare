@@ -87,11 +87,8 @@ const pageKey = pathname === '/' ? 'home'
             const probe = new Image();
             probe.onload = () => setBackground(ownImage);
             probe.onerror = () => {
-              // If a page-specific image has not been uploaded, use the homepage image.
-              const fallback = new Image();
-              fallback.onload = () => setBackground('/backgrounds/home/background.jpg');
-              fallback.onerror = () => setBackground(null);
-              fallback.src = '/backgrounds/home/background.jpg';
+              // No image uploaded for this page: keep its plain theme background.
+              setBackground(null);
             };
             probe.src = ownImage;
           }
