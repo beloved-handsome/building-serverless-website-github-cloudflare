@@ -110,6 +110,20 @@
     }
     const archiveIntro = document.querySelector<HTMLElement>('[data-archive-count]');
     if (archiveIntro) archiveIntro.textContent = (dictionaries[lang]['archive.intro'] || '').replace('{n}', archiveIntro.dataset.archiveCount || '0');
+    const path = window.location.pathname;
+    const pageTitles: Record<string, Record<string,string>> = {
+      '/': {zh:'个人书房 — 记录生活，思考世界',en:'The Private Study — Notes on Life & the World',ja:'個人書斎 — 日々を記録し、世界を考える',ko:'개인 서재 — 삶을 기록하고 세계를 생각하다'},
+      '/search/': {zh:'搜索 — 个人书房',en:'Search — The Private Study',ja:'検索 — 個人書斎',ko:'검색 — 개인 서재'},
+      '/wander/': {zh:'随机漫游 — 个人书房',en:'Wander — The Private Study',ja:'ランダム散策 — 個人書斎',ko:'랜덤 산책 — 개인 서재'},
+      '/archive/': {zh:'文章归档 — 个人书房',en:'Archive — The Private Study',ja:'記事一覧 — 個人書斎',ko:'글 모음 — 개인 서재'},
+      '/about/': {zh:'关于我 — 个人书房',en:'About — The Private Study',ja:'私について — 個人書斎',ko:'소개 — 개인 서재'}
+    };
+    if (pageTitles[path]?.[lang]) document.title = pageTitles[path][lang];
+    if (path.startsWith('/posts/')) {
+      const articleSuffix: Record<string,string> = {zh:'个人书房',en:'The Private Study',ja:'個人書斎',ko:'개인 서재'};
+      const originalTitle = document.querySelector('article.article-page h1')?.textContent?.trim();
+      if (originalTitle) document.title = originalTitle + ' — ' + articleSuffix[lang];
+    }
     const theme = document.querySelector<HTMLButtonElement>('.theme-toggle');
     if (theme) { theme.title = dictionaries[lang]['theme.title'] || 'Toggle theme'; theme.setAttribute('aria-label', theme.title); }
     if (selector) selector.value = lang;
