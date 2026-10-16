@@ -107,19 +107,22 @@
       count.textContent = (dictionaries[lang]['search.hint'] || '').replace('{n}', String(total));
     }
     const archiveIntro = document.querySelector<HTMLElement>('[data-archive-count]');
-    document.querySelectorAll<HTMLElement>('.archive-item[data-post-slug] .archive-post-title').forEach(async titleEl => {
-      const item = titleEl.closest<HTMLElement>('.archive-item');
-      const slug = item?.dataset.postSlug;
-      if (!slug) return;
-      const original = titleEl.dataset.originalTitle || titleEl.textContent || '';
-      if (lang === 'zh') { titleEl.textContent = original; return; }
-      try {
-        const res = await fetch('/translations/' + encodeURIComponent(slug.split('/').join('--')) + '.en.json');
-        if (!res.ok) return;
-        const translation = await res.json() as {title?: string};
-        if (titleEl.isConnected && translation.title) titleEl.textContent = translation.title;
-      } catch (error) { console.warn('Archive title translation unavailable:', error); }
-    });
+    const archiveTitles = Array.from(document.querySelectorAll<HTMLElement>('.archive-item[data-post-slug] .archive-post-title'));
+    if (lang === 'zh') {
+      archiveTitles.forEach(el => { el.textContent = el.dataset.originalTitle || el.dataset.translatedOriginal || el.textContent || ''; });
+    } else if (archiveTitles.length) {
+      void (async () => {
+        const originals = archiveTitles.map(el => el.dataset.originalTitle || el.dataset.translatedOriginal || el.textContent || '');
+        try {
+          const translations = await translateTexts(originals);
+          archiveTitles.forEach((el, index) => {
+            if (el.isConnected && translations[index]) el.textContent = translations[index];
+          });
+        } catch (error) {
+          console.warn('Cloudflare AI archive translation unavailable:', error);
+        }
+      })();
+    }
     if (archiveIntro) archiveIntro.textContent = (dictionaries[lang]['archive.intro'] || '').replace('{n}', archiveIntro.dataset.archiveCount || '0');
     const path = window.location.pathname;
     const pageTitles: Record<string, Record<string,string>> = {
