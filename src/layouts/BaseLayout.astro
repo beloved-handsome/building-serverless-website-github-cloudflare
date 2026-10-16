@@ -58,7 +58,7 @@ const pageKey = pathname === '/' ? 'home'
     <script is:inline>
       (() => {
         const getPage = () => {
-          const path = window.location.pathname.replace(/\\/+$/, '') || '/';
+          const path = window.location.pathname.replace(/\/+$/, '') || '/';
           return path === '/' ? 'home'
             : path.startsWith('/archive') ? 'archive'
             : path.startsWith('/search') ? 'search'
