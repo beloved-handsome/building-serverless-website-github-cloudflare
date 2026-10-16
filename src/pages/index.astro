@@ -176,10 +176,10 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   :global(body[data-page="home"]) { background-color:#d8d8d8 !important; background-image:none !important; }
   :global(body[data-page="home"] .site-header) { background:transparent !important; border-color:transparent !important; box-shadow:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
   .profile-card,.shortcut-card,.latest-card,.empty-posts,.now-card { background:transparent !important; border:0 !important; box-shadow:none !important; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; }
-  .blog-hero { min-height:250px;position:relative;display:grid;place-items:center;overflow:hidden;margin:0 0 24px;border-radius:0;border:0;background:linear-gradient(0deg,rgba(25,20,30,.40),rgba(25,20,30,.06)),url('/backgrounds/home/background.jpg') center 46%/cover no-repeat,linear-gradient(125deg,#746a7e,#c88d89 55%,#e4c8a2);box-shadow:none; }
+  .blog-hero { width:100vw;min-height:clamp(300px,36vw,470px);position:relative;display:grid;place-items:center;overflow:hidden;margin:0 calc(50% - 50vw) 24px;border-radius:0;border:0;background:linear-gradient(0deg,rgba(25,20,30,.40),rgba(25,20,30,.06)),url('/backgrounds/home/background.jpg') center 46%/cover no-repeat,linear-gradient(125deg,#746a7e,#c88d89 55%,#e4c8a2);box-shadow:none; }
   .hero-overlay { position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,18,28,.18),transparent 70%); }
   /* Two independently moving wave layers create the animated shoreline seen in the reference. */
-  .hero-wave { position:absolute;z-index:2;left:-1%;bottom:-1px;width:202%;height:clamp(48px,10vw,92px);pointer-events:none;will-change:transform; }
+  .hero-wave { position:absolute;z-index:2;left:-1%;bottom:-1px;width:202%;height:clamp(65px,10vw,115px);pointer-events:none;will-change:transform; }
   .hero-wave path { fill:#d8d8d8; }
   .hero-wave-back { animation:hero-wave-drift 13s linear infinite;opacity:.68; }
   .hero-wave-back path { fill:#e2e2e2; }
@@ -187,7 +187,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .hero-wave-front path { fill:#d8d8d8; }
   @keyframes hero-wave-drift { from { transform:translateX(0); } to { transform:translateX(-50%); } }
   @media(prefers-reduced-motion:reduce) { .hero-wave-back,.hero-wave-front { animation:none; } }
-  .hero-heading { position:relative;z-index:1;text-align:center;color:white;padding:44px 16px 70px;text-shadow:0 2px 22px rgba(0,0,0,.22); }
+  .hero-heading { position:relative;z-index:1;text-align:center;color:white;padding:clamp(70px,10vw,130px) 16px clamp(90px,12vw,150px);text-shadow:0 2px 22px rgba(0,0,0,.22); }
   .hero-heading h1 { margin:0;font-size:clamp(40px,7vw,62px);line-height:1.2;letter-spacing:.01em;font-weight:600; }
   .hero-heading p { margin:14px 0 0;font-size:clamp(13px,2vw,17px); }
   .home-layout { display:grid;grid-template-columns:190px minmax(0,1fr);gap:18px;align-items:start; }
@@ -220,6 +220,6 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
   .now-title { display:flex;align-items:center;gap:8px;font-size:12px; }
   .now-title span { color:var(--accent); }
   .now-details { display:flex;flex-wrap:wrap;gap:5px 14px;margin-top:8px;color:var(--muted);font-size:10px; }
-  @media(max-width:700px) { .blog-hero { min-height:210px;margin-top:0;border-radius:0; }.home-layout { grid-template-columns:1fr; }.profile-card { position:static;order:2;flex-direction:row;text-align:left;gap:12px;padding:13px; }.profile-avatar { width:64px;height:64px;flex:0 0 64px;border-radius:12px; }.profile-name { margin-top:0; }.profile-bio { margin:2px 0 4px; }.profile-card>div:not(.profile-avatar) { min-width:0; }.profile-link { display:block; }.latest-section { margin-top:18px; } }
+  @media(max-width:700px) { .blog-hero { width:100vw;min-height:clamp(260px,58vw,360px);margin:0 calc(50% - 50vw) 20px;border-radius:0; }.home-layout { grid-template-columns:1fr; }.profile-card { position:static;order:2;flex-direction:row;text-align:left;gap:12px;padding:13px; }.profile-avatar { width:64px;height:64px;flex:0 0 64px;border-radius:12px; }.profile-name { margin-top:0; }.profile-bio { margin:2px 0 4px; }.profile-card>div:not(.profile-avatar) { min-width:0; }.profile-link { display:block; }.latest-section { margin-top:18px; } }
   @media(max-width:450px) { .shortcut-grid,.latest-grid { gap:8px; }.shortcut-card { padding:11px 9px;gap:8px; }.shortcut-icon { flex-basis:29px;height:29px;font-size:17px; }.shortcut-copy strong { font-size:11px; }.shortcut-copy small { font-size:9px; }.latest-card-body { padding:10px; } }
 </style>
