@@ -988,3 +988,33 @@ body[data-page="home"] .blog-hero {
     top: 12px !important;
   }
 }
+
+
+/* Canonical navigation geometry: every route uses the same shell and header width. */
+body .site-shell {
+  width: min(900px, calc(100% - 40px)) !important;
+  max-width: 900px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+body .site-header {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+body[data-page="home"] .site-header.glass-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+@media (max-width: 700px) {
+  body .site-shell {
+    width: calc(100% - 28px) !important;
+    max-width: none !important;
+  }
+  body .site-header {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
