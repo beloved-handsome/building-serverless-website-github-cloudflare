@@ -114,7 +114,7 @@
       const original = titleEl.dataset.originalTitle || titleEl.textContent || '';
       if (lang === 'zh') { titleEl.textContent = original; return; }
       try {
-        const res = await fetch('/translations/' + encodeURIComponent(slug.replace(/\\//g, '--')) + '.en.json');
+        const res = await fetch('/translations/' + encodeURIComponent(slug.replaceAll('/', '--')) + '.en.json');
         if (!res.ok) return;
         const translation = await res.json() as {title?: string};
         if (titleEl.isConnected && translation.title) titleEl.textContent = translation.title;
