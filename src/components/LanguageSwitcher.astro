@@ -127,7 +127,10 @@
     const theme = document.querySelector<HTMLButtonElement>('.theme-toggle');
     if (theme) { theme.title = dictionaries[lang]['theme.title'] || 'Toggle theme'; theme.setAttribute('aria-label', theme.title); }
     if (selector) selector.value = lang;
-    try { localStorage.setItem('study-room-language', lang); } catch {}\n    if (path.startsWith('/posts/')) {\n      window.dispatchEvent(new CustomEvent('beloved-translate-article', {detail:{language:lang}}));\n    }
+    try { localStorage.setItem('study-room-language', lang); } catch {}
+    if (path.startsWith('/posts/')) {
+      window.dispatchEvent(new CustomEvent('beloved-translate-article', {detail:{language:lang}}));
+    }
     window.dispatchEvent(new CustomEvent('study-room-language-change', {detail:{language:lang, dictionary:dictionaries[lang]}}));
   }
   const savedLanguage = (() => { try { return localStorage.getItem('study-room-language') || 'zh'; } catch { return 'zh'; } })();
