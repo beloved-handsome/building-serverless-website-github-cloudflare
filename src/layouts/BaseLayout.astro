@@ -57,21 +57,38 @@ const pageKey = pathname === '/' ? 'home'
     <div id="google_translate_element" class="google-translate-hidden" aria-hidden="true"></div>
     <script is:inline>
       (() => {
-        const path = window.location.pathname;
-        const page = path === '/' ? 'home'
-          : path.startsWith('/archive') ? 'archive'
-          : path.startsWith('/search') ? 'search'
-          : path.startsWith('/about') ? 'about'
-          : path.startsWith('/wander') ? 'wander'
-          : path.startsWith('/posts/') ? 'posts' : 'default';
-        const body = document.body;
-        body.dataset.page = page;
-        if (page === 'home') {
-          body.style.setProperty('background-image', "linear-gradient(rgba(247,248,244,.20),rgba(247,248,244,.20)), url('/backgrounds/home/background.jpg')", 'important');
+        const getPage = () => {
+          const path = window.location.pathname.replace(/\\/+$/, '') || '/';
+          return path === '/' ? 'home'
+            : path.startsWith('/archive') ? 'archive'
+            : path.startsWith('/search') ? 'search'
+            : path.startsWith('/about') ? 'about'
+            : path.startsWith('/wander') ? 'wander'
+            : path.startsWith('/posts/') ? 'posts' : 'default';
+        };
+        const applyPageBackground = () => {
+          const body = document.body;
+          if (!body) return;
+          const page = getPage();
+          body.dataset.page = page;
+          const dark = document.documentElement.dataset.theme === 'dark';
+          const overlay = dark
+            ? (page === 'home' ? 'rgba(17,20,18,.42)' : 'rgba(17,20,18,.60)')
+            : (page === 'home' ? 'rgba(247,248,244,.20)' : 'rgba(247,248,244,.36)');
+          const image = ['home','archive','search','about','wander','posts'].includes(page)
+            ? `, url('/backgrounds/${page}/background.jpg')`
+            : '';
+          body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${image}`, 'important');
+          body.style.setProperty('background-color', 'var(--bg)', 'important');
           body.style.setProperty('background-size', 'cover', 'important');
           body.style.setProperty('background-position', 'center', 'important');
-          body.style.setProperty('background-attachment', 'fixed', 'important');
-        }
+          body.style.setProperty('background-attachment', window.matchMedia('(max-width: 700px)').matches ? 'scroll' : 'fixed', 'important');
+          body.style.setProperty('background-repeat', 'no-repeat', 'important');
+        };
+        applyPageBackground();
+        new MutationObserver(applyPageBackground).observe(document.documentElement, {
+          attributes: true, attributeFilter: ['data-theme']
+        });
       })();
     </script>
   </body>
