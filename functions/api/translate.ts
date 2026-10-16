@@ -8,7 +8,7 @@ interface TranslateRequest {
   texts?: string[];
 }
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+type PagesContext = { request: Request; env: Env };\n\nexport const onRequestPost = async ({ request, env }: PagesContext): Promise<Response> => {
   let body: TranslateRequest;
   try {
     body = await request.json() as TranslateRequest;
@@ -44,5 +44,5 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 };
 
-export const onRequestOptions: PagesFunction = async () =>
+export const onRequestOptions = async (): Promise<Response> =>
   new Response(null, { status: 204, headers: { Allow: 'POST, OPTIONS' } });
