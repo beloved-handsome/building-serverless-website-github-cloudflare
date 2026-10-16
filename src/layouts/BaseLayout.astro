@@ -33,7 +33,7 @@ const pageKey = pathname === '/' ? 'home'
       })();
     </script>
   </head>
-  <body data-page={pageKey} style={['home', 'archive', 'search', 'about', 'wander', 'posts'].includes(pageKey) ? `background-image: linear-gradient(rgba(247,248,244,.20),rgba(247,248,244,.20)), url('/backgrounds/${pageKey}/background.jpg'), url('/backgrounds/home/background.jpg') !important; background-color: var(--bg) !important; background-size: cover !important; background-position: center !important; background-attachment: fixed !important; background-repeat: no-repeat !important;` : undefined}>
+  <body data-page={pageKey} >
     <div class="site-shell">
       <header class="site-header glass-panel notranslate" translate="no">
         <a class="brand" href="/" aria-label="Beloved home">
@@ -76,7 +76,7 @@ const pageKey = pathname === '/' ? 'home'
             ? (page === 'home' ? 'rgba(17,20,18,.42)' : 'rgba(17,20,18,.60)')
             : (page === 'home' ? 'rgba(247,248,244,.20)' : 'rgba(247,248,244,.36)');
           const image = ['home','archive','search','about','wander','posts'].includes(page)
-            ? `, url('/backgrounds/${page}/background.jpg'), url('/backgrounds/home/background.jpg')`
+            ? `, url('/backgrounds/${page}/background.jpg')`
             : '';
           body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${image}`, 'important');
           body.style.setProperty('background-color', 'var(--bg)', 'important');
