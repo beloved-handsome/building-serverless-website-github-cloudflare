@@ -1155,3 +1155,66 @@ body[data-page="about"] .interior-content { max-width:1080px !important; }
  .interior-waves { height:112px; margin-top:-76px; } .interior-content { width:100% !important; padding:26px 18px 48px !important; }
 }
 @media(prefers-reduced-motion:reduce) { .interior-wave-parallax use { animation:none; } }
+
+
+/* Corrected full-bleed interior pages: photo belongs only to the hero;
+   the wave must sit directly over a viewport-wide solid content canvas. */
+body[data-page="archive"], body[data-page="search"], body[data-page="about"], body[data-page="wander"] {
+  background-color: #faf9f6 !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+}
+body[data-page="archive"] .site-shell,
+body[data-page="search"] .site-shell,
+body[data-page="about"] .site-shell,
+body[data-page="wander"] .site-shell {
+  width: 100% !important; max-width: none !important; margin: 0 !important;
+  padding: 0 !important; background: transparent !important;
+}
+body[data-page="archive"] main,
+body[data-page="search"] main,
+body[data-page="about"] main,
+body[data-page="wander"] main {
+  width: 100% !important; max-width: none !important; margin: 0 !important;
+  padding: 0 !important; background: transparent !important;
+}
+.interior-hero {
+  width: 100vw !important; max-width: none !important;
+  height: 70vh !important; min-height: 520px !important; max-height: 760px !important;
+  margin: 0 calc(50% - 50vw) !important; border-radius: 0 !important;
+  background-position: center 46% !important; background-size: cover !important;
+}
+.interior-waves {
+  width: 100vw !important; height: 136px !important;
+  margin: -92px calc(50% - 50vw) 0 !important;
+}
+.interior-content {
+  box-sizing: border-box !important;
+  width: 100vw !important; max-width: none !important;
+  margin: 0 calc(50% - 50vw) !important;
+  padding: 28px 24px 64px !important;
+  border: 0 !important; border-radius: 0 !important;
+  background: #faf9f6 !important; background-image: none !important;
+  box-shadow: none !important; backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+.interior-content > * {
+  width: min(1080px, 100%) !important;
+  max-width: 1080px !important;
+  margin-left: auto !important; margin-right: auto !important;
+}
+.interior-content .archive-year,
+.interior-content .archive-intro,
+.interior-content .utility-intro { width: min(1080px,100%) !important; }
+.interior-content .about-page,
+.interior-content .wander-card { max-width: 900px !important; }
+:root[data-theme="dark"] body[data-page="archive"],
+:root[data-theme="dark"] body[data-page="search"],
+:root[data-theme="dark"] body[data-page="about"],
+:root[data-theme="dark"] body[data-page="wander"] { background-color:#000 !important; background-image:none !important; }
+:root[data-theme="dark"] .interior-content { background:#000 !important; color:#eee !important; }
+@media (max-width:700px) {
+ .interior-hero { height:62vh !important; min-height:430px !important; max-height:none !important; }
+ .interior-waves { height:112px !important; margin-top:-76px !important; }
+ .interior-content { padding:24px 18px 48px !important; }
+}
