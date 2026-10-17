@@ -1088,8 +1088,9 @@ body[data-page="home"] .profile-avatar {
   width: 148px !important; height: 148px !important;
   min-width: 148px !important; min-height: 148px !important;
   margin: 0 auto 18px !important; border-radius: 24px !important;
-  background: var(--accent-soft) !important; border: 1px solid var(--glass-border) !important;
-  background-size: cover !important; background-position: center !important;
+  background-color: var(--accent-soft) !important; border: 1px solid var(--glass-border) !important;
+  background-image: url('/profile/avatar.jpg') !important;
+  background-repeat: no-repeat !important; background-size: cover !important; background-position: center center !important;
 }
 body[data-page="home"] .profile-name { font-size: 1.45rem !important; line-height: 1.45 !important; font-weight: 700 !important; }
 body[data-page="home"] .profile-bio, body[data-page="home"] .profile-link { font-size: 1rem !important; line-height: 1.9 !important; }
@@ -1108,4 +1109,14 @@ body[data-page="home"] .now-title, body[data-page="home"] .now-details { font-si
   body[data-page="home"] .blog-hero .hero-heading p { font-size: 1.12rem !important; padding-inline: 10px; }
   body[data-page="home"] .home-layout { width: calc(100% - 28px) !important; grid-template-columns: 1fr !important; gap: 22px !important; }
   body[data-page="home"] .profile-avatar { width: 136px !important; height: 136px !important; min-width: 136px !important; min-height: 136px !important; }
+}
+
+
+/* Final avatar safeguard: never use the background shorthand here, as it clears the image. */
+body[data-page="home"] .profile-card .profile-avatar {
+  background-color: var(--accent-soft) !important;
+  background-image: url('/profile/avatar.jpg') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
 }
