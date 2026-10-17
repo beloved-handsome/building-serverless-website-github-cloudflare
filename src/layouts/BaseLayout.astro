@@ -78,10 +78,11 @@ const pageKey = pathname === '/' ? 'home'
           const supportedPages = ['home','archive','search','about','wander','posts'];
           const ownImage = supportedPages.includes(page) ? `/backgrounds/${page}/background.jpg` : null;
           const setBackground = (imageUrl) => {
-            // Homepage photo is rendered by the full-bleed hero; the page below follows the theme.
-            if (page === 'home') {
+            // Home and interior utility pages render their own hero image.
+            // Never leave the old fixed body background behind the wave/content canvas.
+            if (['home','archive','search','about','wander'].includes(page)) {
               body.style.setProperty('background-image', 'none', 'important');
-              body.style.setProperty('background-color', dark ? '#000' : 'var(--bg)', 'important');
+              body.style.setProperty('background-color', dark ? '#000' : '#faf9f6', 'important');
               body.style.setProperty('background-size', 'auto', 'important');
               body.style.setProperty('background-position', 'initial', 'important');
               body.style.setProperty('background-attachment', 'scroll', 'important');
