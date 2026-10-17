@@ -11,9 +11,24 @@ const groups = Object.groupBy(
 );
 ---
 <BaseLayout title="文章归档 — Beloved" description="浏览 Beloved 的全部文章。">
-  <section class="archive-page glass-panel">
-    <p class="section-kicker" data-i18n="archive.kicker">THE ARCHIVE</p>
-    <h1 data-i18n="archive.title">文章归档<span>.</span></h1>
+  <section class="interior-hero interior-hero-archive" aria-label="文章归档">
+    <div class="interior-hero-shade"></div>
+    <div class="interior-hero-copy">
+      <p class="interior-kicker">ARCHIVE</p>
+      <h1 data-i18n="archive.title">文章归档<span>.</span></h1>
+      <p data-i18n="archive.intro">浏览所有文章，按时间寻找留下的记录。</p>
+    </div>
+  </section>
+  <div class="interior-waves" aria-hidden="true">
+    <svg viewBox="0 24 150 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><path id="interior-wave-archive" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path></defs>
+      <g class="interior-wave-parallax">
+        <use href="#interior-wave-archive" x="48" y="0" class="iw-1"></use><use href="#interior-wave-archive" x="48" y="3" class="iw-2"></use><use href="#interior-wave-archive" x="48" y="5" class="iw-3"></use><use href="#interior-wave-archive" x="48" y="7" class="iw-4"></use>
+      </g>
+    </svg>
+  </div>
+
+  <section class="archive-page interior-content glass-panel">
     <p class="archive-intro" data-i18n="archive.intro" data-archive-count={posts.length}>所有写过的东西，都在这里留下痕迹。共 {posts.length} 篇文章。</p>
     {Object.entries(groups)
       .sort(([a], [b]) => Number(b) - Number(a))
