@@ -1018,3 +1018,64 @@ body[data-page="home"] .site-header.glass-panel {
     max-width: 100% !important;
   }
 }
+
+
+/* Navigation text stays pure black across every route and theme. */
+body .site-header, body .site-header *, body .site-header .nav-links,
+body .site-header .nav-links a, body .site-header .brand,
+body .site-header .brand-mark, body .site-header .language-switcher,
+body .site-header .language-switcher select, body .site-header .language-switcher option,
+body .site-header .theme-toggle, body .site-header .theme-icon {
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+}
+body .site-header .nav-links a:hover, body .site-header .nav-links a:focus-visible,
+body .site-header .wander-link {
+  color: #000 !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+/* Larger homepage type and profile frame. */
+body[data-page="home"] .blog-hero .hero-heading h1 {
+  font-size: clamp(3.4rem, 6.6vw, 5.6rem) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.035em !important;
+  margin: 0 0 22px !important;
+}
+body[data-page="home"] .blog-hero .hero-heading p {
+  max-width: 850px;
+  font-size: clamp(1.2rem, 2vw, 1.65rem) !important;
+  line-height: 1.8 !important;
+}
+body[data-page="home"] .home-layout {
+  grid-template-columns: 240px minmax(0, 1fr) !important;
+  gap: 26px !important;
+  width: min(1080px, calc(100% - 48px)) !important;
+  padding-top: 34px !important;
+}
+body[data-page="home"] .profile-card { padding: 26px 20px !important; text-align: center; }
+body[data-page="home"] .profile-avatar {
+  display: block !important;
+  width: 148px !important; height: 148px !important;
+  min-width: 148px !important; min-height: 148px !important;
+  margin: 0 auto 18px !important; border-radius: 24px !important;
+  background-size: cover !important; background-position: center !important;
+}
+body[data-page="home"] .profile-name { font-size: 1.45rem !important; line-height: 1.45 !important; font-weight: 700 !important; }
+body[data-page="home"] .profile-bio, body[data-page="home"] .profile-link { font-size: 1rem !important; line-height: 1.9 !important; }
+body[data-page="home"] .shortcut-grid { gap: 18px !important; }
+body[data-page="home"] .shortcut-card { min-height: 82px !important; padding: 18px !important; }
+body[data-page="home"] .shortcut-icon { width: 44px !important; height: 44px !important; font-size: 1.45rem !important; }
+body[data-page="home"] .shortcut-copy strong { font-size: 1.08rem !important; line-height: 1.6 !important; }
+body[data-page="home"] .shortcut-copy small { font-size: .92rem !important; line-height: 1.7 !important; }
+body[data-page="home"] .latest-heading h2 { font-size: 1.7rem !important; }
+body[data-page="home"] .latest-heading > a { font-size: .95rem !important; }
+body[data-page="home"] .latest-card h3 { font-size: 1.25rem !important; line-height: 1.55 !important; }
+body[data-page="home"] .latest-card p { font-size: 1rem !important; line-height: 1.9 !important; }
+body[data-page="home"] .now-title, body[data-page="home"] .now-details { font-size: 1rem !important; line-height: 1.9 !important; }
+@media (max-width: 700px) {
+  body[data-page="home"] .blog-hero .hero-heading h1 { font-size: clamp(2.65rem, 11vw, 3.8rem) !important; }
+  body[data-page="home"] .blog-hero .hero-heading p { font-size: 1.12rem !important; padding-inline: 10px; }
+  body[data-page="home"] .home-layout { width: calc(100% - 28px) !important; grid-template-columns: 1fr !important; gap: 22px !important; }
+  body[data-page="home"] .profile-avatar { width: 136px !important; height: 136px !important; min-width: 136px !important; min-height: 136px !important; }
+}
