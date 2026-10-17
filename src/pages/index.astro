@@ -52,7 +52,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
               <a class="latest-card glass-panel" href={`/posts/${post.id}/`}>
                 <div class="latest-card-body">
                   <h3>{post.data.title}</h3>
-                  <p>{post.data.description || '记录生活里的片段与想法。'}</p>
+                  <p>{post.data.description || <span data-i18n="home.defaultPostDescription">记录生活里的片段与想法。</span>}</p>
                   <span class="post-date">{post.data.pubDate.toLocaleDateString('zh-CN')}</span>
                 </div>
               </a>
