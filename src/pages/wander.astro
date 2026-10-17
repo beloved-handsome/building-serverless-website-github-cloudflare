@@ -4,8 +4,24 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('posts', ({ data }) => !data.draft)).map(p => ({ title:p.data.title, url:`/posts/${p.id}/`, description:p.data.description }));
 ---
 <BaseLayout title="随机漫游 — Beloved" description="在 Beloved 随机阅读一篇文章。">
-  <section class="utility-page wander-page">
-    <p class="section-kicker" data-i18n="wander.kicker">SERENDIPITY</p><h1 data-i18n="wander.title">随机漫游<span>.</span></h1>
+  <section class="interior-hero interior-hero-wander" aria-label="随机漫游">
+    <div class="interior-hero-shade"></div>
+    <div class="interior-hero-copy">
+      <p class="interior-kicker">WANDER</p>
+      <h1 data-i18n="wander.title">随机漫游<span>.</span></h1>
+      <p data-i18n="wander.intro">有时不必带着问题来。让下一篇文章替你决定方向。</p>
+    </div>
+  </section>
+  <div class="interior-waves" aria-hidden="true">
+    <svg viewBox="0 24 150 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><path id="interior-wave-wander" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path></defs>
+      <g class="interior-wave-parallax">
+        <use href="#interior-wave-wander" x="48" y="0" class="iw-1"></use><use href="#interior-wave-wander" x="48" y="3" class="iw-2"></use><use href="#interior-wave-wander" x="48" y="5" class="iw-3"></use><use href="#interior-wave-wander" x="48" y="7" class="iw-4"></use>
+      </g>
+    </svg>
+  </div>
+
+  <section class="utility-page wander-page interior-content">
     <p class="utility-intro" data-i18n="wander.intro">有时不必带着问题来。让下一篇文章替你决定方向。</p>
     <div class="wander-card glass-panel"><div class="wander-symbol">✳</div><h2 id="wander-title" data-i18n="wander.ready">准备好偶遇一段文字了吗？</h2><p id="wander-description" data-i18n="wander.desc">点击下面的按钮，随机打开书房中的一篇文章。</p><button class="button-primary" id="wander-button" type="button" data-i18n="wander.button">带我去看看 ↗</button></div>
     {posts.length === 0 ? <p class="search-count" data-i18n="wander.empty">书房里还没有文章。先为书房添几篇记录吧。</p> : <script type="application/json" id="wander-data" set:html={JSON.stringify(posts).replace(/</g, '\\u003c')} />}
