@@ -141,6 +141,21 @@
       if (value !== undefined) el.setAttribute('title', value);
     });
 
+    // Translate dynamic homepage post metadata using the shared Chinese→English dictionary.
+    document.querySelectorAll<HTMLElement>('[data-home-post-title], [data-home-post-description]').forEach(el => {
+      if (!el.dataset.translatedOriginal) {
+        el.dataset.translatedOriginal = el.textContent || '';
+      }
+      const original = el.dataset.translatedOriginal || '';
+      el.textContent = lang === 'en' ? (englishText[original] || original) : original;
+    });
+    document.querySelectorAll<HTMLTimeElement>('[data-home-post-date]').forEach(el => {
+      if (!el.dataset.originalDate) el.dataset.originalDate = el.dateTime;
+      if (el.dataset.originalDate) {
+        el.textContent = new Date(el.dataset.originalDate).toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN');
+      }
+    });
+
     const count = document.querySelector<HTMLElement>('[data-search-count]');
     if (count) {
       const total = Number(count.dataset.total || 0);
