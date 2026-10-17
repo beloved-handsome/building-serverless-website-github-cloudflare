@@ -2,9 +2,24 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="关于 — Beloved" description="了解 Beloved。">
-  <article class="about-page glass-panel">
-    <p class="eyebrow" data-i18n="about.kicker">ABOUT ME</p>
-    <h1 data-i18n="about.title">关于我<span>.</span></h1>
+  <section class="interior-hero interior-hero-about" aria-label="关于我">
+    <div class="interior-hero-shade"></div>
+    <div class="interior-hero-copy">
+      <p class="interior-kicker">ABOUT</p>
+      <h1 data-i18n="about.title">关于我<span>.</span></h1>
+      <p data-i18n="about.lead">你好，很高兴你来到这里。</p>
+    </div>
+  </section>
+  <div class="interior-waves" aria-hidden="true">
+    <svg viewBox="0 24 150 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><path id="interior-wave-about" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path></defs>
+      <g class="interior-wave-parallax">
+        <use href="#interior-wave-about" x="48" y="0" class="iw-1"></use><use href="#interior-wave-about" x="48" y="3" class="iw-2"></use><use href="#interior-wave-about" x="48" y="5" class="iw-3"></use><use href="#interior-wave-about" x="48" y="7" class="iw-4"></use>
+      </g>
+    </svg>
+  </div>
+
+  <article class="about-page interior-content glass-panel">
     <p class="lead" data-i18n="about.lead">你好，很高兴你来到这里。</p>
     <p data-i18n="about.p1">我是一个喜欢探索、记录和思考的人。这个博客用来记录技术实践、生活感悟，以及那些值得留下的瞬间。</p>
     <h2 data-i18n="about.h2">关于这个博客</h2>
