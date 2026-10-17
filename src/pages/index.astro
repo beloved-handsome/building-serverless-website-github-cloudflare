@@ -11,8 +11,8 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
     <section class="blog-hero">
       <div class="hero-overlay"></div>
       <div class="hero-heading">
-        <h1>Beloved's Blog</h1>
-        <p>🌿 记录生活的点滴，分享值得珍藏的瞬间。</p>
+        <h1 data-i18n="home.heroTitle">Beloved's Blog</h1>
+        <p data-i18n="home.heroSubtitle">🌿 记录生活的点滴，分享值得珍藏的瞬间。</p>
       </div>
     </section>
     <div class="waves" aria-hidden="true">
@@ -31,22 +31,22 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
 
     <div class="home-layout">
       <aside class="profile-card glass-panel">
-        <div class="profile-avatar" role="img" aria-label="个人头像"></div>
-        <div class="profile-name">Beloved</div>
-        <p class="profile-bio">记录、思考，慢慢生活。</p>
-        <a class="profile-link" href="/about/">关于我　↗</a>
+        <div class="profile-avatar" role="img" aria-label="个人头像" data-i18n-aria="home.avatarAria"></div>
+        <div class="profile-name" data-i18n="home.profileName">Beloved</div>
+        <p class="profile-bio" data-i18n="home.profileBio">记录、思考，慢慢生活。</p>
+        <a class="profile-link" href="/about/" data-i18n="home.profileLink">关于我　↗</a>
       </aside>
 
       <main class="home-main">
-        <section class="shortcut-grid" aria-label="快捷导航">
-          <a class="shortcut-card glass-panel" href="/archive/"><span class="shortcut-icon">▤</span><span class="shortcut-copy"><strong>文章归档</strong><small>按时间浏览文章</small></span></a>
-          <a class="shortcut-card glass-panel" href="/search/"><span class="shortcut-icon">⌕</span><span class="shortcut-copy"><strong>搜索</strong><small>查找书房里的文章</small></span></a>
-          <a class="shortcut-card glass-panel" href="/wander/"><span class="shortcut-icon">↗</span><span class="shortcut-copy"><strong>随机漫游</strong><small>随意发现一篇文章</small></span></a>
-          <a class="shortcut-card glass-panel" href="/about/"><span class="shortcut-icon">✳</span><span class="shortcut-copy"><strong>关于</strong><small>了解这个博客</small></span></a>
+        <section class="shortcut-grid" aria-label="快捷导航" data-i18n-aria="home.shortcutsAria">
+          <a class="shortcut-card glass-panel" href="/archive/"><span class="shortcut-icon">▤</span><span class="shortcut-copy"><strong data-i18n="home.shortcutArchive">文章归档</strong><small data-i18n="home.shortcutArchiveDesc">按时间浏览文章</small></span></a>
+          <a class="shortcut-card glass-panel" href="/search/"><span class="shortcut-icon">⌕</span><span class="shortcut-copy"><strong data-i18n="home.shortcutSearch">搜索</strong><small data-i18n="home.shortcutSearchDesc">查找书房里的文章</small></span></a>
+          <a class="shortcut-card glass-panel" href="/wander/"><span class="shortcut-icon">↗</span><span class="shortcut-copy"><strong data-i18n="home.shortcutWander">随机漫游</strong><small data-i18n="home.shortcutWanderDesc">随意发现一篇文章</small></span></a>
+          <a class="shortcut-card glass-panel" href="/about/"><span class="shortcut-icon">✳</span><span class="shortcut-copy"><strong data-i18n="home.shortcutAbout">关于</strong><small data-i18n="home.shortcutAboutDesc">了解这个博客</small></span></a>
         </section>
 
         <section class="latest-section">
-          <div class="latest-heading"><h2>最近文章</h2><a href="/archive/">查看全部　↗</a></div>
+          <div class="latest-heading"><h2 data-i18n="home.latestTitle">最近文章</h2><a href="/archive/" data-i18n="home.latestAll">查看全部　↗</a></div>
           <div class="latest-grid">
             {posts.map((post) => (
               <a class="latest-card glass-panel" href={`/posts/${post.id}/`}>
@@ -57,7 +57,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft))
                 </div>
               </a>
             ))}
-            {posts.length === 0 && <div class="empty-posts glass-panel">还没有文章，写下第一篇吧。</div>}
+            {posts.length === 0 && <div class="empty-posts glass-panel" data-i18n="home.emptyPosts">还没有文章，写下第一篇吧。</div>}
           </div>
         </section>
 
