@@ -1035,6 +1035,35 @@ body .site-header .wander-link {
   -webkit-text-fill-color: #000 !important;
 }
 
+/* Restore the actual uploaded profile image; the previous size rule accidentally
+   replaced its background image with a flat accent color. */
+body[data-page="home"] .profile-avatar {
+  background-image: url('/profile/avatar.jpg') !important;
+  background-color: var(--accent-soft) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center center !important;
+}
+
+/* Navbar text follows the selected theme: black in light mode, white in dark mode. */
+:root[data-theme="dark"] body .site-header,
+:root[data-theme="dark"] body .site-header *,
+:root[data-theme="dark"] body .site-header .nav-links,
+:root[data-theme="dark"] body .site-header .nav-links a,
+:root[data-theme="dark"] body .site-header .brand,
+:root[data-theme="dark"] body .site-header .brand-mark,
+:root[data-theme="dark"] body .site-header .language-switcher,
+:root[data-theme="dark"] body .site-header .language-switcher select,
+:root[data-theme="dark"] body .site-header .language-switcher option,
+:root[data-theme="dark"] body .site-header .theme-toggle,
+:root[data-theme="dark"] body .site-header .theme-icon,
+:root[data-theme="dark"] body .site-header .nav-links a:hover,
+:root[data-theme="dark"] body .site-header .nav-links a:focus-visible,
+:root[data-theme="dark"] body .site-header .wander-link {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
 /* Larger homepage type and profile frame. */
 body[data-page="home"] .blog-hero .hero-heading h1 {
   font-size: clamp(3.4rem, 6.6vw, 5.6rem) !important;
