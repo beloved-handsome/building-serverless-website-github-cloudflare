@@ -1302,7 +1302,7 @@ body .site-header .nav-links > a.wander-link:focus-visible {
 }
 
 
-/* Match AI Assistant transition timing to the regular navigation links. */
+/* Keep AI Assistant transition identical to regular navigation links. */
 body .site-header .nav-links > .chat-nav-trigger {
-  transition: color .2s !important;
+  transition: background .2s, border-color .2s, color .2s !important;
 }
