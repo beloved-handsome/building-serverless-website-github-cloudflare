@@ -33,8 +33,7 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
   const messages: Record<string, Record<string,string>> = {
     zh:{hint:'共 {n} 篇文章。输入关键词开始搜索。',found:'找到 {n} 篇相关记录',noneTitle:'没有找到相关记录',none:'换个关键词试试。'},
     en:{hint:'{n} articles. Enter a keyword to search.',found:'Found {n} related articles',noneTitle:'No matching notes',none:'Try another keyword.'},
-    ja:{hint:'全 {n} 件。キーワードを入力して検索してください。',found:'関連する記事：{n} 件',noneTitle:'記事が見つかりません',none:'別のキーワードをお試しください。'},
-    ko:{hint:'전체 {n}개 글. 키워드를 입력해 검색하세요.',found:'관련 글 {n}개를 찾았습니다',noneTitle:'검색 결과가 없습니다',none:'다른 키워드를 입력해 보세요.'}
+    en:{hint:'{n} articles. Enter a keyword to search.',found:'Found {n} related articles',noneTitle:'No matching notes',none:'Try another keyword.'}
   };
   function render(query = '') {
     if (!results || !count) return;
