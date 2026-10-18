@@ -1,0 +1,163 @@
+---
+---
+<div class="beloved-chatbot" data-chatbot>
+  <button class="chatbot-launcher" type="button" aria-label="打开 Beloved 聊天助手" aria-expanded="false" aria-controls="beloved-chat-panel">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H5l-1-4.5A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8 11h.01M12 11h.01M16 11h.01"/></svg>
+    <span class="chatbot-launcher-label">和我聊聊</span>
+  </button>
+
+  <section class="chatbot-panel" id="beloved-chat-panel" aria-label="Beloved 聊天助手" aria-hidden="true">
+    <header class="chatbot-header">
+      <div class="chatbot-avatar" aria-hidden="true">B</div>
+      <div class="chatbot-heading">
+        <strong>Beloved 小助手</strong>
+        <span><i></i> 固定回复 · 随时可以聊聊</span>
+      </div>
+      <button class="chatbot-icon-button chatbot-clear" type="button" aria-label="清空聊天记录" title="清空聊天记录">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3"/></svg>
+      </button>
+      <button class="chatbot-icon-button chatbot-close" type="button" aria-label="关闭聊天窗口" title="关闭">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+
+    <div class="chatbot-messages" role="log" aria-live="polite" aria-relevant="additions text">
+      <div class="chatbot-message bot-message">
+        你好，欢迎来到 Beloved！我是博客小助手，可以和你聊聊这个网站、文章和作者。你也可以点击下面的问题开始。
+      </div>
+    </div>
+
+    <div class="chatbot-suggestions" aria-label="推荐问题">
+      <button type="button" data-question="你是谁？">你是谁？</button>
+      <button type="button" data-question="这个博客有什么？">博客有什么？</button>
+      <button type="button" data-question="怎么联系作者？">联系作者</button>
+    </div>
+
+    <form class="chatbot-form">
+      <label class="chatbot-sr-only" for="beloved-chat-input">输入消息</label>
+      <input id="beloved-chat-input" name="message" type="text" maxlength="500" placeholder="输入消息，试试“文章”或“关于”…" autocomplete="off" required />
+      <button type="submit" aria-label="发送消息">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 15 22l-4-9-9-4 20-7ZM22 2 11 13"/></svg>
+      </button>
+    </form>
+    <p class="chatbot-footnote">这是固定模板机器人，不会调用 AI API。</p>
+  </section>
+</div>
+
+<style>
+  .beloved-chatbot { --cb-bg: var(--surface, #fff); --cb-text: var(--text, #242421); --cb-muted: var(--muted, #85847d); --cb-border: var(--border, #e9e7e0); --cb-accent: var(--accent, #65745b); --cb-soft: var(--accent-soft, #edf0e9); position: fixed; right: max(22px, env(safe-area-inset-right)); bottom: max(22px, env(safe-area-inset-bottom)); z-index: 9999; color: var(--cb-text); font-family: inherit; }
+  .beloved-chatbot * { box-sizing: border-box; }
+  .chatbot-launcher { display: flex; align-items: center; justify-content: center; gap: 9px; min-height: 54px; padding: 0 19px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: var(--cb-text); color: var(--cb-bg); box-shadow: 0 10px 35px rgba(0,0,0,.2); cursor: pointer; transition: transform .2s, box-shadow .2s; }
+  .chatbot-launcher:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(0,0,0,.24); }
+  .chatbot-launcher svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .chatbot-launcher-label { font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .chatbot-panel { position: absolute; right: 0; bottom: 68px; display: flex; flex-direction: column; width: min(370px, calc(100vw - 28px)); height: min(540px, calc(100dvh - 120px)); min-height: 350px; overflow: hidden; border: 1px solid var(--cb-border); border-radius: 20px; background: var(--cb-bg); color: var(--cb-text); box-shadow: 0 22px 70px rgba(0,0,0,.2); opacity: 0; visibility: hidden; transform: translateY(10px) scale(.985); transform-origin: bottom right; transition: opacity .18s, transform .18s, visibility .18s; }
+  .beloved-chatbot.is-open .chatbot-panel { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+  .chatbot-header { display: flex; align-items: center; gap: 10px; padding: 15px; border-bottom: 1px solid var(--cb-border); }
+  .chatbot-avatar { display: grid; place-items: center; flex: 0 0 39px; width: 39px; height: 39px; border-radius: 13px; background: var(--cb-soft); color: var(--cb-accent); font-weight: 700; font-size: 17px; }
+  .chatbot-heading { display: flex; flex: 1; flex-direction: column; min-width: 0; line-height: 1.5; }
+  .chatbot-heading strong { font-size: 13px; font-weight: 650; }
+  .chatbot-heading span { display: flex; align-items: center; gap: 6px; color: var(--cb-muted); font-size: 10px; }
+  .chatbot-heading i { width: 6px; height: 6px; border-radius: 50%; background: #6d9b68; }
+  .chatbot-icon-button { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; padding: 6px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--cb-muted); cursor: pointer; }
+  .chatbot-icon-button:hover { border-color: var(--cb-border); background: var(--cb-soft); color: var(--cb-text); }
+  .chatbot-icon-button svg, .chatbot-form button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .chatbot-messages { display: flex; flex: 1; flex-direction: column; gap: 12px; overflow-y: auto; padding: 17px 14px; overscroll-behavior: contain; }
+  .chatbot-message { max-width: 88%; padding: 10px 12px; border-radius: 14px; font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .bot-message { align-self: flex-start; border: 1px solid var(--cb-border); border-top-left-radius: 5px; background: var(--cb-bg); }
+  .user-message { align-self: flex-end; border: 1px solid var(--cb-soft); border-top-right-radius: 5px; background: var(--cb-soft); }
+  .chatbot-suggestions { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 14px 12px; }
+  .chatbot-suggestions button { padding: 6px 10px; border: 1px solid var(--cb-border); border-radius: 999px; background: transparent; color: var(--cb-text); font-size: 10px; cursor: pointer; }
+  .chatbot-suggestions button:hover { border-color: var(--cb-accent); background: var(--cb-soft); }
+  .chatbot-form { display: flex; align-items: center; gap: 8px; margin: 0 12px; padding: 7px 7px 7px 13px; border: 1px solid var(--cb-border); border-radius: 14px; background: var(--cb-bg); }
+  .chatbot-form input { flex: 1; width: 0; min-width: 0; padding: 7px 0; border: 0; outline: 0; background: transparent; color: var(--cb-text); font: inherit; font-size: 12px; }
+  .chatbot-form input::placeholder { color: var(--cb-muted); }
+  .chatbot-form button { display: grid; place-items: center; flex: 0 0 34px; width: 34px; height: 34px; border: 0; border-radius: 10px; background: var(--cb-text); color: var(--cb-bg); cursor: pointer; }
+  .chatbot-form button:hover { opacity: .82; }
+  .chatbot-footnote { margin: 8px 12px 10px; color: var(--cb-muted); text-align: center; font-size: 9px; line-height: 1.5; }
+  .chatbot-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  @media (max-width: 480px) { .beloved-chatbot { right: max(14px, env(safe-area-inset-right)); bottom: max(14px, env(safe-area-inset-bottom)); } .chatbot-launcher { min-height: 50px; padding: 0 15px; } .chatbot-panel { position: fixed; right: max(10px, env(safe-area-inset-right)); bottom: max(74px, calc(env(safe-area-inset-bottom) + 68px)); width: calc(100vw - 20px); height: min( min(600px, calc(100dvh - 100px)), 78dvh); min-height: 300px; border-radius: 18px; } .chatbot-message { font-size: 12px; } }
+  @media (prefers-reduced-motion: reduce) { .chatbot-launcher, .chatbot-panel { transition: none; } }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-chatbot]');
+  if (root && !root.dataset.initialized) {
+    root.dataset.initialized = 'true';
+    const launcher = root.querySelector<HTMLButtonElement>('.chatbot-launcher')!;
+    const panel = root.querySelector<HTMLElement>('.chatbot-panel')!;
+    const closeButton = root.querySelector<HTMLButtonElement>('.chatbot-close')!;
+    const clearButton = root.querySelector<HTMLButtonElement>('.chatbot-clear')!;
+    const form = root.querySelector<HTMLFormElement>('.chatbot-form')!;
+    const input = root.querySelector<HTMLInputElement>('#beloved-chat-input')!;
+    const messages = root.querySelector<HTMLElement>('.chatbot-messages')!;
+    const suggestions = root.querySelector<HTMLElement>('.chatbot-suggestions')!;
+
+    const welcome = '你好，欢迎来到 Beloved！我是博客小助手，可以和你聊聊这个网站、文章和作者。你也可以点击下面的问题开始。';
+    const answers: { keywords: string[]; reply: string }[] = [
+      { keywords: ['你好', '您好', '嗨', '哈喽', 'hello', 'hi', 'hey'], reply: '你好呀！很高兴你来到 Beloved。想了解博客、文章，还是来随便聊聊？' },
+      { keywords: ['你是谁', '你叫什么', '机器人', '助手', 'who are you', 'your name'], reply: '我是 Beloved 的博客小助手，由固定问答模板驱动，不会调用 AI API。虽然不能像真人一样理解所有问题，但我很乐意带你逛逛这里。' },
+      { keywords: ['博客', '网站', 'beloved', '这里有什么', 'what is this site', 'about this blog'], reply: '这里是 Beloved，一个记录生活、阅读、见闻与思考的个人空间。你可以通过顶部导航浏览文章归档、搜索、关于页面和随机漫游。' },
+      { keywords: ['文章', '帖子', '写了什么', '阅读', 'post', 'article', 'writing'], reply: '你可以从「归档」浏览已发布的文章，也可以使用「搜索」查找感兴趣的内容。正在阅读某篇文章的话，也欢迎继续往下看！' },
+      { keywords: ['关于', '作者', '博主', '介绍', '你了解我吗', 'author', 'about me'], reply: '想认识博客作者的话，可以打开导航里的「关于」页面。这里的介绍由站点作者维护；我不会凭空编造作者的个人经历。' },
+      { keywords: ['联系', '邮箱', '邮件', '找你', '联系方式', 'contact', 'email'], reply: '联系作者的方式请以「关于」页面公开的信息为准。如果页面没有提供联系方式，我就不能替作者编造邮箱或社交账号啦。' },
+      { keywords: ['搜索', '查找', '找文章', 'search'], reply: '点击顶部导航的「搜索」，输入标题或关键词，就能尝试查找站内内容。' },
+      { keywords: ['归档', '分类', '历史文章', 'archive'], reply: '打开「归档」页面可以浏览已发布的文章，适合按时间慢慢回顾。' },
+      { keywords: ['漫游', '随机', 'wander'], reply: '试试导航里的「随机漫游」，让网站带你去看看另一个角落。' },
+      { keywords: ['谢谢', '感谢', 'thanks', 'thank you'], reply: '不客气！谢谢你来 Beloved 逛逛。希望这里有一段文字能让你停留片刻。' },
+      { keywords: ['再见', '拜拜', '回头见', 'bye', 'goodbye'], reply: '那就先聊到这里啦。欢迎随时回来 Beloved 看看！' },
+      { keywords: ['天气', '时间', '位置', '定位', 'weather', 'time'], reply: '我目前是固定模板机器人，没有连接实时天气、时间或定位服务，所以没办法提供实时信息。' },
+      { keywords: ['api', '人工智能', 'ai', '模型'], reply: '我不连接 AI API，也不会把消息发送给 AI 服务。我的回答来自网站里预先编写的关键词和固定模板。' }
+    ];
+
+    function appendMessage(text: string, kind: 'bot' | 'user') {
+      const message = document.createElement('div');
+      message.className = `chatbot-message ${kind === 'bot' ? 'bot-message' : 'user-message'}`;
+      message.textContent = text;
+      messages.append(message);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function getAnswer(text: string) {
+      const normalized = text.toLocaleLowerCase().replace(/[？?!！。，,、\s]/g, '');
+      const match = answers.find(item => item.keywords.some(keyword => normalized.includes(keyword.toLocaleLowerCase().replace(/\s/g, ''))));
+      return match?.reply ?? '这个问题我暂时没有预设答案呢。你可以试试问我「你是谁」「博客有什么」「文章」「关于作者」或「怎么联系作者」。';
+    }
+
+    function send(text: string) {
+      const value = text.trim();
+      if (!value) return;
+      appendMessage(value, 'user');
+      appendMessage(getAnswer(value), 'bot');
+      input.value = '';
+      input.focus();
+    }
+
+    function setOpen(open: boolean) {
+      root!.classList.toggle('is-open', open);
+      launcher.setAttribute('aria-expanded', String(open));
+      panel.setAttribute('aria-hidden', String(!open));
+      if (open) window.setTimeout(() => input.focus(), 50);
+    }
+
+    launcher.addEventListener('click', () => setOpen(!root!.classList.contains('is-open')));
+    closeButton.addEventListener('click', () => setOpen(false));
+    clearButton.addEventListener('click', () => {
+      messages.replaceChildren();
+      appendMessage(welcome, 'bot');
+      input.value = '';
+      input.focus();
+    });
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      send(input.value);
+    });
+    suggestions.addEventListener('click', event => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-question]');
+      if (button) send(button.dataset.question ?? '');
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && root!.classList.contains('is-open')) setOpen(false);
+    });
+  }
+</script>
