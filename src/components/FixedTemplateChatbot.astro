@@ -114,7 +114,8 @@
 
     function appendMessage(text: string, kind: 'bot' | 'user') {
       const message = document.createElement('div');
-      message.className = `chatbot-message ${kind === 'bot' ? 'bot-message' : 'user-message'}`;\n      message.dataset.messageRole = kind === 'bot' ? 'assistant' : 'user';
+      message.className = `chatbot-message ${kind === 'bot' ? 'bot-message' : 'user-message'}`;
+      message.dataset.messageRole = kind === 'bot' ? 'assistant' : 'user';
       message.textContent = text;
       messages.append(message);
       messages.scrollTop = messages.scrollHeight;
