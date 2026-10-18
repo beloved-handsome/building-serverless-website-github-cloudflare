@@ -19,7 +19,6 @@ const pageKey = pathname === '/' ? 'home'
 <html lang="zh-CN" translate="no">
   <head>
     <meta charset="UTF-8" />
-    <meta name="google" content="notranslate" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#e9eee8" />
     <meta name="description" content={description} />
@@ -36,7 +35,7 @@ const pageKey = pathname === '/' ? 'home'
   </head>
   <body data-page={pageKey} >
     <div class="site-shell">
-      <header class="site-header glass-panel notranslate" translate="no">
+      <header class="site-header glass-panel">
         <a class="brand" href="/" aria-label="Beloved home">
           <span class="brand-mark">B</span>
           <span>Beloved</span>
@@ -56,7 +55,6 @@ const pageKey = pathname === '/' ? 'home'
       </main>
     </div>
     <FixedTemplateChatbot />
-    <div id="google_translate_element" class="google-translate-hidden" aria-hidden="true"></div>
     <script is:inline>
       (() => {
         const getPage = () => {
