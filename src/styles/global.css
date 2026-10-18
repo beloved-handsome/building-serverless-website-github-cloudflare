@@ -1205,7 +1205,23 @@ body[data-page="wander"] main {
 .interior-content .archive-intro,
 .interior-content .utility-intro { width: min(1080px,100%) !important; }
 .interior-content .about-page,
-.interior-content .wander-card { max-width: 900px !important; }
+.interior-content .wander-card {
+  box-sizing: border-box !important;
+  display: block !important;
+  width: min(1080px, 100%) !important;
+  max-width: 1080px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* About content must sit on the same full-width canvas as the wave,
+   not retain the old narrow centered-card dimensions. */
+body[data-page="about"] .interior-content.about-page {
+  width: 100vw !important;
+  max-width: none !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+}
 :root[data-theme="dark"] body[data-page="archive"],
 :root[data-theme="dark"] body[data-page="search"],
 :root[data-theme="dark"] body[data-page="about"],
