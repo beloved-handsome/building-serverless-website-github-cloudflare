@@ -5,6 +5,14 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort((a,
 const entries = posts.map(p => ({ title:p.data.title, description:p.data.description, category:p.data.category, tags:p.data.tags, date:p.data.pubDate.toISOString().slice(0,10), url:`/posts/${p.id}/`, text:[p.data.title,p.data.description,p.data.category,...p.data.tags].join(' ') }));
 ---
 <BaseLayout title="搜索 — Beloved" description="搜索 Beloved 中的文章、主题与标签。">
+  <section class="interior-hero interior-hero-search" aria-label="搜索文章">
+    <div class="interior-hero-shade"></div>
+    <div class="interior-hero-copy">
+      <p class="interior-kicker">SEARCH</p>
+      <h1 data-i18n="search.title">搜索<span>.</span></h1>
+      <p data-i18n="search.intro">按标题、摘要、分类或标签寻找一段记录。</p>
+    </div>
+  </section>
   <div class="interior-waves" aria-hidden="true">
     <svg viewBox="0 24 150 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <defs><path id="interior-wave-search" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"></path></defs>
