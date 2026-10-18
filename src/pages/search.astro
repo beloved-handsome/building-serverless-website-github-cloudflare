@@ -32,7 +32,6 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
   const entries = JSON.parse(dataNode?.textContent || '[]') as {title:string;description:string;category:string;tags:string[];date:string;url:string;text:string}[];
   const messages: Record<string, Record<string,string>> = {
     zh:{hint:'共 {n} 篇文章。输入关键词开始搜索。',found:'找到 {n} 篇相关记录',noneTitle:'没有找到相关记录',none:'换个关键词试试。'},
-    en:{hint:'{n} articles. Enter a keyword to search.',found:'Found {n} related articles',noneTitle:'No matching notes',none:'Try another keyword.'},
     en:{hint:'{n} articles. Enter a keyword to search.',found:'Found {n} related articles',noneTitle:'No matching notes',none:'Try another keyword.'}
   };
   function render(query = '') {
