@@ -16,7 +16,7 @@
     </header>
 
     <div class="chatbot-messages" role="log" aria-live="polite" aria-relevant="additions text">
-      <div class="chatbot-message bot-message">
+      <div class="chatbot-message bot-message" data-message-role="assistant">
         你好，欢迎来到 Beloved！我是博客小助手，可以和你聊聊这个网站、文章和作者。你也可以点击下面的问题开始。
       </div>
     </div>
@@ -114,7 +114,7 @@
 
     function appendMessage(text: string, kind: 'bot' | 'user') {
       const message = document.createElement('div');
-      message.className = `chatbot-message ${kind === 'bot' ? 'bot-message' : 'user-message'}`;
+      message.className = `chatbot-message ${kind === 'bot' ? 'bot-message' : 'user-message'}`;\n      message.dataset.messageRole = kind === 'bot' ? 'assistant' : 'user';
       message.textContent = text;
       messages.append(message);
       messages.scrollTop = messages.scrollHeight;
