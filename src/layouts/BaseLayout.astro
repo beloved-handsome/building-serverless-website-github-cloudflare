@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import FixedTemplateChatbot from '../components/FixedTemplateChatbot.astro';
 
 interface Props { title?: string; description?: string; }
 const { title = 'Beloved — A personal corner of the world', description = 'Beloved — a quiet space for time, place, weather, and writing.' } = Astro.props;
@@ -54,6 +55,7 @@ const pageKey = pathname === '/' ? 'home'
         <slot />
       </main>
     </div>
+    <FixedTemplateChatbot />
     <div id="google_translate_element" class="google-translate-hidden" aria-hidden="true"></div>
     <script is:inline>
       (() => {
