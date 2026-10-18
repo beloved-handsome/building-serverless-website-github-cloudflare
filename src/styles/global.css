@@ -1222,6 +1222,19 @@ body[data-page="about"] .interior-content.about-page {
   margin-left: calc(50% - 50vw) !important;
   margin-right: calc(50% - 50vw) !important;
 }
+
+/* Center all About page copy within the full-width white canvas. */
+body[data-page="about"] .interior-content.about-page {
+  text-align: center !important;
+}
+body[data-page="about"] .interior-content.about-page > * {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+body[data-page="about"] .interior-content.about-page p,
+body[data-page="about"] .interior-content.about-page h2 {
+  text-align: center !important;
+}
 :root[data-theme="dark"] body[data-page="archive"],
 :root[data-theme="dark"] body[data-page="search"],
 :root[data-theme="dark"] body[data-page="about"],
