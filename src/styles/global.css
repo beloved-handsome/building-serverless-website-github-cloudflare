@@ -1216,3 +1216,12 @@ body[data-page="wander"] main {
  .interior-waves { height:112px !important; margin-top:-76px !important; }
  .interior-content { padding:24px 18px 48px !important; }
 }
+
+
+/* Requested clean canvas: pure white in light mode and pure black in dark mode. */
+:root { --bg: #ffffff; --surface: #ffffff; --page-background: #ffffff; }
+:root[data-theme='dark'] { --bg: #000000; --surface: #000000; --page-background: #000000; }
+body { background: #ffffff !important; }
+:root[data-theme='dark'] body { background: #000000 !important; }
+:root[data-theme='dark'] body[data-page='home'] .home-layout,
+:root[data-theme='dark'] .interior-content { background: #000000 !important; }
