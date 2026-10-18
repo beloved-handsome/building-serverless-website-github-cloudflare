@@ -1283,3 +1283,20 @@ body .site-header .nav-links > .chat-nav-trigger:focus-visible {
 @media(max-width:700px) {
   .beloved-chatbot .chatbot-messages .chatbot-message { max-width:90% !important; }
 }
+
+
+/* Make Wander use exactly the same nav-chip geometry and hover treatment as other links. */
+body .site-header .nav-links > a.wander-link {
+  display:inline-flex !important; align-items:center !important; justify-content:center !important;
+  min-height:34px !important; box-sizing:border-box !important;
+  padding:5px 9px !important; margin:0 !important;
+  border:1px solid transparent !important; border-radius:10px !important;
+  background:transparent !important; font:inherit !important; line-height:1.4 !important;
+  text-decoration:none !important; white-space:nowrap !important;
+  transition:background .2s,border-color .2s,color .2s !important;
+}
+body .site-header .nav-links > a.wander-link:hover,
+body .site-header .nav-links > a.wander-link:focus-visible {
+  background:var(--glass) !important; border-color:var(--glass-border) !important;
+  outline-offset:2px;
+}
