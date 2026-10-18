@@ -1225,3 +1225,12 @@ body { background: #ffffff !important; }
 :root[data-theme='dark'] body { background: #000000 !important; }
 :root[data-theme='dark'] body[data-page='home'] .home-layout,
 :root[data-theme='dark'] .interior-content { background: #000000 !important; }
+
+/* Ensure all non-hero canvas areas use the requested pure monochrome backgrounds. */
+body[data-page='archive'], body[data-page='search'], body[data-page='about'], body[data-page='wander'] { background-color: #ffffff !important; }
+.interior-content { background: #ffffff !important; }
+:root[data-theme='dark'] body[data-page='archive'],
+:root[data-theme='dark'] body[data-page='search'],
+:root[data-theme='dark'] body[data-page='about'],
+:root[data-theme='dark'] body[data-page='wander'] { background-color: #000000 !important; }
+:root[data-theme='dark'] .interior-content { background: #000000 !important; }
