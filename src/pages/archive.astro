@@ -29,7 +29,7 @@ const groups = Object.groupBy(
   </div>
 
   <section class="archive-page interior-content glass-panel">
-    <p class="archive-intro" data-i18n="archive.intro" data-archive-count={posts.length}>所有写过的东西，都在这里留下痕迹。共 {posts.length} 篇文章。</p>
+    
     {Object.entries(groups)
       .sort(([a], [b]) => Number(b) - Number(a))
       .map(([year, yearPosts]) => (
