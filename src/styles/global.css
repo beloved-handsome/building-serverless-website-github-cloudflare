@@ -1302,7 +1302,8 @@ body .site-header .nav-links > a.wander-link:focus-visible {
 }
 
 
-/* Keep AI Assistant transition identical to regular navigation links. */
+/* Theme changes should recolor the AI Assistant label immediately.
+   Keep only hover surface transitions animated. */
 body .site-header .nav-links > .chat-nav-trigger {
-  transition: background .2s, border-color .2s, color .2s !important;
+  transition: background .2s, border-color .2s, color 0s !important;
 }
