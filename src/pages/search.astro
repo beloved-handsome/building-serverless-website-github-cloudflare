@@ -23,7 +23,6 @@ const entries = posts.map(p => ({ title:p.data.title, description:p.data.descrip
   </div>
 
   <section class="utility-page interior-content">
-    <p class="utility-intro" data-i18n="search.intro">按标题、摘要、分类或标签寻找一段记录。</p>
     <div class="search-box glass-panel"><span aria-hidden="true">⌕</span><input id="site-search" type="search" data-i18n-placeholder="search.placeholder" data-i18n-aria="search.aria" placeholder="试试输入：读书、生活、思考……" autocomplete="off" aria-label="搜索文章" /><kbd>Enter</kbd></div>
     <p id="search-count" class="search-count" data-search-count data-total={posts.length}>共 {posts.length} 篇文章。输入关键词开始搜索。</p>
     <div id="search-results" class="search-results"></div>
