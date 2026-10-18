@@ -688,14 +688,12 @@ body[data-page="posts"] { background-image:linear-gradient(rgba(247,248,244,.36)
 :root[data-theme="dark"] body[data-page="about"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/about/background.jpg'); }
 :root[data-theme="dark"] body[data-page="wander"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/wander/background.jpg'); }
 :root[data-theme="dark"] body[data-page="posts"] { background-image:linear-gradient(rgba(17,20,18,.60),rgba(17,20,18,.60)),url('/backgrounds/posts/background.jpg'); }
-.google-translate-hidden { position:fixed;left:-10000px;top:0;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none; }
 .goog-te-banner-frame.skiptranslate { display:none!important; }
 body { top:0!important; }
 @media(max-width:700px) {
   body { background-attachment:scroll; }
 }
 @media(prefers-reduced-transparency:reduce) {
-  .google-translate-hidden { visibility:hidden; }
 }
 
 
