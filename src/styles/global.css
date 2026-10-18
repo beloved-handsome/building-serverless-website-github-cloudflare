@@ -1300,3 +1300,13 @@ body .site-header .nav-links > a.wander-link:focus-visible {
   background:var(--glass) !important; border-color:var(--glass-border) !important;
   outline-offset:2px;
 }
+
+
+/* Faster theme response for the AI Assistant navigation control. */
+body .site-header .nav-links > .chat-nav-trigger {
+  transition:background-color .06s linear,border-color .06s linear,color .06s linear !important;
+}
+:root[data-theme='dark'] body .site-header .nav-links > .chat-nav-trigger,
+:root:not([data-theme='dark']) body .site-header .nav-links > .chat-nav-trigger {
+  transition-duration:.06s !important;
+}
