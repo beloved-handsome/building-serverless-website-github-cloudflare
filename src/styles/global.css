@@ -1302,11 +1302,7 @@ body .site-header .nav-links > a.wander-link:focus-visible {
 }
 
 
-/* Faster theme response for the AI Assistant navigation control. */
+/* Match AI Assistant transition timing to the regular navigation links. */
 body .site-header .nav-links > .chat-nav-trigger {
-  transition:background-color .06s linear,border-color .06s linear,color .06s linear !important;
-}
-:root[data-theme='dark'] body .site-header .nav-links > .chat-nav-trigger,
-:root:not([data-theme='dark']) body .site-header .nav-links > .chat-nav-trigger {
-  transition-duration:.06s !important;
+  transition: color .2s !important;
 }
