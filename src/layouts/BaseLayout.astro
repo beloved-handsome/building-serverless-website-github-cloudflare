@@ -89,7 +89,7 @@ const pageKey = pathname === '/' ? 'home'
               body.style.setProperty('background-repeat', 'no-repeat', 'important');
               return;
             }
-            const versionedUrl = imageUrl ? `${imageUrl}?v=7` : null;
+            const versionedUrl = imageUrl ? `${imageUrl}?v=8` : null;
             const imageLayer = versionedUrl ? `, url("${versionedUrl}")` : '';
             body.style.setProperty('background-image', `linear-gradient(${overlay},${overlay})${imageLayer}`, 'important');
           };
@@ -99,7 +99,7 @@ const pageKey = pathname === '/' ? 'home'
             const probe = new Image();
             probe.onload = () => setBackground(ownImage);
             probe.onerror = () => setBackground('/backgrounds/home/background.jpg');
-            probe.src = `${ownImage}?v=7`;
+            probe.src = `${ownImage}?v=8`;
           } else {
             setBackground(ownImage || '/backgrounds/home/background.jpg');
           }
